@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Mr.Bugger_App</string>
+    <string name="promotionsBanner">Promotions</string>
+    <string name="product1_name">Chicken_Burger</string>
+    <string name="product2_name">Beef_Burger</string>
+    <string name="product3_name">Veg Burger</string>
+    <string name="product4_name">Fish Burger</string>
+    <string name="product_image">product_image</string>
+</resources>
