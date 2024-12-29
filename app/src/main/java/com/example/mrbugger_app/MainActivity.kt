@@ -14,19 +14,21 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.mrbugger_app.NavController.AppNavigation
 import com.example.mrbugger_app.ui.screen.container.ScreenContainer
 import com.example.mrbugger_app.ui.screen.homepage.homePage
 import com.example.mrbugger_app.ui.screen.welcome.welcomePage
-import com.example.mrbugger_app.ui.theme.MrBugger_AppTheme
+import com.example.mrbugger_app.ui.theme.MrBurgerTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MrBugger_AppTheme {
-                homePage()
-
+            MrBurgerTheme {
+                AppNavigation()
             }
         }
     }

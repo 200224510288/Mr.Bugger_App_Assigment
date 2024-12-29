@@ -13,26 +13,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.mrbugger_app.BottomNav.BottomNavDesign
+import com.example.mrbugger_app.TopNav.TopBar
 import com.example.mrbugger_app.ui.theme.ExtraYellowLight
 import com.google.ai.client.generativeai.type.content
 
 
 @Composable
-fun ScreenWithBottonNavBar(){
-
+fun ScreenWithBottonNavBar(navController: NavController){
     Column(modifier = Modifier.fillMaxSize()) {
         // Main Content
         Box(modifier = Modifier.weight(1f).background(Color.White)) {
         }
         // Bottom Navigation Bar
-        BottomNavSection()
+        BottomNavSection(navController = navController)
     }
 }
 
 
 @Composable
-fun BottomNavSection(){
+fun BottomNavSection(navController: NavController){
 
     Box(modifier = Modifier
         .fillMaxWidth()
@@ -41,6 +44,18 @@ fun BottomNavSection(){
         .height(80.dp),
         contentAlignment = Alignment.Center){
 
-        BottomNavDesign(modifier = Modifier)
+        BottomNavDesign(modifier = Modifier, navController = navController)
+    }
+}
+
+@Composable
+fun TopBarSection() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Transparent),
+        contentAlignment = Alignment.Center
+    ) {
+        TopBar()
     }
 }
