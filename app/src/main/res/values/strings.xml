@@ -1,9 +1,49 @@
 <resources>
     <string name="app_name">Mr.Bugger_App</string>
     <string name="promotionsBanner">Promotions</string>
-    <string name="product1_name">Chicken_Burger</string>
-    <string name="product2_name">Beef_Burger</string>
-    <string name="product3_name">Veg Burger</string>
-    <string name="product4_name">Fish Burger</string>
+    <string name="ChickenBurger">Chicken Burger</string>
+    <string name="ChickenBurgerPrice">600</string>
+    <string name="BeefBurger">Beef Burger</string>
+    <string name="BeefBurgerPrice">850</string>
+    <string name="VegBurger">Veg Burger</string>
+    <string name="VegBurgerPrice">450</string>
+    <string name="whooperBugerPrice">1100</string>
+    <string name="whooperBuger">Whooper Burger</string>
     <string name="product_image">product_image</string>
+    <string name="chicken_burger_image">product_image</string>
+    <string name="categorey_1">All</string>
+    <string name="categorey_2">Chicken</string>
+    <string name="categorey_3">Beef</string>
+    <string name="categorey_4">Veg</string>
+
+    <!-- Chicken Burgers -->
+    <string name="zingerBurger">Zinger Burger</string>
+    <string name="zingerBurgerPrice">990</string>
+    <string name="loadedCheeseburger">Loaded Cheese Burger</string>
+    <string name="loadedCheeseburgerPrice">1300</string>
+    <string name="tandooriBurger">Tandoori Burger</string>
+    <string name="tandooriBurgerPrice">1450</string>
+    <string name="nashvilleBurger">Nashville Burger</string>
+    <string name="nashvilleBurgerPrice">1950</string>
+
+    <!-- Beef Burgers -->
+    <string name="bbqBaconBurger">BBQ Bacon Burger</string>
+    <string name="bbqBaconBurgerPrice">1600</string>
+    <string name="WesternWhopperBurger">Western Whopper Burger</string>
+    <string name="WesternWhopperBurgerPrice">1700</string>
+    <string name="loadedCheeseBeefBurger">Cheese loaded Beef Burger</string>
+    <string name="loadedCheeseBeefBurgerPrice">1800</string>
+    <string name="DoubleMushroomSwissBurger">Double Mushroom Swiss Burger</string>
+    <string name="DoubleMushroomSwissBurgerPrice">1500</string>
+
+    <!-- Veg Burgers -->
+    <string name="classicVeggieBurger">Classic Veggie Burger</string>
+    <string name="classicVeggieBurgerPrice">800</string>
+    <string name="spicyVeggieBurger">Spicy Veggie Burger</string>
+    <string name="spicyVeggieBurgerPrice">950</string>
+    <string name="gardenFreshBurger">Garden Fresh Burger</string>
+    <string name="gardenFreshBurgerPrice">900</string>
+    <string name="cheesyVegDelightBurger">Cheesy Veg Burger</string>
+    <string name="cheesyVegDelightBurgerPrice">1000</string>
+
 </resources>

@@ -15,6 +15,9 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,13 +31,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.example.mrbugger_app.Screen
 import com.example.mrbugger_app.ui.theme.ExtraYellowLight
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
 
 
-@Preview
 @Composable
-fun BottomNavDesign(modifier: Modifier = Modifier) {
+fun BottomNavDesign(modifier: Modifier = Modifier, navController: NavController) {
 
     Row(
         modifier = Modifier
@@ -46,7 +51,7 @@ fun BottomNavDesign(modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         // Home Icon
-        IconButton(onClick = { /* Do nothing */ }) {
+        IconButton(onClick = { navController.navigate(Screen.Home.route) }) {
             Icon(
                 imageVector = Icons.Filled.Home,
                 contentDescription = "Home",
@@ -58,9 +63,9 @@ fun BottomNavDesign(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.size(25.dp))
 
         // Explore Icon
-        IconButton(onClick = { /* Do nothing */ }) {
+        IconButton(onClick = {navController.navigate(Screen.Search.route)}) {
             Icon(
-                imageVector = Icons.Filled.Search,
+                imageVector = Icons.Outlined.Search,
                 contentDescription = "Explore",
                 tint = Color.Black,
                 modifier = Modifier.size(28.dp)
@@ -70,14 +75,14 @@ fun BottomNavDesign(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.size(25.dp))
 
         // Shopping cart
-        IconButton(onClick = { /* Do nothing */ }) {
+        IconButton(onClick = {navController.navigate(Screen.Cart.route)}) {
             Box(
                 modifier = Modifier
                     .size(24.dp)
                     .background(Color.Transparent)
             ) {
                 Icon(
-                    imageVector = Icons.Filled.ShoppingCart,
+                    imageVector = Icons.Outlined.ShoppingCart,
                     contentDescription = "Saved",
                     tint = Color.Black,
                     modifier = Modifier.size(28.dp)
@@ -105,9 +110,9 @@ fun BottomNavDesign(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.size(25.dp))
 
         // Profile Icon
-        IconButton(onClick = { /* Do nothing */ }) {
+        IconButton(onClick = {navController.navigate(Screen.Profile.route) }) {
             Icon(
-                imageVector = Icons.Filled.Person,
+                imageVector = Icons.Outlined.Person,
                 contentDescription = "Profile",
                 tint = Color.Black,
                 modifier = Modifier.size(28.dp)

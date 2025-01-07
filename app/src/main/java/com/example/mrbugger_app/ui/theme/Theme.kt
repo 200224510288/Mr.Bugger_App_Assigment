@@ -1,25 +1,54 @@
 package com.example.mrbugger_app.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Color
 import com.example.mrbugger_app.R
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.darkColorScheme
 
-private val AppColors = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+// Light and Dark theme colors
+private val DarkColorPalette = darkColorScheme(
+    primary = PrimaryYellowLight,
+    secondary = SecondaryColor,
+    background = Darkgray,
+    surface = Darkgray,
+    onPrimary = BackgroundColor,
+    onSecondary = Color.Black,
+    onBackground = BackgroundColor,
+    onSurface = BackgroundColor
 )
+
+private val LightColorPalette = lightColorScheme(
+    primary = PrimaryYellowLight,
+    secondary = SecondaryColor,
+    background = BackgroundColor,
+    surface = lightGray,
+    onPrimary = TextColor,
+    onSecondary = TextColor,
+    onBackground = TextColor,
+    onSurface = TextColor
+)
+
+@Composable
+fun MrBurgerTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    val colors = if (darkTheme) DarkColorPalette else LightColorPalette
+
+    MaterialTheme(
+        colorScheme = colors,
+        typography = Typography,
+        shapes = Shapes,
+        content = content
+    )
+}
 val Poppins = FontFamily(
     Font(R.font.poppinslight, FontWeight.Light),
     Font(R.font.poppinsregular, FontWeight.Normal),
@@ -28,13 +57,3 @@ val Poppins = FontFamily(
     Font(R.font.poppinsbold, FontWeight.Bold),
     Font(R.font.poppinsextrabold, FontWeight.ExtraBold)
 )
-
-
-@Composable
-fun MrBugger_AppTheme(content: @Composable () -> Unit) {
-    MaterialTheme(
-        colorScheme = AppColors,
-        typography = Typography,
-        content = content
-    )
-}
