@@ -7,11 +7,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.mrbugger_app.Screen
 import com.example.mrbugger_app.ui.screen.CartScreen.CartScreen
+import com.example.mrbugger_app.ui.screen.DetailedProductView.DetailedProductView
 import com.example.mrbugger_app.ui.screen.ProfileScreen.ProfileScreen
 import com.example.mrbugger_app.ui.screen.SearchScreen.SearchScreen
 import com.example.mrbugger_app.ui.screen.homepage.homePage
@@ -40,8 +43,25 @@ fun AppNavigation() {
            composable(Screen.Cart.route){
                CartScreen(navController = navController)
            }
-
+           composable(
+               route = "detailedProductView/{imageResId}/{nameResId}/{priceResId}",
+               arguments = listOf(
+                   navArgument("imageResId") { type = NavType.IntType },
+                   navArgument("nameResId") { type = NavType.IntType },
+                   navArgument("priceResId") { type = NavType.IntType }
+               )
+           ) { backStackEntry ->
+               val imageResId = backStackEntry.arguments?.getInt("imageResId") ?: 0
+               val nameResId = backStackEntry.arguments?.getInt("nameResId") ?: 0
+               val priceResId = backStackEntry.arguments?.getInt("priceResId") ?: 0
+               DetailedProductView(
+                   navController = navController,
+                   imageResId = imageResId,
+                   nameResId = nameResId,
+                   priceResId = priceResId
+               )
+           }
        }
-
    }
 }
+

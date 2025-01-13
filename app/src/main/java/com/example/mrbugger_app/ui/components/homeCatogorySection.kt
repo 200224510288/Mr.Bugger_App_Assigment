@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,23 +25,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mrbugger_app.Data.Category
-import com.example.mrbugger_app.Data.categoryList
 import com.example.mrbugger_app.R
-import com.example.mrbugger_app.ui.theme.MrBugger_AppTheme
+import com.example.mrbugger_app.model.CategoryPictuers
+import com.example.mrbugger_app.ui.theme.MrBurgerTheme
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
-import com.example.mrbugger_app.ui.theme.Wight
-import com.example.mrbugger_app.ui.theme.gray
+
 
 
 //creating  the categoryChip
 @Composable
 fun CategoryChip(
-    title: String,
+    titleRes : Int,
     imageRes: Int,
     isSelect: Boolean,
     onSelected: () -> Unit,
@@ -70,13 +71,13 @@ fun CategoryChip(
         ) {
             Image(
                 painter = painterResource(id = imageRes),
-                contentDescription = title,
+                contentDescription = stringResource(id = titleRes),
                 modifier = Modifier.size(72.dp),
                 contentScale = ContentScale.Fit
             )
         }
         Text(
-            text = title,
+            text = stringResource(id = titleRes),
             color = textColor,
             fontWeight = fontWeight,
             fontSize = 14.sp
@@ -89,7 +90,7 @@ fun CategoryChip(
 @Composable
 fun CategoryBar(
     modifier: Modifier = Modifier,
-    categories: List<Category> = categoryList
+    categories: List<CategoryPictuers> = Category().loadCategory()
 ) {
     var selectedCategory by remember { mutableStateOf(0) }
 
@@ -101,10 +102,10 @@ fun CategoryBar(
         items(categories.size) { index ->
             val category = categories[index]
             CategoryChip(
-                title = category.name,
-                imageRes = category.imageRes,
+                titleRes = category.stringResourceId,
+                imageRes = category.imageResourceId,
                 isSelect = selectedCategory == index,
-                onSelected = { selectedCategory = index }
+                onSelected = { selectedCategory = index },
             )
         }
     }
@@ -113,7 +114,7 @@ fun CategoryBar(
 @Preview(showBackground = true)
 @Composable
 fun CategoryBarPreview() {
-    MrBugger_AppTheme {
+    MrBurgerTheme {
         CategoryBar()
     }
 }

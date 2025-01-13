@@ -5,16 +5,21 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -36,6 +41,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -48,18 +54,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.mrbugger_app.CommonSections.PopularCategories
 import com.example.mrbugger_app.CommonSections.TopBarSection
+import com.example.mrbugger_app.Data.Category
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.ui.theme.BackgroundColor
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
+import com.example.mrbugger_app.ui.theme.TextColor
 
 @Composable
 fun DetailedProductView(  navController: NavController,
                           imageResId: Int,
                           nameResId: Int,
-                          priceResId: Int
+                          priceResId: Int,
+                          enableScrolling: Boolean = true
 ) {
+    val category = Category()
     var quantity by remember { mutableStateOf(1) }
     var isSpicy by remember { mutableStateOf(false) }
     Scaffold(
@@ -68,13 +79,63 @@ fun DetailedProductView(  navController: NavController,
             .padding(top = 16.dp),
         topBar = {
             TopBarSection(navController = navController)
+        },
+                bottomBar = {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    // Fixed bottom bar
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)
+                    .shadow(elevation = 8.dp, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                    .padding(16.dp)
+                    .height(85.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+            // food price section
+                Box(
+                    modifier = Modifier
+                        .border(
+                            width = 2.dp,
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = RoundedCornerShape(30.dp)
+                        )
+                        .width(120.dp)
+                        .padding(8.dp)
+                ) {
+
+                    Text(
+                        text = stringResource(id = priceResId),
+                        fontSize = 21.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                //add to cart button
+                Button(
+                    onClick = { /* Handle Add to Cart */ },
+                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+                    shape = RoundedCornerShape(25.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .height(50.dp)
+                ) {
+                    Text(
+                        text = "Add to Cart",
+                        color = MaterialTheme.colorScheme.background,
+                        fontSize = 21.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-
+                .verticalScroll(rememberScrollState())
         ) {
 
             Image(
@@ -154,7 +215,8 @@ fun DetailedProductView(  navController: NavController,
                             horizontalAlignment = Alignment.End
                         ) {
                             Row(
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.offset(y = (-4).dp)
                             ) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.star),
@@ -178,15 +240,30 @@ fun DetailedProductView(  navController: NavController,
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(15.dp))
+                //food discription section
+                    Box(
+                        modifier = Modifier
+                            .border(
+                                1.dp, TextColor, shape = RoundedCornerShape(13.dp)
+                            )
+                            .padding(10.dp)
+                    ) {
 
-                    // Description
-                    Text(
-                        text = "Try a juicy, grilled beef patty nestled inside soft buns. Included fresh ripe tomatoes, crispy onions and a slice of cheddar cheese.",
-                        fontSize = 14.sp,
-                        color = Color.Gray
-                    )
-
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = "Description",
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 20.sp
+                            )
+                            Spacer(modifier = Modifier.height(5.dp))
+                            Text(
+                                text = "Try a juicy, grilled beef patty nestled inside soft buns. Included fresh ripe tomatoes, crispy onions and a slice of cheddar cheese.",
+                                fontSize = 14.sp,
+                                color = Color.Gray
+                            )
+                        }
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
 
                     // Spicy Toggle and Portion Controls
@@ -196,55 +273,56 @@ fun DetailedProductView(  navController: NavController,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
+                            Spacer(modifier = Modifier.width(15.dp))
                             Text(text = "Spicy", fontSize = 16.sp)
                             Spacer(modifier = Modifier.width(8.dp))
                             Switch(checked = isSpicy, onCheckedChange = { isSpicy = it })
                         }
+                        //increasing the porting section
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            IconButton(onClick = { if (quantity > 1) quantity-- }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.minus),
-                                    contentDescription = "Minus"
+                            Button(
+                                onClick = { if (quantity > 1) quantity-- },
+                                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+                                modifier = Modifier.padding(4.dp),
+                                contentPadding = PaddingValues(4.dp),
+                                shape = RoundedCornerShape(12.dp)
+                            ) {
+                                Text(
+                                    text = "-",
+                                    fontSize = 30.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    textAlign = TextAlign.Center
                                 )
                             }
                             Text(
                                 text = "$quantity",
-                                fontSize = 16.sp,
+                                fontSize = 25.sp,
                                 textAlign = TextAlign.Center,
-                                modifier = Modifier.width(24.dp)
+                                modifier = Modifier.width(30.dp)
                             )
-                            IconButton(onClick = { quantity++ }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.plus),
-                                    contentDescription = "Plus"
+                            Button(
+                                onClick = { quantity++ },
+                                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+                                modifier = Modifier.padding(4.dp),
+                                contentPadding = PaddingValues(4.dp),
+                                shape = RoundedCornerShape(12.dp)  // Add rounded corners with a radius of 12.dp
+                            ) {
+                                Text(
+                                    text = "+",
+                                    fontSize = 30.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    textAlign = TextAlign.Center
                                 )
                             }
                         }
                     }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    // Price and Add to Cart Button
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(text = "Rs.700", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                        Button(
-                            onClick = { /* Handle Add to Cart */ },
-                            colors = ButtonDefaults.buttonColors(Color.Gray),
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Text(
-                                text = "Add to Cart",
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
+                    //popular food category section
+                    Spacer(modifier = Modifier.height(10.dp))
+                    PopularCategories(category.loadCategory())
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
             }
         }
     }
 }
+

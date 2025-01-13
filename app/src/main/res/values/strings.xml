@@ -46,4 +46,15 @@
     <string name="cheesyVegDelightBurger">Cheesy Veg Burger</string>
     <string name="cheesyVegDelightBurgerPrice">1000</string>
 
+    <!-- Beverages -->
+    <string name="avacado">Avacado</string>
+
+    <!-- PopularCategories -->
+    <string name="PopularCategories">Popular Categories</string>
+    <string name="Burgers">Burgers</string>
+    <string name="Juices">Juices</string>
+    <string name="FastFood">Fast Foods</string>
+    <string name="Beverages">Beverages</string>
+    <string name="popular_burgers">Popular Burgers</string>
+    <string name="popular_fast_foods">Popular Fast Foods</string>
 </resources>

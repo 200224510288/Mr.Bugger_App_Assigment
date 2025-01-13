@@ -57,6 +57,13 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.engage.core)
     implementation(libs.generativeai)
+    implementation(libs.androidx.monitor)
+    implementation(libs.androidx.junit.ktx)
+    implementation(libs.litert.support.api)
+    implementation(libs.androidx.lifecycle.runtime.compose.android)
+    implementation(libs.androidx.benchmark.macro)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit)
     debugImplementation(libs.compose.tooling)
     implementation(libs.bundles.ui)
 

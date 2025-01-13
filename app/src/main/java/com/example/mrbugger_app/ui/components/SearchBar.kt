@@ -31,7 +31,6 @@ import com.example.mrbugger_app.ui.screen.homepage.homePage
 import com.example.mrbugger_app.ui.theme.Darkgray
 import com.example.mrbugger_app.ui.theme.Poppins
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
-import com.example.mrbugger_app.ui.theme.Wight
 
 @Composable
 fun SearchBar(
@@ -43,7 +42,7 @@ fun SearchBar(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .background(Wight, RoundedCornerShape(60.dp))
+            .background(Color.White, RoundedCornerShape(60.dp))
             .height(55.dp)
             .shadow(4.dp, shape = RoundedCornerShape(60.dp), clip = false)
             .border(1.dp, Color.Gray, RoundedCornerShape(60.dp)),

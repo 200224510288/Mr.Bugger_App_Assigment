@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.ui.components.ActionButton
-import com.example.mrbugger_app.ui.theme.MrBugger_AppTheme
+import com.example.mrbugger_app.ui.theme.MrBurgerTheme
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
 import kotlinx.coroutines.delay
@@ -53,7 +53,7 @@ fun welcomePage(
     ) {
         // Background Image
         Image(
-            painter = painterResource(id = R.drawable.whooper_buger),
+            painter = painterResource(id = R.drawable.chicken_burger),
             contentDescription = null,
             modifier = Modifier.fillMaxWidth().padding(top = 55.dp),
             contentScale = ContentScale.Crop,

@@ -2,7 +2,6 @@ package com.example.mrbugger_app.ui.screen.homepage
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsTopHeight
@@ -27,10 +25,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -40,34 +35,30 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.mrbugger_app.BottomNav.BottomNavDesign
-import com.example.mrbugger_app.CommonSections.ScreenWithBottonNavBar
-import com.example.mrbugger_app.Data.DataSource
+import androidx.navigation.NavHostController
+import com.example.mrbugger_app.Data.FoodItem
 import com.example.mrbugger_app.R
+import com.example.mrbugger_app.CommonSections.ScreenWithBottonNavBar
 import com.example.mrbugger_app.model.Pictures
 import com.example.mrbugger_app.ui.components.CategoryBar
 import com.example.mrbugger_app.ui.components.LogoAndCard
 import com.example.mrbugger_app.ui.components.PromoBanner
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
-import com.example.mrbugger_app.ui.theme.Wight
-import com.example.mrbugger_app.ui.theme.gray
+
 
 
 @Composable
-fun homePage() {
+fun homePage(navController: NavHostController) {
     var search by remember { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -102,7 +93,7 @@ fun homePage() {
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    PopularBurgerList(pictureList = DataSource().loadPictures())
+                    PopularBurgerList(pictureList = FoodItem().loadPopularPictures(),navController = navController)
                 }
 
                 item {
@@ -110,9 +101,8 @@ fun homePage() {
                 }
             }
         }
-
         //  Bottom Navigation Bar
-        ScreenWithBottonNavBar()
+        ScreenWithBottonNavBar(navController = navController)
     }
 }
 // Popular burger section
@@ -151,19 +141,20 @@ fun PopularBar(/*navController: NavController*/) {
 
 // Burger list
 @Composable
-fun PopularBurgerList(pictureList: List<Pictures>,/*navController = navController*/) {
+fun PopularBurgerList(pictureList: List<Pictures>, navController: NavController) {
     LazyRow(modifier = Modifier) {
         items(pictureList) { picture ->
-            PopularBurgerCard(picture = picture, modifier = Modifier.padding(10.dp))
+            PopularBurgerCard(picture = picture, modifier = Modifier.padding(10.dp), navController = navController)
         }
     }
 }
 
+
 // popular burger card
 @Composable
-fun PopularBurgerCard(picture:Pictures, modifier: Modifier = Modifier,/*navController = navController*/) {
+fun PopularBurgerCard(picture: Pictures, modifier: Modifier = Modifier, navController: NavController) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 12.dp)
             .width(180.dp)
             .shadow(
@@ -172,18 +163,17 @@ fun PopularBurgerCard(picture:Pictures, modifier: Modifier = Modifier,/*navContr
                 ambientColor = Color.Black,
                 spotColor = Color.Black
             )
-            .height(260.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-            // .clickable { navController.navigate("detailedProductView/${picture.imageResourceId}") }
-
+            .height(260.dp)
+            .clickable {
+                // Navigate to detailed product view, passing necessary parameters
+                navController.navigate("detailedProductView/${picture.imageResourceId}/${picture.stringResourceId}/${picture.price}")
+            },
+        colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Column {
             Image(
                 painter = painterResource(picture.imageResourceId),
-                contentDescription = stringResource(
-                    id = R.string.product_image,
-
-                    ),
+                contentDescription = stringResource(id = R.string.product_image),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .height(130.dp)
@@ -198,7 +188,7 @@ fun PopularBurgerCard(picture:Pictures, modifier: Modifier = Modifier,/*navContr
                     .padding(2.dp)
             )
             Text(
-                text = "Rs ${picture.price}",
+                text = "Rs ${stringResource(id = picture.price)}",
                 fontSize = 18.sp,
                 color = PrimaryYellowDark,
                 style = MaterialTheme.typography.labelMedium,
@@ -207,24 +197,20 @@ fun PopularBurgerCard(picture:Pictures, modifier: Modifier = Modifier,/*navContr
                     .padding(10.dp)
             )
             Button(
-                onClick = { /*navController.navigate("detailedProductView/${picture.imageResourceId}") */ },
+                onClick = {
+                    // Navigate to detailed product view when button is clicked
+                    navController.navigate("detailedProductView/${picture.imageResourceId}/${picture.stringResourceId}/${picture.price}")
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = PrimaryYellowLight
-                ),
+                colors = ButtonDefaults.buttonColors(containerColor = PrimaryYellowLight)
             ) {
                 Text(text = "Buy", fontSize = 18.sp, color = Color.Black)
             }
         }
     }
 }
-
-
-
-
-
 
 
 @Composable

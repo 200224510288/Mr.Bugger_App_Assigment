@@ -32,8 +32,7 @@ import com.example.mrbugger_app.R
 import com.example.mrbugger_app.ui.theme.Poppins
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
-import com.example.mrbugger_app.ui.theme.Wight
-import com.example.mrbugger_app.ui.theme.gray
+
 
 @Composable
 @Preview
@@ -106,7 +105,7 @@ fun PromoBanner(){
 
               ) {
                   Image(
-                      painter = painterResource(id = R.drawable.bannerpic1),
+                      painter = painterResource(id = R.drawable.beef_1),
                       contentDescription = "Burger Image",
                       modifier = Modifier
                           .size(140.dp)
