@@ -18,6 +18,7 @@ import com.example.mrbugger_app.ui.screen.DetailedProductView.DetailedProductVie
 import com.example.mrbugger_app.ui.screen.ProfileScreen.ProfileScreen
 import com.example.mrbugger_app.ui.screen.SearchScreen.SearchScreen
 import com.example.mrbugger_app.ui.screen.homepage.homePage
+import com.example.mrbugger_app.ui.screen.login.LoginScreen
 
 @Composable
 fun AppNavigation() {
@@ -29,7 +30,7 @@ fun AppNavigation() {
 
        NavHost(
            navController = navController,
-           startDestination = Screen.Home.route
+           startDestination = Screen.Login.route
                        ){
            composable(Screen.Home.route){
                homePage(navController = navController)
@@ -42,6 +43,9 @@ fun AppNavigation() {
            }
            composable(Screen.Cart.route){
                CartScreen(navController = navController)
+           }
+           composable(Screen.Login.route){
+               LoginScreen(navController = navController)
            }
            composable(
                route = "detailedProductView/{imageResId}/{nameResId}/{priceResId}",
