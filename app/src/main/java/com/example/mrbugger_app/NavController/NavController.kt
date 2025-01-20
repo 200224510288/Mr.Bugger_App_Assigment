@@ -7,21 +7,24 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.mrbugger_app.Screen
+import com.example.mrbugger_app.model.UserProfileViewModel
 import com.example.mrbugger_app.ui.screen.CartScreen.CartScreen
 import com.example.mrbugger_app.ui.screen.DetailedProductView.DetailedProductView
 import com.example.mrbugger_app.ui.screen.ProfileScreen.ProfileScreen
 import com.example.mrbugger_app.ui.screen.SearchScreen.SearchScreen
 import com.example.mrbugger_app.ui.screen.homepage.homePage
 import com.example.mrbugger_app.ui.screen.login.LoginScreen
+import com.example.mrbugger_app.ui.screen.signup.signupPage
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(userProfileViewModel: UserProfileViewModel) {
    Surface(
        modifier = Modifier.fillMaxSize(),
        color = MaterialTheme.colorScheme.background
@@ -30,13 +33,13 @@ fun AppNavigation() {
 
        NavHost(
            navController = navController,
-           startDestination = Screen.Login.route
+           startDestination = Screen.Profile.route,
                        ){
            composable(Screen.Home.route){
                homePage(navController = navController)
            }
            composable(Screen.Profile.route){
-               ProfileScreen(navController = navController)
+               ProfileScreen(navController = navController, userProfileViewModel = userProfileViewModel )
            }
            composable(Screen.Search.route){
                SearchScreen(navController = navController)
@@ -46,6 +49,9 @@ fun AppNavigation() {
            }
            composable(Screen.Login.route){
                LoginScreen(navController = navController)
+           }
+           composable(Screen.Singup.route){
+               signupPage(navController = navController)
            }
            composable(
                route = "detailedProductView/{imageResId}/{nameResId}/{priceResId}",
