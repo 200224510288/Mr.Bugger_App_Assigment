@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.mrbugger_app.Screen
+import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.model.UserProfileViewModel
 import com.example.mrbugger_app.ui.screen.CartScreen.CartScreen
 import com.example.mrbugger_app.ui.screen.DetailedProductView.DetailedProductView
@@ -24,7 +25,7 @@ import com.example.mrbugger_app.ui.screen.login.LoginScreen
 import com.example.mrbugger_app.ui.screen.signup.signupPage
 
 @Composable
-fun AppNavigation(userProfileViewModel: UserProfileViewModel) {
+fun AppNavigation(userProfileViewModel: UserProfileViewModel, cartViewModel: CartViewModel) {
    Surface(
        modifier = Modifier.fillMaxSize(),
        color = MaterialTheme.colorScheme.background
@@ -45,7 +46,7 @@ fun AppNavigation(userProfileViewModel: UserProfileViewModel) {
                SearchScreen(navController = navController)
            }
            composable(Screen.Cart.route){
-               CartScreen(navController = navController)
+               CartScreen(navController = navController,cartViewModel)
            }
            composable(Screen.Login.route){
                LoginScreen(navController = navController)
@@ -66,6 +67,7 @@ fun AppNavigation(userProfileViewModel: UserProfileViewModel) {
                val priceResId = backStackEntry.arguments?.getInt("priceResId") ?: 0
                DetailedProductView(
                    navController = navController,
+                   cartViewModel = cartViewModel,
                    imageResId = imageResId,
                    nameResId = nameResId,
                    priceResId = priceResId

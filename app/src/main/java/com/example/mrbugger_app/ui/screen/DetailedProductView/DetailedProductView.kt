@@ -1,5 +1,6 @@
 package com.example.mrbugger_app.ui.screen.DetailedProductView
 
+import android.widget.Toast
 import androidx.benchmark.perfetto.Row
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -44,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role.Companion.Switch
@@ -58,27 +60,42 @@ import com.example.mrbugger_app.CommonSections.PopularCategories
 import com.example.mrbugger_app.CommonSections.TopBarSection
 import com.example.mrbugger_app.Data.Category
 import com.example.mrbugger_app.R
+import com.example.mrbugger_app.model.CartItem
+import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.ui.theme.BackgroundColor
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
 import com.example.mrbugger_app.ui.theme.TextColor
 
 @Composable
-fun DetailedProductView(  navController: NavController,
+fun DetailedProductView( navController: NavController,cartViewModel: CartViewModel,
                           imageResId: Int,
                           nameResId: Int,
                           priceResId: Int,
                           enableScrolling: Boolean = true
 ) {
+    val context = LocalContext.current
     val category = Category()
     var quantity by remember { mutableStateOf(1) }
     var isSpicy by remember { mutableStateOf(false) }
+    val basePrice = stringResource(id = priceResId).toFloat()
+    var currentPrice by remember { mutableStateOf(basePrice) }
+
+    val name = stringResource(id = nameResId)
+    val price = stringResource(id = priceResId).toDouble()
+
+    // Update current price when quantity changes
+    val updatePrice = { newQuantity: Int ->
+        currentPrice = basePrice * newQuantity
+        quantity = newQuantity
+    }
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 16.dp),
         topBar = {
             TopBarSection(navController = navController)
+
         },
                 bottomBar = {
                     Spacer(modifier = Modifier.height(8.dp))
@@ -87,7 +104,7 @@ fun DetailedProductView(  navController: NavController,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.background)
-                    .shadow(elevation = 8.dp, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                   // .shadow(elevation = 8.dp, shape = RoundedCornerShape(topStart = 16.dp))
                     .padding(16.dp)
                     .height(85.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -101,12 +118,12 @@ fun DetailedProductView(  navController: NavController,
                             color = MaterialTheme.colorScheme.primary,
                             shape = RoundedCornerShape(30.dp)
                         )
-                        .width(120.dp)
+                        .width(150.dp)
                         .padding(8.dp)
                 ) {
 
                     Text(
-                        text = stringResource(id = priceResId),
+                        text = "Rs. ${"%.2f".format(currentPrice)}",
                         fontSize = 21.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.align(Alignment.Center)
@@ -114,7 +131,15 @@ fun DetailedProductView(  navController: NavController,
                 }
                 //add to cart button
                 Button(
-                    onClick = { /* Handle Add to Cart */ },
+                    onClick = { val cartItem = CartItem(
+                        imageRes = imageResId,
+                        name = name,
+                        price = price,
+                        quantity = quantity
+                    )
+                        Toast.makeText(context, "Item added to cart", Toast.LENGTH_SHORT).show()
+                        cartViewModel.addItemToCart(cartItem)},
+
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                     shape = RoundedCornerShape(25.dp),
                     modifier = Modifier
@@ -281,7 +306,7 @@ fun DetailedProductView(  navController: NavController,
                         //increasing the porting section
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Button(
-                                onClick = { if (quantity > 1) quantity-- },
+                                onClick = { if (quantity > 1) updatePrice(quantity - 1) },
                                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                                 modifier = Modifier.padding(4.dp),
                                 contentPadding = PaddingValues(4.dp),
@@ -301,7 +326,7 @@ fun DetailedProductView(  navController: NavController,
                                 modifier = Modifier.width(30.dp)
                             )
                             Button(
-                                onClick = { quantity++ },
+                                onClick =  { updatePrice(quantity + 1) },
                                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                                 modifier = Modifier.padding(4.dp),
                                 contentPadding = PaddingValues(4.dp),

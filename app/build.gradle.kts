@@ -62,9 +62,12 @@ dependencies {
     implementation(libs.litert.support.api)
     implementation(libs.androidx.lifecycle.runtime.compose.android)
     implementation(libs.androidx.benchmark.macro)
+    implementation(libs.androidx.animation.core.lint)
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit)
     debugImplementation(libs.compose.tooling)
     implementation(libs.bundles.ui)
+    implementation("androidx.compose.material:material:1.4.0")
+    implementation ("androidx.compose.material:material-icons-extended:1.5.0")
 
 }

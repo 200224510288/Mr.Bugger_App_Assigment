@@ -57,4 +57,9 @@
     <string name="Beverages">Beverages</string>
     <string name="popular_burgers">Popular Burgers</string>
     <string name="popular_fast_foods">Popular Fast Foods</string>
+
+
+    <string name="removeBtn">Remove</string>
+    <string name="clearBtn">Clear</string>
+    <string name="buyBtn">Buy</string>
 </resources>
