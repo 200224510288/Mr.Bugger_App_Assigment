@@ -1,5 +1,6 @@
 package com.example.mrbugger_app.ui.screen.login
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -8,8 +9,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -23,16 +30,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mrbugger_app.R
+import com.example.mrbugger_app.Screen
 import com.example.mrbugger_app.ui.screen.PlainTextVisualTransformation
 import com.example.mrbugger_app.ui.theme.BackgroundColor
 import com.example.mrbugger_app.ui.theme.ExtraYellowLight
@@ -45,6 +58,9 @@ fun LoginScreen(navController: NavController) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
 
     Box(modifier = Modifier.fillMaxSize()) {
         // Background Image
@@ -59,11 +75,15 @@ fun LoginScreen(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 32.dp, vertical = 20.dp)
-                .padding(top = 150.dp, bottom = 50.dp)
+                .padding(
+                    horizontal = if (isLandscape) 220.dp else 32.dp,
+                    vertical = if (isLandscape) 15.dp else 20.dp
+                )
+                .padding(top = if (isLandscape) 2.dp else 150.dp)
+                .padding(bottom = if (isLandscape) 2.dp else 50.dp)
                 .background(
-                    color = Color.White.copy(alpha = 1f),
-                    shape = RoundedCornerShape(24.dp)
+                    color = Color.White.copy(alpha = 1f), // transparent white
+                    shape = RoundedCornerShape(24.dp) // Rounded corners
                 )
                 .clip(RoundedCornerShape(24.dp))
                 .padding(20.dp)
@@ -72,8 +92,50 @@ fun LoginScreen(navController: NavController) {
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize()
+
             ) {
+                // Top-left Mr. Burger Text
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(if (isLandscape) 16.dp else 12.dp)
+                        .offset(x = (-15).dp, y = (-16).dp) // X and Y offsets
+                        .padding(start = 4.dp, top = 4.dp),
+                    contentAlignment = Alignment.TopStart
+                ) {
+                    Text(
+                        text = AnnotatedString.Builder().apply {
+                            // Style for "Mr."
+                            pushStyle(
+                                SpanStyle(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontFamily = MaterialTheme.typography.displayLarge.fontFamily,
+                                    fontWeight = MaterialTheme.typography.displayLarge.fontWeight,
+                                    fontSize = 22.sp
+                                )
+                            )
+                            append("Mr.")
+                            pop()
+
+                            // Style for "Burger"
+                            pushStyle(
+                                SpanStyle(
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                                    fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
+                                    fontSize = 22.sp
+                                )
+                            )
+                            append("Burger")
+                            pop()
+                        }.toAnnotatedString(),
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(2.dp))
                 // Logo
                 Image(
                     painter = painterResource(R.drawable.logo2),
@@ -108,7 +170,14 @@ fun LoginScreen(navController: NavController) {
                         focusedContainerColor = BackgroundColor,
                         unfocusedLabelColor = TextColor
                     ),
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(16.dp),
+                            leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Email,
+                            contentDescription = "Email Icon",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(26.dp))
@@ -127,14 +196,23 @@ fun LoginScreen(navController: NavController) {
                         focusedContainerColor = BackgroundColor,
                         unfocusedLabelColor = TextColor
                     ),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(12.dp),
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    trailingIcon = {
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(
+                                imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                contentDescription = if (passwordVisible) "Hide Password" else "Show Password"
+                            )
+                        }
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(26.dp))
 
                 // Login Button
                 Button(
-                    onClick = { /* Handle Login */ },
+                    onClick = { navController.navigate(Screen.Home.route) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 12.dp, horizontal = 30.dp)
@@ -154,7 +232,7 @@ fun LoginScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(22.dp))
 
                 // Signup TextButton
-                TextButton(onClick = { /* Handle Signup navigation */ }) {
+                TextButton(onClick = { navController.navigate(Screen.Singup.route)  }) {
                     Text(text = "Don't Have an Account? Sign Up", color = TextColor, fontSize = 18.sp)
                 }
             }

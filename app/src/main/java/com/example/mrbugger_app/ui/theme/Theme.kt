@@ -17,9 +17,9 @@ private val DarkColorPalette = darkColorScheme(
     primary = PrimaryYellowLight,
     secondary = SecondaryColor,
     background = Darkgray,
-    surface = Darkgray,
+    surface = PrimaryYellowDark,
     onPrimary = BackgroundColor,
-    onSecondary = Color.Black,
+    onSecondary = BackgroundColor,
     onBackground = BackgroundColor,
     onSurface = BackgroundColor
 )
@@ -28,9 +28,9 @@ private val LightColorPalette = lightColorScheme(
     primary = PrimaryYellowLight,
     secondary = SecondaryColor,
     background = BackgroundColor,
-    surface = lightGray,
+    surface = TextfeildColor,
     onPrimary = TextColor,
-    onSecondary = TextColor,
+    onSecondary = BackgroundColor,
     onBackground = TextColor,
     onSurface = TextColor
 )

@@ -34,7 +34,7 @@ fun AppNavigation(userProfileViewModel: UserProfileViewModel, cartViewModel: Car
 
        NavHost(
            navController = navController,
-           startDestination = Screen.Profile.route,
+           startDestination = Screen.Cart.route,
                        ){
            composable(Screen.Home.route){
                homePage(navController = navController)
