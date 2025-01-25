@@ -9,7 +9,7 @@ val ExtraYellowLight = Color(0xFFFEE4A2)
 val PrimaryYellowLight = Color(0xFFFFBE18) // Use for accents like cards , buttons
 val SecondaryColor = Color(0xFFD8D7D7) // Yellow (e.g., accents like buttons)
 val BackgroundColor = Color(0xFFFFFFFF) // White background
-val TextfeildColor = Color(0xFFFFFFFF)
+val TextfeildColor = Color.White
 
 
 val TextColor = Color(0xFF000000) // for Black text

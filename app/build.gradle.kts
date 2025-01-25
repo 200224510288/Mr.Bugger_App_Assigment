@@ -69,5 +69,7 @@ dependencies {
     implementation(libs.bundles.ui)
     implementation("androidx.compose.material:material:1.4.0")
     implementation ("androidx.compose.material:material-icons-extended:1.5.0")
+    implementation ("com.google.maps.android:maps-compose:2.7.2")
+    implementation ("com.google.android.gms:play-services-maps:18.0.2")
 
 }

@@ -41,7 +41,7 @@ fun SearchBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 12.dp)
             .background(Color.White, RoundedCornerShape(60.dp))
             .height(55.dp)
             .shadow(4.dp, shape = RoundedCornerShape(60.dp), clip = false)

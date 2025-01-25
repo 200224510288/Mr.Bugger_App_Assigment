@@ -29,11 +29,11 @@
     <!-- Beef Burgers -->
     <string name="bbqBaconBurger">BBQ Bacon Burger</string>
     <string name="bbqBaconBurgerPrice">1600</string>
-    <string name="WesternWhopperBurger">Western Whopper Burger</string>
+    <string name="WesternWhopperBurger">Whopper Burger</string>
     <string name="WesternWhopperBurgerPrice">1700</string>
-    <string name="loadedCheeseBeefBurger">Cheese loaded Beef Burger</string>
+    <string name="loadedCheeseBeefBurger">Cheese Beef Burger</string>
     <string name="loadedCheeseBeefBurgerPrice">1800</string>
-    <string name="DoubleMushroomSwissBurger">Double Mushroom Swiss Burger</string>
+    <string name="DoubleMushroomSwissBurger">Mushroom Burger</string>
     <string name="DoubleMushroomSwissBurgerPrice">1500</string>
 
     <!-- Veg Burgers -->

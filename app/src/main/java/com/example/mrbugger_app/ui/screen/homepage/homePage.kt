@@ -89,7 +89,7 @@ fun homePage(navController: NavHostController) {
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    PopularBar()
+                    PopularBar(navController)
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
@@ -107,7 +107,7 @@ fun homePage(navController: NavHostController) {
 }
 // Popular burger section
 @Composable
-fun PopularBar(/*navController: NavController*/) {
+fun PopularBar(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -124,7 +124,7 @@ fun PopularBar(/*navController: NavController*/) {
         )
         Spacer(modifier = Modifier.weight(1f))
         TextButton(
-            onClick = { /*navController.navigate("products")*/ },
+            onClick = { navController.navigate("menuPage") },
             modifier = Modifier.align(Alignment.CenterVertically)
         ) {
             Text(

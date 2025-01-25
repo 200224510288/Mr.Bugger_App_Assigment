@@ -18,6 +18,8 @@ import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.model.UserProfileViewModel
 import com.example.mrbugger_app.ui.screen.CartScreen.CartScreen
 import com.example.mrbugger_app.ui.screen.DetailedProductView.DetailedProductView
+import com.example.mrbugger_app.ui.screen.MenuScreen.MenuPage
+import com.example.mrbugger_app.ui.screen.OrderConfirmation.OrderConfirmation
 import com.example.mrbugger_app.ui.screen.ProfileScreen.ProfileScreen
 import com.example.mrbugger_app.ui.screen.SearchScreen.SearchScreen
 import com.example.mrbugger_app.ui.screen.homepage.homePage
@@ -34,7 +36,7 @@ fun AppNavigation(userProfileViewModel: UserProfileViewModel, cartViewModel: Car
 
        NavHost(
            navController = navController,
-           startDestination = Screen.Cart.route,
+           startDestination = Screen.OrderConfirmation.route,
                        ){
            composable(Screen.Home.route){
                homePage(navController = navController)
@@ -54,6 +56,13 @@ fun AppNavigation(userProfileViewModel: UserProfileViewModel, cartViewModel: Car
            composable(Screen.Singup.route){
                signupPage(navController = navController)
            }
+           composable(Screen.Menu.route){
+               MenuPage(navController = navController)
+           }
+           composable(Screen.OrderConfirmation.route){
+               OrderConfirmation(navController = navController,cartViewModel)
+           }
+
            composable(
                route = "detailedProductView/{imageResId}/{nameResId}/{priceResId}",
                arguments = listOf(

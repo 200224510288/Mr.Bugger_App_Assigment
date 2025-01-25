@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mrbugger_app.BottomNav.BottomNavDesign
+import com.example.mrbugger_app.Screen
 import com.example.mrbugger_app.TopNav.TopBar
 import com.example.mrbugger_app.ui.theme.ExtraYellowLight
 
@@ -48,6 +50,7 @@ fun ScreenWithBottonNavBar(navController: NavController){
 
 @Composable
 fun cartBar(navController: NavController){
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -70,7 +73,7 @@ fun cartBar(navController: NavController){
 
         // Confirm Order Button
         Button(
-            onClick = { }, // Confirm order action
+            onClick = {navController.navigate(Screen.OrderConfirmation.route)}, // Confirm order action
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             shape = RoundedCornerShape(35),
             modifier = Modifier.padding(12.dp).height(50.dp).width(160.dp),

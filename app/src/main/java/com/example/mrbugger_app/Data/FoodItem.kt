@@ -58,6 +58,47 @@ class ChickenBurgerItems {
                 R.string.nashvilleBurger,
                 R.string.nashvilleBurgerPrice
             ),
+            Pictures(
+                R.drawable.bbqbeefburger,
+                R.string.bbqBaconBurger,
+                R.string.bbqBaconBurgerPrice,
+            ),
+            Pictures(
+                R.drawable.westernwhopper,
+                R.string.WesternWhopperBurger,
+                R.string.WesternWhopperBurgerPrice,
+            ),
+            Pictures(
+                R.drawable.cheesybeefburger,
+                R.string.loadedCheeseBeefBurger,
+                R.string.loadedCheeseBeefBurgerPrice,
+            ),
+            Pictures(
+                R.drawable.mushrrombeefburger,
+                R.string.DoubleMushroomSwissBurger,
+                R.string.DoubleMushroomSwissBurgerPrice
+            ),
+            Pictures(
+                R.drawable.vegburger1,
+                R.string.classicVeggieBurger,
+                R.string.classicVeggieBurgerPrice,
+            ),
+            Pictures(
+                R.drawable.vebburger2,
+                R.string.spicyVeggieBurger,
+                R.string.spicyVeggieBurgerPrice,
+            ),
+            Pictures(
+                R.drawable.vegburger3,
+                R.string.gardenFreshBurger,
+                R.string.gardenFreshBurgerPrice,
+            ),
+            Pictures(
+                R.drawable.vegbuger4,
+                R.string.cheesyVegDelightBurger,
+                R.string.cheesyVegDelightBurgerPrice
+            ),
+
 
             )
     }
