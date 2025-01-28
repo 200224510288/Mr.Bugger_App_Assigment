@@ -104,36 +104,59 @@ fun BurgerCard(
 fun BeverageCard(
     imageResourceId: Int,
     title: String,
-    backgroundColor: Color = Color.LightGray,
+    price: String,
+    backgroundColor: Color = BackgroundColor,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
     Card(
         modifier = modifier
-            .padding(horizontal = 12.dp)
-            .size(150.dp),
-        shape = CircleShape,
+            .padding(horizontal = 8.dp)
+            .width(170.dp)
+            .height(220.dp)
+            .clickable { onClick() }
+            .shadow(
+                elevation = 8.dp,
+                shape = RoundedCornerShape(8.dp),
+                ambientColor = Color.Black,
+                spotColor = Color.Black
+            ),
+        colors = CardDefaults.cardColors(containerColor = backgroundColor)
     ) {
-        Column(
-            modifier = Modifier
-                .clickable(onClick = onClick)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Column {
             Image(
                 painter = painterResource(imageResourceId),
                 contentDescription = null,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
+                    .height(135.dp)
+                    .width(240.dp)
             )
-            Spacer(modifier = Modifier.height(8.dp)) // Add spacing between Image and Text
-
+            Text(
+                text = title,
+                fontSize = 18.sp,
+                style = MaterialTheme.typography.labelMedium,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = "Rs $price",
+                fontSize = 18.sp,
+                color = PrimaryYellowDark,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
+                    .padding(horizontal = 9.dp)
+            )
         }
     }
 }
+
+
 
 @Composable
 fun PopularCategories(categories: List<CategoryPictuers>) {

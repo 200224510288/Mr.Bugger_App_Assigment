@@ -40,14 +40,14 @@ fun PromoBanner(){
   Column(
       modifier = Modifier
           .fillMaxSize()
-          .background(Color.White)
+          .background(MaterialTheme.colorScheme.background)
           .padding(8.dp)
   ) {
 
       Text(
           text = stringResource(R.string.promotionsBanner),
           style = MaterialTheme.typography.bodyMedium.copy(
-              color = Color.Black,
+              color = MaterialTheme.colorScheme.onBackground,
               fontWeight = FontWeight.Bold
           ),
           fontSize = 20.sp

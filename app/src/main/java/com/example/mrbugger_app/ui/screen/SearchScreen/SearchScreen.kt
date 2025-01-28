@@ -33,6 +33,7 @@ import com.example.mrbugger_app.Data.BeefBurgerItems
 import com.example.mrbugger_app.Data.BeverageData
 import com.example.mrbugger_app.Data.Category
 import com.example.mrbugger_app.Data.ChickenBurgerItems
+import com.example.mrbugger_app.Data.FastFoodData
 import com.example.mrbugger_app.Data.VegBurgerItems
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.model.CategoryPictuers
@@ -84,16 +85,9 @@ fun SearchScreen(navController: NavHostController) {
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    BeefBurgerList(beefBugerList = BeefBurgerItems().loadBeefBurgers())
+                    FastFoodrList(FastFoodlist = FastFoodData().loadFastFood())
                 }
-                item {
-                    Spacer(modifier = Modifier.height(5.dp))
-                    SectionsText(title = "Veg Burgers")
-                }
-                item {
-                    Spacer(modifier = Modifier.height(5.dp))
-                    VegBurgerList(vegBugerList = VegBurgerItems().loadVegBurgers())
-                }
+
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
                     SectionsText(title = "Beverages")
@@ -136,15 +130,20 @@ fun ChickenBurgerList(chickenBugerList: List<Pictures>){
     }
 }
 
+
 @Composable
-fun BeverageCard(beveragePictures: CategoryPictuers, modifier: Modifier) {
+fun BeverageCard(beveragePictures: Pictures, modifier: Modifier) {
     com.example.mrbugger_app.CommonSections.BeverageCard(
         imageResourceId = beveragePictures.imageResourceId,
         title = stringResource(id = beveragePictures.stringResourceId),
+        price = stringResource(id = beveragePictures.price),
+        backgroundColor = BackgroundColor
         )
 }
+
+
 @Composable
-fun BeveragerList(bevarageList: List<CategoryPictuers>){
+fun BeveragerList(bevarageList: List<Pictures>){
 
     val limitedBeverage = bevarageList.take(5)
     LazyRow(modifier = Modifier.fillMaxWidth()) {
@@ -154,15 +153,7 @@ fun BeveragerList(bevarageList: List<CategoryPictuers>){
     }
 }
 
-@Composable
-fun BeefBurgerCard(beefBurgerPictures: Pictures, modifier: Modifier) {
-    BurgerCard(
-        imageResourceId = beefBurgerPictures.imageResourceId,
-        title = stringResource(id = beefBurgerPictures.stringResourceId),
-        price = stringResource(id = beefBurgerPictures.price),
-        backgroundColor = BackgroundColor
-    )
-}
+
 
 @Composable
 fun VegBurgerCard(vegBurgerPictures: Pictures, modifier: Modifier) {
@@ -172,20 +163,6 @@ fun VegBurgerCard(vegBurgerPictures: Pictures, modifier: Modifier) {
         price = stringResource(id = vegBurgerPictures.price),
         backgroundColor = BackgroundColor
     )
-}
-
-
-
-
-@Composable
-fun BeefBurgerList(beefBugerList: List<Pictures>){
-
-    val limitedBeefBugers = beefBugerList.take(5)
-    LazyRow(modifier = Modifier.fillMaxWidth()) {
-        items(limitedBeefBugers){ beefBugers ->
-            BeefBurgerCard(beefBurgerPictures = beefBugers, modifier = Modifier.padding(9.dp))
-        }
-    }
 }
 
 @Composable
@@ -198,6 +175,28 @@ fun VegBurgerList(vegBugerList: List<Pictures>){
         }
     }
 }
+
+@Composable
+fun FastFoodCard(FastFood: Pictures, modifier: Modifier) {
+    BurgerCard(
+        imageResourceId = FastFood.imageResourceId,
+        title = stringResource(id = FastFood.stringResourceId),
+        price = stringResource(id = FastFood.price),
+        backgroundColor = BackgroundColor
+    )
+}
+@Composable
+fun FastFoodrList(FastFoodlist: List<Pictures>){
+
+    val limitedBeefBugers = FastFoodlist.take(5)
+    LazyRow(modifier = Modifier.fillMaxWidth()) {
+        items(limitedBeefBugers){ fastfoods ->
+            FastFoodCard(FastFood = fastfoods, modifier = Modifier.padding(9.dp))
+        }
+    }
+}
+
+
 
 
 

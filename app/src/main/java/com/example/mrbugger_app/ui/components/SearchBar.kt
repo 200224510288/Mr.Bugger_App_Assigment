@@ -42,7 +42,7 @@ fun SearchBar(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
-            .background(Color.White, RoundedCornerShape(60.dp))
+            .background(MaterialTheme.colorScheme.surfaceBright, RoundedCornerShape(60.dp))
             .height(55.dp)
             .shadow(4.dp, shape = RoundedCornerShape(60.dp), clip = false)
             .border(1.dp, Color.Gray, RoundedCornerShape(60.dp)),
@@ -59,7 +59,7 @@ fun SearchBar(
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color(0xFFEDEDED),
                 unfocusedContainerColor = Color(0xFFF0F0F0),
-                focusedIndicatorColor = PrimaryYellowLight,
+                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
                 unfocusedIndicatorColor = Color.Transparent
             ),
             singleLine = true,
@@ -67,7 +67,7 @@ fun SearchBar(
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = null,
-                    tint = Darkgray,
+                    tint = MaterialTheme.colorScheme.inverseOnSurface,
                 )
             },
             textStyle = MaterialTheme.typography.bodyMedium.copy(color = Color.Black,

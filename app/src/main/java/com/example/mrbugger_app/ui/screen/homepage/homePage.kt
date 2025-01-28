@@ -54,7 +54,7 @@ import com.example.mrbugger_app.ui.components.LogoAndCard
 import com.example.mrbugger_app.ui.components.PromoBanner
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
-
+import com.example.mrbugger_app.ui.theme.Shapes
 
 
 @Composable
@@ -66,13 +66,13 @@ fun homePage(navController: NavHostController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(1.dp)
                 .padding(bottom = 66.dp)
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(10.dp),
+                contentPadding = PaddingValues(8.dp),
                 verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
                 item {
@@ -95,8 +95,9 @@ fun homePage(navController: NavHostController) {
                     Spacer(modifier = Modifier.height(5.dp))
                     PopularBurgerList(pictureList = FoodItem().loadPopularPictures(),navController = navController)
                 }
-
                 item {
+                    Spacer(modifier = Modifier.height(5.dp))
+
                     PromoBanner()
                 }
             }
@@ -107,7 +108,7 @@ fun homePage(navController: NavHostController) {
 }
 // Popular burger section
 @Composable
-fun PopularBar(navController: NavController) {
+fun  PopularBar(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -118,7 +119,7 @@ fun PopularBar(navController: NavController) {
             text = "Popular",
             fontSize = 20.sp,
             style = MaterialTheme.typography.bodyMedium.copy(
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold
             )
         )
@@ -130,7 +131,7 @@ fun PopularBar(navController: NavController) {
             Text(
                 text = "Show more",
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.inverseSurface,
                     fontWeight = FontWeight.Bold
                 ),
                 fontSize = 15.sp
@@ -144,7 +145,7 @@ fun PopularBar(navController: NavController) {
 fun PopularBurgerList(pictureList: List<Pictures>, navController: NavController) {
     LazyRow(modifier = Modifier) {
         items(pictureList) { picture ->
-            PopularBurgerCard(picture = picture, modifier = Modifier.padding(10.dp), navController = navController)
+            PopularBurgerCard(picture = picture, modifier = Modifier.padding(0.dp), navController = navController)
         }
     }
 }
@@ -158,17 +159,17 @@ fun PopularBurgerCard(picture: Pictures, modifier: Modifier = Modifier, navContr
             .padding(horizontal = 12.dp)
             .width(180.dp)
             .shadow(
-                elevation = 8.dp,
-                shape = RoundedCornerShape(8.dp),
+                elevation = 12.dp,
+                shape = Shapes.medium,
                 ambientColor = Color.Black,
                 spotColor = Color.Black
             )
-            .height(260.dp)
+            .height(240.dp)
             .clickable {
                 // Navigate to detailed product view, passing necessary parameters
                 navController.navigate("detailedProductView/${picture.imageResourceId}/${picture.stringResourceId}/${picture.price}")
             },
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column {
             Image(
@@ -176,15 +177,15 @@ fun PopularBurgerCard(picture: Pictures, modifier: Modifier = Modifier, navContr
                 contentDescription = stringResource(id = R.string.product_image),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .height(130.dp)
-                    .width(200.dp)
+                    .height(120.dp)
+                    .width(190.dp)
             )
             Text(
                 text = stringResource(id = picture.stringResourceId),
                 fontSize = 18.sp,
                 style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
                     .padding(2.dp)
             )
             Text(
@@ -193,8 +194,9 @@ fun PopularBurgerCard(picture: Pictures, modifier: Modifier = Modifier, navContr
                 color = PrimaryYellowDark,
                 style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .padding(7.dp)
+
             )
             Button(
                 onClick = {
@@ -204,7 +206,7 @@ fun PopularBurgerCard(picture: Pictures, modifier: Modifier = Modifier, navContr
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = PrimaryYellowLight)
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text(text = "Buy", fontSize = 18.sp, color = Color.Black)
             }

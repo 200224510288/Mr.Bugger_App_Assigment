@@ -47,7 +47,28 @@
     <string name="cheesyVegDelightBurgerPrice">1000</string>
 
     <!-- Beverages -->
-    <string name="avacado">Avacado</string>
+    <string name="Lime">Lime</string>
+    <string name="Pasion">Pasion</string>
+    <string name="Orange">Orange</string>
+    <string name="Apple">Apple</string>
+    <string name="Pinaplle">PineApple</string>
+    <string name="watermellon">Watermelon</string>
+    <string name="grapes">Grapes</string>
+
+
+    <!-- Fast Foods -->
+    <string name="Fries">Fries</string>
+    <string name="FriesPrice">600</string>
+    <string name="breads">Garlic Bread</string>
+    <string name="breadsPrice">450</string>
+    <string name="rings">Onion Rings</string>
+    <string name="ringsPrice">Onion Rings</string>
+    <string name="taccos">Taccos</string>
+    <string name="taccosPrice">800</string>
+    <string name="shawarma">Shawarma</string>
+    <string name="shawarmaPrice">950</string>
+    <string name="Wegus">Wegus</string>
+    <string name="WegusPrice">900</string>
 
     <!-- PopularCategories -->
     <string name="PopularCategories">Popular Categories</string>

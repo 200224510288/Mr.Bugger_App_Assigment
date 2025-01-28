@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -35,7 +37,8 @@ import com.example.mrbugger_app.R
 import com.example.mrbugger_app.model.CategoryPictuers
 import com.example.mrbugger_app.ui.theme.MrBurgerTheme
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
-
+import com.example.mrbugger_app.ui.theme.Shapes
+import org.checkerframework.checker.units.qual.s
 
 
 //creating  the categoryChip
@@ -48,7 +51,7 @@ fun CategoryChip(
     modifier: Modifier = Modifier
 ){
     val backgroundColor by animateColorAsState(
-        targetValue = if (isSelect) PrimaryYellowLight else Color.LightGray,
+        targetValue = if (isSelect) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
         label = "Category Background"
     )
     val textColor by animateColorAsState(
@@ -65,7 +68,8 @@ fun CategoryChip(
         Box(
             modifier = Modifier
                 .size(80.dp)
-                .clip(RoundedCornerShape(15.dp))
+                .clip(shape = Shapes.small)
+                .shadow(elevation = 6.dp, ambientColor = MaterialTheme.colorScheme.onBackground)
                 .background(backgroundColor),
             contentAlignment = Alignment.Center
         ) {
@@ -78,9 +82,10 @@ fun CategoryChip(
         }
         Text(
             text = stringResource(id = titleRes),
-            color = textColor,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = fontWeight,
-            fontSize = 14.sp
+            fontSize = 16.sp,
+
         )
     }
 }
