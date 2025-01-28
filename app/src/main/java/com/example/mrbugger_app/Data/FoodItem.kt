@@ -170,42 +170,42 @@ class BeverageData {
             Pictures(
                 R.drawable.pineapple,
                 R.string.Pinaplle,
-                R.string.ringsPrice
+                R.string.PinapllePrice
             ),
             Pictures(
                 R.drawable.watermelon,
                 R.string.watermellon,
-                R.string.ringsPrice
+                R.string.watermellonPrice
 
             ),
             Pictures(
                 R.drawable.grapes,
                 R.string.grapes,
-                R.string.ringsPrice
+                R.string.grapesPrice
 
             ),
             Pictures(
                 R.drawable.lime,
                 R.string.Lime,
-                R.string.ringsPrice
+                R.string.LimePrice
 
             ),
             Pictures(
                 R.drawable.pasion,
                 R.string.Pasion,
-                R.string.ringsPrice
+                R.string.PasionPrice
 
             ),
             Pictures(
                 R.drawable.orange,
                 R.string.Orange,
-                R.string.ringsPrice
+                R.string.OrangePrice
 
             ),
             Pictures(
                 R.drawable.apple,
                 R.string.Apple,
-                R.string.ringsPrice
+                R.string.ApplePrice
 
             ),
 

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,8 +53,7 @@ fun SearchScreen(navController: NavHostController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White)
-                .padding(1.dp)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(bottom = 1.dp)
         ) {
             LazyColumn(
@@ -77,7 +77,7 @@ fun SearchScreen(navController: NavHostController) {
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    ChickenBurgerList(chickenBugerList = ChickenBurgerItems().loadChickenBurgers())
+                    ChickenBurgerList(chickenBugerList = ChickenBurgerItems().loadChickenBurgers(),navController=navController)
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
@@ -85,16 +85,16 @@ fun SearchScreen(navController: NavHostController) {
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    FastFoodrList(FastFoodlist = FastFoodData().loadFastFood())
+                    FastFoodrList(FastFoodlist = FastFoodData().loadFastFood(),navController=navController)
                 }
 
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    SectionsText(title = "Beverages")
+                    SectionsText(title = stringResource(R.string.beverages))
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    BeveragerList(bevarageList = BeverageData().loadBeverages())
+                    BeveragerList(bevarageList = BeverageData().loadBeverages(),navController=navController)
                     Spacer(modifier = Modifier.height(100.dp))
 
                 }
@@ -110,45 +110,48 @@ fun SearchScreen(navController: NavHostController) {
 
 
 @Composable
-fun ChickenBurgerCard(chickenBurgerPictures: Pictures, modifier: Modifier) {
+fun ChickenBurgerCard(chickenBurgerPictures: Pictures, modifier: Modifier, navController: NavController) {
     BurgerCard(
         imageResourceId = chickenBurgerPictures.imageResourceId,
         title = stringResource(id = chickenBurgerPictures.stringResourceId),
         price = stringResource(id = chickenBurgerPictures.price),
-        backgroundColor = BackgroundColor
+        backgroundColor = BackgroundColor,
+        onClick = {navController.navigate("detailedProductView/${chickenBurgerPictures.imageResourceId}/${chickenBurgerPictures.stringResourceId}/${chickenBurgerPictures.price}")
+        }
     )
 }
 
 @Composable
-fun ChickenBurgerList(chickenBugerList: List<Pictures>){
+fun ChickenBurgerList(chickenBugerList: List<Pictures>,navController: NavController){
 
     val limitedChickenBugers = chickenBugerList.take(5)
     LazyRow(modifier = Modifier.fillMaxWidth()) {
         items(limitedChickenBugers){ chickenBugers ->
-            ChickenBurgerCard(chickenBurgerPictures = chickenBugers, modifier = Modifier.padding(9.dp))
+            ChickenBurgerCard(chickenBurgerPictures = chickenBugers, modifier = Modifier.padding(9.dp),navController = navController)
         }
     }
 }
 
 
 @Composable
-fun BeverageCard(beveragePictures: Pictures, modifier: Modifier) {
-    com.example.mrbugger_app.CommonSections.BeverageCard(
+fun BeverageCard(beveragePictures: Pictures, modifier: Modifier,navController: NavController) {
+    com.example.mrbugger_app.CommonSections.BurgerCard(
         imageResourceId = beveragePictures.imageResourceId,
         title = stringResource(id = beveragePictures.stringResourceId),
         price = stringResource(id = beveragePictures.price),
-        backgroundColor = BackgroundColor
-        )
-}
+        onClick = {navController.navigate("detailedProductView/${beveragePictures.imageResourceId}/${beveragePictures.stringResourceId}/${beveragePictures.price}")
+
+
+})}
 
 
 @Composable
-fun BeveragerList(bevarageList: List<Pictures>){
+fun BeveragerList(bevarageList: List<Pictures> , navController: NavController){
 
     val limitedBeverage = bevarageList.take(5)
     LazyRow(modifier = Modifier.fillMaxWidth()) {
         items(limitedBeverage){ beverage ->
-            BeverageCard(beveragePictures = beverage, modifier = Modifier.padding(9.dp))
+            BeverageCard(beveragePictures = beverage, modifier = Modifier.padding(9.dp), navController = navController)
         }
     }
 }
@@ -156,45 +159,58 @@ fun BeveragerList(bevarageList: List<Pictures>){
 
 
 @Composable
-fun VegBurgerCard(vegBurgerPictures: Pictures, modifier: Modifier) {
+fun VegBurgerCard(vegBurgerPictures: Pictures, modifier: Modifier, navController: NavController) {
     BurgerCard(
         imageResourceId = vegBurgerPictures.imageResourceId,
         title = stringResource(id = vegBurgerPictures.stringResourceId),
         price = stringResource(id = vegBurgerPictures.price),
-        backgroundColor = BackgroundColor
-    )
-}
+        backgroundColor = BackgroundColor,
+        onClick = {navController.navigate("detailedProductView/${vegBurgerPictures.imageResourceId}/${vegBurgerPictures.stringResourceId}/${vegBurgerPictures.price}")
+
+        })}
 
 @Composable
-fun VegBurgerList(vegBugerList: List<Pictures>){
+fun VegBurgerList(vegBugerList: List<Pictures>, navController: NavController){
 
     val limitedBeefBugers = vegBugerList.take(5)
     LazyRow(modifier = Modifier.fillMaxWidth()) {
         items(limitedBeefBugers){ vegBugers ->
-            VegBurgerCard(vegBurgerPictures = vegBugers, modifier = Modifier.padding(9.dp))
+            VegBurgerCard(vegBurgerPictures = vegBugers, modifier = Modifier.padding(9.dp), navController = navController)
         }
     }
 }
 
 @Composable
-fun FastFoodCard(FastFood: Pictures, modifier: Modifier) {
+fun FastFoodCard(FastFood: Pictures, modifier: Modifier, navController: NavController) {
     BurgerCard(
         imageResourceId = FastFood.imageResourceId,
         title = stringResource(id = FastFood.stringResourceId),
         price = stringResource(id = FastFood.price),
-        backgroundColor = BackgroundColor
-    )
+        backgroundColor = BackgroundColor,
+        onClick = {
+            navController.navigate("detailedProductView/${FastFood.imageResourceId}/${FastFood.stringResourceId}/${FastFood.price}")
+
+
+        })
 }
+
 @Composable
-fun FastFoodrList(FastFoodlist: List<Pictures>){
+fun FastFoodrList(FastFoodlist: List<Pictures>, navController: NavController) {
 
     val limitedBeefBugers = FastFoodlist.take(5)
     LazyRow(modifier = Modifier.fillMaxWidth()) {
-        items(limitedBeefBugers){ fastfoods ->
-            FastFoodCard(FastFood = fastfoods, modifier = Modifier.padding(9.dp))
+        items(limitedBeefBugers) { fastfoods ->
+            FastFoodCard(
+                FastFood = fastfoods,
+                modifier = Modifier.padding(9.dp),
+                navController = navController
+            )
         }
     }
 }
+
+
+
 
 
 

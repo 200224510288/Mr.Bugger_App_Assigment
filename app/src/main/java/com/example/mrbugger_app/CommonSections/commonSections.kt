@@ -41,7 +41,7 @@ fun ScreenWithBottonNavBar(navController: NavController){
         // Main Content
         Box(modifier = Modifier
             .weight(1f)
-            .background(Color.White)) {
+            .background(MaterialTheme.colorScheme.tertiary)) {
         }
         // Bottom Navigation Bar
         BottomNavSection(navController = navController)
@@ -54,7 +54,6 @@ fun cartBar(navController: NavController){
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.Transparent)
             .padding(horizontal = 1.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -92,7 +91,6 @@ fun BottomNavSection(navController: NavController){
 
     Box(modifier = Modifier
         .fillMaxWidth()
-        .background(ExtraYellowLight)
         .shadow(elevation = 8.dp)
         .height(80.dp),
         contentAlignment = Alignment.Center){

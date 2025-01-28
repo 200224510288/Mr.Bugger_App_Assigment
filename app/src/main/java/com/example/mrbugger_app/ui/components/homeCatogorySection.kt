@@ -82,7 +82,7 @@ fun CategoryChip(
         }
         Text(
             text = stringResource(id = titleRes),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = fontWeight,
             fontSize = 16.sp,
 
@@ -101,7 +101,7 @@ fun CategoryBar(
 
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.Start),
         contentPadding = PaddingValues(horizontal = 16.dp)
     ) {
         items(categories.size) { index ->

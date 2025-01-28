@@ -1,5 +1,6 @@
 package com.example.mrbugger_app.ui.screen.homepage
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,12 +33,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -60,6 +63,9 @@ import com.example.mrbugger_app.ui.theme.Shapes
 @Composable
 fun homePage(navController: NavHostController) {
     var search by remember { mutableStateOf("") }
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    val coroutineScope = rememberCoroutineScope()
 
     Box(modifier = Modifier.fillMaxSize()) {
         // Content Column
@@ -67,12 +73,17 @@ fun homePage(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(1.dp)
                 .padding(bottom = 66.dp)
+                .padding(
+                    horizontal = if (isLandscape) 50.dp else 2.dp,
+                    vertical = if (isLandscape) 15.dp else 10.dp
+                )
+                .padding(top = if (isLandscape) 2.dp else 10.dp)
+                .padding(bottom = if (isLandscape) 2.dp else 20.dp)
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(8.dp),
+                contentPadding = PaddingValues(6.dp),
                 verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
                 item {
@@ -156,8 +167,8 @@ fun PopularBurgerList(pictureList: List<Pictures>, navController: NavController)
 fun PopularBurgerCard(picture: Pictures, modifier: Modifier = Modifier, navController: NavController) {
     Card(
         modifier = modifier
-            .padding(horizontal = 12.dp)
-            .width(180.dp)
+            .padding(horizontal = 7.dp)
+            .width(170.dp)
             .shadow(
                 elevation = 12.dp,
                 shape = Shapes.medium,

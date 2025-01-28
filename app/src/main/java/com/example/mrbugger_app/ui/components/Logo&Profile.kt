@@ -32,7 +32,7 @@ fun LogoAndCard(){
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Column for text items

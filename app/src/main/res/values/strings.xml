@@ -19,7 +19,7 @@
     <!-- Chicken Burgers -->
     <string name="zingerBurger">Zinger Burger</string>
     <string name="zingerBurgerPrice">990</string>
-    <string name="loadedCheeseburger">Loaded Cheese Burger</string>
+    <string name="loadedCheeseburger">Cheese Burger</string>
     <string name="loadedCheeseburgerPrice">1300</string>
     <string name="tandooriBurger">Tandoori Burger</string>
     <string name="tandooriBurgerPrice">1450</string>
@@ -37,7 +37,7 @@
     <string name="DoubleMushroomSwissBurgerPrice">1500</string>
 
     <!-- Veg Burgers -->
-    <string name="classicVeggieBurger">Classic Veggie Burger</string>
+    <string name="classicVeggieBurger">Veggie Burger</string>
     <string name="classicVeggieBurgerPrice">800</string>
     <string name="spicyVeggieBurger">Spicy Veggie Burger</string>
     <string name="spicyVeggieBurgerPrice">950</string>
@@ -47,13 +47,21 @@
     <string name="cheesyVegDelightBurgerPrice">1000</string>
 
     <!-- Beverages -->
+    <string name="beverages">Beverages</string>
     <string name="Lime">Lime</string>
+    <string name="LimePrice">200</string>
     <string name="Pasion">Pasion</string>
+    <string name="PasionPrice">350</string>
     <string name="Orange">Orange</string>
+    <string name="OrangePrice">400</string>
     <string name="Apple">Apple</string>
+    <string name="ApplePrice">600</string>
     <string name="Pinaplle">PineApple</string>
+    <string name="PinapllePrice">590</string>
     <string name="watermellon">Watermelon</string>
+    <string name="watermellonPrice">150</string>
     <string name="grapes">Grapes</string>
+    <string name="grapesPrice">750</string>
 
 
     <!-- Fast Foods -->
@@ -62,7 +70,7 @@
     <string name="breads">Garlic Bread</string>
     <string name="breadsPrice">450</string>
     <string name="rings">Onion Rings</string>
-    <string name="ringsPrice">Onion Rings</string>
+    <string name="ringsPrice">900</string>
     <string name="taccos">Taccos</string>
     <string name="taccosPrice">800</string>
     <string name="shawarma">Shawarma</string>

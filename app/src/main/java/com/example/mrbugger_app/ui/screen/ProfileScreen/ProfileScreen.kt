@@ -179,7 +179,7 @@ fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfil
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            MaterialTheme.colorScheme.background,
+                            MaterialTheme.colorScheme.surface,
                             shape = RoundedCornerShape(16.dp)
                         )
                         .padding(12.dp)
@@ -235,9 +235,10 @@ fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfil
                 Icon(
                     imageVector = Icons.Filled.Logout,
                     contentDescription = "Logout Icon",
+                    tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
                         .padding(end = 15.dp)
-                        .size(30.dp) // Adjust size as needed
+                        .size(30.dp)
                 )
                 Button(
                     onClick = { navController.navigate(Screen.Login.route)},
@@ -289,7 +290,7 @@ fun UserInfoField(label: String, value: String, isEditMode: Boolean, onValueChan
                     unfocusedContainerColor = MaterialTheme.colorScheme.surface
                 ),
                 shape = RoundedCornerShape(12.dp),
-                modifier = Modifier.background(MaterialTheme.colorScheme.background, RoundedCornerShape(8.dp)))
+                modifier = Modifier.background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp)))
 
         } else {
             Text(

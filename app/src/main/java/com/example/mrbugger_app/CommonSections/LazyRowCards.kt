@@ -18,12 +18,18 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,19 +49,21 @@ import com.example.mrbugger_app.model.CategoryPictuers
 import com.example.mrbugger_app.ui.theme.BackgroundColor
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
 import com.example.mrbugger_app.ui.theme.SecondaryColor
+import com.example.mrbugger_app.ui.theme.Shapes
+import org.checkerframework.checker.units.qual.h
 
 @Composable
 fun BurgerCard(
     imageResourceId: Int,
     title: String,
     price: String,
-    backgroundColor: Color = BackgroundColor,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
     Card(
         modifier = modifier
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = 6.dp)
             .width(170.dp)
             .height(220.dp)
             .clickable { onClick() }
@@ -63,9 +71,11 @@ fun BurgerCard(
                 elevation = 8.dp,
                 shape = RoundedCornerShape(8.dp),
                 ambientColor = Color.Black,
-                spotColor = Color.Black
+                spotColor = Color.Black,
+
             ),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+
     ) {
         Column {
             Image(
@@ -99,63 +109,6 @@ fun BurgerCard(
         }
     }
 }
-
-@Composable
-fun BeverageCard(
-    imageResourceId: Int,
-    title: String,
-    price: String,
-    backgroundColor: Color = BackgroundColor,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
-) {
-    Card(
-        modifier = modifier
-            .padding(horizontal = 8.dp)
-            .width(170.dp)
-            .height(220.dp)
-            .clickable { onClick() }
-            .shadow(
-                elevation = 8.dp,
-                shape = RoundedCornerShape(8.dp),
-                ambientColor = Color.Black,
-                spotColor = Color.Black
-            ),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor)
-    ) {
-        Column {
-            Image(
-                painter = painterResource(imageResourceId),
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .height(135.dp)
-                    .width(240.dp)
-            )
-            Text(
-                text = title,
-                fontSize = 18.sp,
-                style = MaterialTheme.typography.labelMedium,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Text(
-                text = "Rs $price",
-                fontSize = 18.sp,
-                color = PrimaryYellowDark,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp)
-                    .padding(horizontal = 9.dp)
-            )
-        }
-    }
-}
-
 
 
 @Composable
@@ -163,12 +116,12 @@ fun PopularCategories(categories: List<CategoryPictuers>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(4.dp)
     ) {
         Text(
             text = stringResource(id = R.string.PopularCategories,),
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(bottom = 16.dp)
+            style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(bottom = 16.dp, top = 5.dp).padding(horizontal = 5.dp)
         )
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -182,16 +135,21 @@ fun PopularCategories(categories: List<CategoryPictuers>) {
 
 @Composable
 fun CategoryItem(category: CategoryPictuers) {
+    var isSelected by remember { mutableStateOf(false) }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .width(80.dp)
-            .clickable { }
+            .clickable { isSelected = !isSelected } // Toggle selection on click
     ) {
         // Circle with elevation
         Card(
-            shape = CircleShape,
+            shape = Shapes.small,
             elevation = CardDefaults.cardElevation(8.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
+            ),
             modifier = Modifier.size(75.dp)
         ) {
             Image(
@@ -199,18 +157,19 @@ fun CategoryItem(category: CategoryPictuers) {
                 contentDescription = stringResource(id = category.stringResourceId),
                 modifier = Modifier
                     .fillMaxSize()
-                    .clip(CircleShape).background(BackgroundColor)
-
+                    .background(if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
             )
         }
 
-        // Text below the circle
+        // Text below the chip
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = stringResource(id = category.stringResourceId),
             style = MaterialTheme.typography.labelSmall,
             textAlign = TextAlign.Center,
+            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.fillMaxWidth()
         )
     }
 }
+

@@ -81,7 +81,7 @@ fun CartScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues) // Padding for the content
+                    .padding(paddingValues)
             ) {
                 Column(
                     modifier = Modifier
@@ -111,7 +111,7 @@ fun CartScreen(
 
                         item {
                             Spacer(modifier = Modifier.height(36.dp))
-                            Divider()
+                            Divider(modifier = Modifier.background(MaterialTheme.colorScheme.onBackground))
                             Spacer(modifier = Modifier.height(8.dp))
                         }
 
@@ -128,7 +128,7 @@ fun CartScreen(
                                     .offset(y = 70.dp)
                                     .border(
                                         width = 1.dp,
-                                        color = Color.Black,
+                                        color = MaterialTheme.colorScheme.onSurface,
                                         shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
                                     )
 
@@ -194,7 +194,7 @@ fun MainCalculation(formattedShipping: String, formattedSubTotal: String) {
         }
         Spacer(modifier = Modifier.height(36.dp))
 
-        Divider()
+        Divider(modifier = Modifier.background(MaterialTheme.colorScheme.onSurfaceVariant))
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -207,7 +207,7 @@ fun MainCalculation(formattedShipping: String, formattedSubTotal: String) {
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        Divider()
+        Divider(modifier = Modifier.background(MaterialTheme.colorScheme.background))
         Spacer(modifier = Modifier.height(36.dp))
 
 
@@ -254,8 +254,8 @@ fun CartItemList(
 
                 Box(modifier = Modifier.size(60.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colorScheme.secondary)
                     .align(alignment = Alignment.CenterVertically)
+                    .background(MaterialTheme.colorScheme.surface)
                     .border(
                         width = 1.dp,
                         color = MaterialTheme.colorScheme.background,
@@ -300,7 +300,7 @@ fun SmallCloseButton(onClick: () -> Unit) {
         modifier = Modifier
             .size(30.dp) // Outer box size for the red ring
             .clip(RoundedCornerShape(50))
-            .background(Color.Red),
+            .background(MaterialTheme.colorScheme.onBackground),
         contentAlignment = Alignment.Center // Ensures the button is centered
     ) {
         Button(
@@ -310,8 +310,8 @@ fun SmallCloseButton(onClick: () -> Unit) {
                 .clip(RoundedCornerShape(50))
                 .offset(x = 0.dp, y = 0.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White, // Background color for button
-                contentColor = Color.Red // Text/Icon color
+                containerColor = MaterialTheme.colorScheme.background, // Background color for button
+                contentColor = MaterialTheme.colorScheme.error // Text/Icon color
             ),
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 4.dp,

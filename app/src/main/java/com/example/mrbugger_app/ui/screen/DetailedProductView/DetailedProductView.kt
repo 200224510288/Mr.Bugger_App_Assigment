@@ -91,8 +91,7 @@ fun DetailedProductView( navController: NavController,cartViewModel: CartViewMod
     }
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 16.dp),
+            .fillMaxSize(),
         topBar = {
             TopBarSection(navController = navController)
 

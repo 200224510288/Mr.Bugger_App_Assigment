@@ -3,6 +3,7 @@ package com.example.mrbugger_app.CommonSections
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,14 +24,13 @@ fun SectionsText(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 7.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.bodyMedium,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.weight(1f))
         TextButton(
@@ -40,10 +40,8 @@ fun SectionsText(
             Text(
                 text = "Show more",
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Color.Gray,
-                    fontWeight = FontWeight.Bold
-                ),
-                fontSize = 15.sp
+                    fontWeight = FontWeight.SemiBold
+                ), modifier = Modifier.offset(x = 8.dp),
             )
         }
     }

@@ -85,10 +85,9 @@ fun BottomNavDesign(modifier: Modifier = Modifier, navController: NavController)
 
     Row(
         modifier = Modifier
-            .shadow(elevation = 8.dp)
             .fillMaxWidth()
-            .height(66.dp)
-            .background(ExtraYellowLight),
+            .height(70.dp)
+            .background(MaterialTheme.colorScheme.tertiary),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {

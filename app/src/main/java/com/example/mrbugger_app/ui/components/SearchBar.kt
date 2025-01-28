@@ -41,24 +41,24 @@ fun SearchBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp)
+            .padding(horizontal = 8.dp)
             .background(MaterialTheme.colorScheme.surfaceBright, RoundedCornerShape(60.dp))
             .height(55.dp)
             .shadow(4.dp, shape = RoundedCornerShape(60.dp), clip = false)
-            .border(1.dp, Color.Gray, RoundedCornerShape(60.dp)),
+            .border(1.dp, MaterialTheme.colorScheme.onBackground, RoundedCornerShape(60.dp)),
 
         contentAlignment = Alignment.Center
     ) {
         TextField(
             value = search,
             onValueChange = onSearchChange,
-            placeholder = { Text(text = "Search", fontFamily = Poppins, fontWeight = FontWeight.Medium, color = Darkgray) },
+            placeholder = { Text(text = "Search", fontFamily = Poppins, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 2.dp),
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color(0xFFEDEDED),
-                unfocusedContainerColor = Color(0xFFF0F0F0),
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                 focusedIndicatorColor = MaterialTheme.colorScheme.primary,
                 unfocusedIndicatorColor = Color.Transparent
             ),
@@ -67,10 +67,10 @@ fun SearchBar(
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.inverseOnSurface,
+                    tint = MaterialTheme.colorScheme.onBackground,
                 )
             },
-            textStyle = MaterialTheme.typography.bodyMedium.copy(color = Color.Black,
+            textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 18.sp,
                 fontFamily = Poppins,
                 fontWeight = FontWeight.Medium

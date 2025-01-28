@@ -112,7 +112,7 @@ fun OrderConfirmation(navController: NavController,cartViewModel: CartViewModel)
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            MaterialTheme.colorScheme.background,
+                            MaterialTheme.colorScheme.surface,
                             shape = RoundedCornerShape(16.dp)
                         )
                         .padding(12.dp)
@@ -170,7 +170,7 @@ fun OrderConfirmation(navController: NavController,cartViewModel: CartViewModel)
                         .width(150.dp),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
-                    Text(text = "Menu", fontSize = 20.sp, color = MaterialTheme.colorScheme.background)
+                    Text(text = "Menu", fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground)
                 }
 
                 Spacer(modifier = Modifier.width(40.dp))
@@ -180,7 +180,7 @@ fun OrderConfirmation(navController: NavController,cartViewModel: CartViewModel)
                     modifier = Modifier.width(150.dp),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
-                    Text(text = "View Order", fontSize = 20.sp, color = MaterialTheme.colorScheme.background)
+                    Text(text = "View Order", fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground)
                 }
             }
 
@@ -265,7 +265,7 @@ fun OrderPlacedCard() {
                 text = "Order has been placed",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -274,7 +274,7 @@ fun OrderPlacedCard() {
             Text(
                 text = "We have received your order!",
                 fontSize = 16.sp,
-                color = Color.Gray
+                color = MaterialTheme.colorScheme.outline
             )
             Spacer(modifier = Modifier.height(8.dp))
             Divider()

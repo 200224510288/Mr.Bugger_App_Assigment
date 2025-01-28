@@ -109,7 +109,7 @@ fun ProductCards(picture: Pictures, modifier: Modifier = Modifier, navController
             }
             .padding(8.dp),
         shape = RoundedCornerShape(15.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
 
@@ -129,7 +129,7 @@ fun ProductCards(picture: Pictures, modifier: Modifier = Modifier, navController
             Text(
                 text = stringResource(id = picture.stringResourceId),
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp),
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(

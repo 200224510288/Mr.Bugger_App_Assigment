@@ -54,13 +54,13 @@ fun TopBar(modifier: Modifier = Modifier, navController: NavController) {
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
             .systemBarsPadding()
-            .padding(horizontal = 10.dp, vertical = 1.dp),
+            .padding(horizontal = 6.dp, vertical = 1.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
 
             IconButton(onClick = {navController.popBackStack() },
-                modifier = Modifier.border(2.dp, color = TextColor, shape = CircleShape).size(35.dp)) {
+                modifier = Modifier.border(2.dp, color = MaterialTheme.colorScheme.onBackground, shape = CircleShape).size(35.dp)) {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = "Back",
