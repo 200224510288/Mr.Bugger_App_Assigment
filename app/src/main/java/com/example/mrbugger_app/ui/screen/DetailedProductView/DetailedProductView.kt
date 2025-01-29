@@ -102,8 +102,8 @@ fun DetailedProductView( navController: NavController,cartViewModel: CartViewMod
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.background)
-                   // .shadow(elevation = 8.dp, shape = RoundedCornerShape(topStart = 16.dp))
+                    .background(MaterialTheme.colorScheme.surface)
+                    // .shadow(elevation = 8.dp, shape = RoundedCornerShape(topStart = 16.dp))
                     .padding(16.dp)
                     .height(85.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -117,13 +117,14 @@ fun DetailedProductView( navController: NavController,cartViewModel: CartViewMod
                             color = MaterialTheme.colorScheme.primary,
                             shape = RoundedCornerShape(30.dp)
                         )
-                        .width(150.dp)
+                        .width(175.dp)
+                        .height(50.dp)
                         .padding(8.dp)
                 ) {
 
                     Text(
                         text = "Rs. ${"%.2f".format(currentPrice)}",
-                        fontSize = 21.sp,
+                        fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -136,19 +137,20 @@ fun DetailedProductView( navController: NavController,cartViewModel: CartViewMod
                         price = price,
                         quantity = quantity
                     )
-                        Toast.makeText(context, "Item added to cart", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,
+                            context.getString(R.string.item_added_to_cart), Toast.LENGTH_SHORT).show()
                         cartViewModel.addItemToCart(cartItem)},
 
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                     shape = RoundedCornerShape(25.dp),
                     modifier = Modifier
-                        .width(200.dp)
+                        .width(175.dp)
                         .height(50.dp)
                 ) {
                     Text(
                         text = "Add to Cart",
                         color = MaterialTheme.colorScheme.background,
-                        fontSize = 21.sp,
+                        fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -175,7 +177,7 @@ fun DetailedProductView( navController: NavController,cartViewModel: CartViewMod
                 shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
                 elevation = CardDefaults.cardElevation(15.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = BackgroundColor
+                    containerColor = MaterialTheme.colorScheme.surface
                 ),
                 modifier = Modifier
                     .fillMaxSize()
@@ -269,7 +271,9 @@ fun DetailedProductView( navController: NavController,cartViewModel: CartViewMod
                     Box(
                         modifier = Modifier
                             .border(
-                                1.dp, TextColor, shape = RoundedCornerShape(13.dp)
+                                1.dp,
+                                MaterialTheme.colorScheme.onBackground,
+                                shape = RoundedCornerShape(13.dp)
                             )
                             .padding(10.dp)
                     ) {
@@ -282,7 +286,7 @@ fun DetailedProductView( navController: NavController,cartViewModel: CartViewMod
                             )
                             Spacer(modifier = Modifier.height(5.dp))
                             Text(
-                                text = "Try a juicy, grilled beef patty nestled inside soft buns. Included fresh ripe tomatoes, crispy onions and a slice of cheddar cheese.",
+                                text = stringResource(R.string.DetailPageContent),
                                 fontSize = 14.sp,
                                 color = Color.Gray
                             )

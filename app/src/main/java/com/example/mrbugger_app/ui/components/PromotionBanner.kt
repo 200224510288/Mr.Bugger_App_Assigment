@@ -46,11 +46,11 @@ fun PromoBanner(){
 
       Text(
           text = stringResource(R.string.promotionsBanner),
-          style = MaterialTheme.typography.bodyMedium.copy(
+          style = MaterialTheme.typography.titleLarge.copy(
               color = MaterialTheme.colorScheme.onBackground,
               fontWeight = FontWeight.Bold
           ),
-          fontSize = 20.sp
+
       )
       Spacer(modifier = Modifier.height(16.dp))
 
@@ -73,28 +73,26 @@ fun PromoBanner(){
                   modifier = Modifier.weight(1f)
               ) {
                   Text(
-                      text = "Today's Deal !",
+                      text = stringResource(R.string.today_s_deal),
                       fontFamily = Poppins,
-                      fontSize = 20.sp,
+                      style = MaterialTheme.typography.titleLarge,
                       fontWeight = FontWeight.Normal,
                       color = Color.White
                   )
                   Spacer(modifier = Modifier.height(8.dp))
                   Text(
-                      text = "Buy Burger Meal\nfor  Rs. 750.00",
+                      text = stringResource(R.string.buy_burger_meal_for_rs_750_00),
                       fontFamily = Poppins,
-                      fontSize = 20.sp,
+                      style = MaterialTheme.typography.titleMedium,
                       fontWeight = FontWeight.SemiBold,
                       color = Color.White
 
                   )
                   Spacer(modifier = Modifier.height(14.dp))
                   Text(
-                      text = "Condition Applied!",
-                      style = TextStyle(
-                          fontSize = 14.sp,
-                          color = Color.White
-                      )
+                      text = stringResource(R.string.condition_applied),
+                      style = MaterialTheme.typography.titleSmall,
+                      color = Color.White
                   )
               }
               // Image Section with Overlapping Pictures

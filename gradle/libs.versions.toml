@@ -16,6 +16,10 @@ litert-support-api = "1.0.1"
 lifecycle-runtime-compose-android = "2.8.7"
 benchmark-macro = "1.3.3"
 animation-core-lint = "1.8.0-alpha07"
+firebase-auth-ktx = "23.1.0"
+runtime-livedata = "1.7.6"
+google-gms-google-services = "4.4.2"
+firebase-auth = "23.1.0"
 
 [libraries]
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
@@ -41,6 +45,9 @@ litert-support-api = { group = "com.google.ai.edge.litert", name = "litert-suppo
 androidx-lifecycle-runtime-compose-android = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose-android", version.ref = "lifecycle-runtime-compose-android" }
 androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro", version.ref = "benchmark-macro" }
 androidx-animation-core-lint = { group = "androidx.compose.animation", name = "animation-core-lint", version.ref = "animation-core-lint" }
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebase-auth-ktx" }
+androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtime-livedata" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebase-auth" }
 
 [bundles]
 androidx = ["androidx-core", "androidx-lifecycle"]
@@ -49,3 +56,4 @@ ui = ["compose-ui", "compose-graphics", "compose-tooling-preview", "compose-acti
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "google-gms-google-services" }

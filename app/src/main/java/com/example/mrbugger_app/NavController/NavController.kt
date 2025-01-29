@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.mrbugger_app.AuthViewModel.AuthViewModel
 import com.example.mrbugger_app.Screen
 import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.model.UserProfileViewModel
@@ -27,7 +28,7 @@ import com.example.mrbugger_app.ui.screen.login.LoginScreen
 import com.example.mrbugger_app.ui.screen.signup.signupPage
 
 @Composable
-fun AppNavigation(userProfileViewModel: UserProfileViewModel, cartViewModel: CartViewModel) {
+fun AppNavigation(userProfileViewModel: UserProfileViewModel, cartViewModel: CartViewModel,authViewModel: AuthViewModel) {
    Surface(
        modifier = Modifier.fillMaxSize(),
        color = MaterialTheme.colorScheme.background
@@ -36,13 +37,13 @@ fun AppNavigation(userProfileViewModel: UserProfileViewModel, cartViewModel: Car
 
        NavHost(
            navController = navController,
-           startDestination = Screen.Profile.route,
+           startDestination = Screen.Login.route,
                        ){
            composable(Screen.Home.route){
-               homePage(navController = navController)
+               homePage(navController = navController, authViewModel)
            }
            composable(Screen.Profile.route){
-               ProfileScreen(navController = navController, userProfileViewModel = userProfileViewModel )
+               ProfileScreen(navController = navController, userProfileViewModel = userProfileViewModel,authViewModel )
            }
            composable(Screen.Search.route){
                SearchScreen(navController = navController)
@@ -51,10 +52,10 @@ fun AppNavigation(userProfileViewModel: UserProfileViewModel, cartViewModel: Car
                CartScreen(navController = navController,cartViewModel)
            }
            composable(Screen.Login.route){
-               LoginScreen(navController = navController)
+               LoginScreen(navController = navController, authViewModel)
            }
            composable(Screen.Singup.route){
-               signupPage(navController = navController)
+               signupPage(navController = navController, authViewModel)
            }
            composable(Screen.Menu.route){
                MenuPage(navController = navController)

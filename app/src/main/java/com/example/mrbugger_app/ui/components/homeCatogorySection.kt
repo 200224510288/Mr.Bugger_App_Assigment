@@ -84,7 +84,7 @@ fun CategoryChip(
             text = stringResource(id = titleRes),
             color = MaterialTheme.colorScheme.onBackground,
             fontWeight = fontWeight,
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.titleMedium,
 
         )
     }

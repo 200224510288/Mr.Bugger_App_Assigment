@@ -1,6 +1,7 @@
 package com.example.mrbugger_app.ui.screen.signup
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -36,7 +37,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,7 +49,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -56,23 +61,36 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.mrbugger_app.AuthViewModel.AuthState
+import com.example.mrbugger_app.AuthViewModel.AuthViewModel
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.Screen
 import com.example.mrbugger_app.ui.theme.BackgroundColor
 import com.example.mrbugger_app.ui.theme.TextColor
 
 @Composable
-fun signupPage(navController: NavController) {
+fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var contact by remember{ mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var location by remember { mutableStateOf("") }
+    val authState = authViewModel.authState.observeAsState()
+    val context = LocalContext.current
 
     var passwordVisible by remember { mutableStateOf(false) }
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
+    LaunchedEffect(authState.value) {
+        when(authState.value){
+            is AuthState.Authenticated -> navController.navigate("home")
+            is AuthState.Error -> Toast.makeText(context,
+                (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+            else -> Unit
+        }
+
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         // Background Image
@@ -81,6 +99,7 @@ fun signupPage(navController: NavController) {
             contentDescription = "Background Image",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
+
         )
 
         // Glass Background Box
@@ -94,7 +113,7 @@ fun signupPage(navController: NavController) {
                 .padding(top = if (isLandscape) 2.dp else 150.dp)
                 .padding(bottom = if (isLandscape) 2.dp else 50.dp)
                 .background(
-                    color = Color.White.copy(alpha = 1f), // transparent white
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 1f), // transparent white
                     shape = RoundedCornerShape(24.dp) // Rounded corners
                 )
                 .clip(RoundedCornerShape(24.dp))
@@ -125,7 +144,6 @@ fun signupPage(navController: NavController) {
                                     color = MaterialTheme.colorScheme.primary,
                                     fontFamily = MaterialTheme.typography.displayLarge.fontFamily,
                                     fontWeight = MaterialTheme.typography.displayLarge.fontWeight,
-                                    fontSize = 22.sp
                                 )
                             )
                             append("Mr.")
@@ -137,7 +155,6 @@ fun signupPage(navController: NavController) {
                                     color = MaterialTheme.colorScheme.onBackground,
                                     fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                                     fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
-                                    fontSize = 22.sp
                                 )
                             )
                             append("Burger")
@@ -160,7 +177,7 @@ fun signupPage(navController: NavController) {
 
                 // Welcome Text
                 Text(
-                    text = "Create Your Account",
+                    text = stringResource(R.string.create_your_account),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -175,12 +192,16 @@ fun signupPage(navController: NavController) {
                     label = { Text("UserName") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, MaterialTheme.colorScheme.onBackground, RoundedCornerShape(16.dp))
+                        .border(
+                            1.dp,
+                            MaterialTheme.colorScheme.onBackground,
+                            RoundedCornerShape(16.dp)
+                        )
                         .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp)),
-                    textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
+                    textStyle = TextStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onBackground),
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = BackgroundColor,
-                        unfocusedLabelColor = TextColor
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onBackground
                     ),
                     shape = RoundedCornerShape(16.dp),
                     leadingIcon = {
@@ -201,12 +222,16 @@ fun signupPage(navController: NavController) {
                     label = { Text("Email") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, MaterialTheme.colorScheme.onBackground, RoundedCornerShape(16.dp))
+                        .border(
+                            1.dp,
+                            MaterialTheme.colorScheme.onBackground,
+                            RoundedCornerShape(16.dp)
+                        )
                         .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp)),
-                    textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
+                    textStyle = TextStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onBackground),
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = BackgroundColor,
-                        unfocusedLabelColor = TextColor
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onBackground
                     ),
                     shape = RoundedCornerShape(16.dp),
                     leadingIcon = {
@@ -227,12 +252,16 @@ fun signupPage(navController: NavController) {
                     label = { Text("Password") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, MaterialTheme.colorScheme.onBackground, RoundedCornerShape(16.dp))
+                        .border(
+                            1.dp,
+                            MaterialTheme.colorScheme.onBackground,
+                            RoundedCornerShape(16.dp)
+                        )
                         .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp)),
-                    textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
+                    textStyle = TextStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onBackground),
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = BackgroundColor,
-                        unfocusedLabelColor = TextColor
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onBackground
                     ),
                     shape = RoundedCornerShape(16.dp),
                     leadingIcon = {
@@ -253,18 +282,22 @@ fun signupPage(navController: NavController) {
                     label = { Text("Location") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, MaterialTheme.colorScheme.onBackground, RoundedCornerShape(16.dp))
+                        .border(
+                            1.dp,
+                            MaterialTheme.colorScheme.onBackground,
+                            RoundedCornerShape(16.dp)
+                        )
                         .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp)),
-                    textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
+                    textStyle = TextStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onBackground),
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = BackgroundColor,
-                        unfocusedLabelColor = TextColor
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onBackground
                     ),
                     shape = RoundedCornerShape(16.dp),
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Filled.AddLocationAlt,
-                            contentDescription = "Phone Icon",
+                            contentDescription = "Location Icon",
                             tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
@@ -272,30 +305,32 @@ fun signupPage(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(26.dp))
 
-                // Login Button
+                // SignUp Button
                 Button(
-                    onClick = { navController.navigate(Screen.Home.route)  },
+                    onClick = { authViewModel.signup(email, password) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 12.dp, horizontal = 30.dp)
+                        .padding(vertical = 7.dp, horizontal = 50.dp)
+                        .height(60.dp)
                         .clip(CircleShape),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                    enabled = authState.value != AuthState.Loading // Disable button when loading
                 ) {
                     Text(
                         text = "Sign Up",
                         color = Color.White,
-                        fontSize = 25.sp,
                         fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.labelMedium,
-                        modifier = Modifier.padding(vertical = 12.dp, horizontal = 32.dp)
+                        style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier.padding(vertical = 5.dp, horizontal = 28.dp)
                     )
                 }
+
 
                 Spacer(modifier = Modifier.height(22.dp))
 
                 // Signup TextButton
                 TextButton(onClick = {navController.navigate(Screen.Login.route) }) {
-                    Text(text = "Already Have an Account? Login", color = TextColor, fontSize = 18.sp)
+                    Text(text = "Already Have an Account? Login", color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.titleMedium)
                 }
             }
         }

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -63,6 +64,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose.android)
     implementation(libs.androidx.benchmark.macro)
     implementation(libs.androidx.animation.core.lint)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.androidx.runtime.livedata)
+    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit)
     debugImplementation(libs.compose.tooling)
@@ -70,6 +74,5 @@ dependencies {
     implementation("androidx.compose.material:material:1.4.0")
     implementation ("androidx.compose.material:material-icons-extended:1.5.0")
     implementation ("com.google.maps.android:maps-compose:2.7.2")
-    implementation ("com.google.android.gms:play-services-maps:18.0.2")
 
 }

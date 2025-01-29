@@ -91,4 +91,13 @@
     <string name="removeBtn">X</string>
     <string name="clearBtn">Clear</string>
     <string name="buyBtn">Buy</string>
+    <string name="item_added_to_cart">Item added to cart</string>
+    <string name="DetailPageContent">Try a juicy, grilled patty nestled inside soft buns. Included fresh ripe tomatoes, crispy onions and a slice of cheddar cheese.</string>
+    <string name="background_image">Login Background Image</string>
+    <string name="welcome">Welcome</string>
+    <string name="create_your_account">Create Your Account</string>
+    <string name="show_more">Show more</string>
+    <string name="today_s_deal">Today\'s Deal !</string>
+    <string name="buy_burger_meal_for_rs_750_00">Buy Burger Meal\nfor  Rs. 750.00</string>
+    <string name="condition_applied">Condition Applied!</string>
 </resources>

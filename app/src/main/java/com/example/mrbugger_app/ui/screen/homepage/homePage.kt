@@ -30,7 +30,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -48,6 +50,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.mrbugger_app.AuthViewModel.AuthState
+import com.example.mrbugger_app.AuthViewModel.AuthViewModel
 import com.example.mrbugger_app.Data.FoodItem
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.CommonSections.ScreenWithBottonNavBar
@@ -61,11 +65,22 @@ import com.example.mrbugger_app.ui.theme.Shapes
 
 
 @Composable
-fun homePage(navController: NavHostController) {
+fun homePage(navController: NavHostController,authViewModel: AuthViewModel) {
     var search by remember { mutableStateOf("") }
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val coroutineScope = rememberCoroutineScope()
+
+    val authState = authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState.value) {
+        when(authState.value){
+            is AuthState.unauthenticated -> navController.navigate("login")
+            else -> Unit
+
+        }
+
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         // Content Column
@@ -128,8 +143,7 @@ fun  PopularBar(navController: NavController) {
     ) {
         Text(
             text = "Popular",
-            fontSize = 20.sp,
-            style = MaterialTheme.typography.bodyMedium.copy(
+            style = MaterialTheme.typography.titleLarge.copy(
                 color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold
             )
@@ -140,12 +154,11 @@ fun  PopularBar(navController: NavController) {
             modifier = Modifier.align(Alignment.CenterVertically)
         ) {
             Text(
-                text = "Show more",
+                text = stringResource(R.string.show_more),
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.inverseSurface,
                     fontWeight = FontWeight.Bold
                 ),
-                fontSize = 15.sp
             )
         }
     }
@@ -193,21 +206,18 @@ fun PopularBurgerCard(picture: Pictures, modifier: Modifier = Modifier, navContr
             )
             Text(
                 text = stringResource(id = picture.stringResourceId),
-                fontSize = 18.sp,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(2.dp)
             )
             Text(
                 text = "Rs ${stringResource(id = picture.price)}",
-                fontSize = 18.sp,
                 color = PrimaryYellowDark,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(7.dp)
-
             )
             Button(
                 onClick = {
@@ -219,7 +229,7 @@ fun PopularBurgerCard(picture: Pictures, modifier: Modifier = Modifier, navContr
                     .padding(horizontal = 30.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
-                Text(text = "Buy", fontSize = 18.sp, color = Color.Black)
+                Text(text = "Buy", style = MaterialTheme.typography.titleMedium, color = Color.Black)
             }
         }
     }

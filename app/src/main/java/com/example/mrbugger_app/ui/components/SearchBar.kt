@@ -70,8 +70,7 @@ fun SearchBar(
                     tint = MaterialTheme.colorScheme.onBackground,
                 )
             },
-            textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 18.sp,
+            textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onBackground,
                 fontFamily = Poppins,
                 fontWeight = FontWeight.Medium
             ),

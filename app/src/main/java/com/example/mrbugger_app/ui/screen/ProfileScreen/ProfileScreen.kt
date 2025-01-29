@@ -71,6 +71,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.Navigation
+import com.example.mrbugger_app.AuthViewModel.AuthViewModel
 import com.example.mrbugger_app.CommonSections.ScreenWithBottonNavBar
 import com.example.mrbugger_app.CommonSections.TopBarSection
 import com.example.mrbugger_app.R
@@ -81,7 +82,7 @@ import com.example.mrbugger_app.ui.theme.TextColor
 import kotlinx.coroutines.launch
 
 @Composable
-fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfileViewModel) {
+fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfileViewModel,authViewModel: AuthViewModel) {
     var isEditMode by remember { mutableStateOf(false) }
     val userProfile = userProfileViewModel.userProfile.value
 
@@ -241,7 +242,7 @@ fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfil
                         .size(30.dp)
                 )
                 Button(
-                    onClick = { navController.navigate(Screen.Login.route)},
+                    onClick = { authViewModel.signout(navController) },
                     modifier = Modifier
                         .width(150.dp),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
