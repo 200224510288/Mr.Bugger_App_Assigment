@@ -74,5 +74,5 @@ dependencies {
     implementation("androidx.compose.material:material:1.4.0")
     implementation ("androidx.compose.material:material-icons-extended:1.5.0")
     implementation ("com.google.maps.android:maps-compose:2.7.2")
-
+    implementation("io.coil-kt:coil-compose:2.3.0")
 }

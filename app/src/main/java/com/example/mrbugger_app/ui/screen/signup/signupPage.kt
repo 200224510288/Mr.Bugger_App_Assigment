@@ -1,10 +1,14 @@
 package com.example.mrbugger_app.ui.screen.signup
 
 import android.content.res.Configuration
+import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -61,6 +65,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.mrbugger_app.AuthViewModel.AuthState
 import com.example.mrbugger_app.AuthViewModel.AuthViewModel
 import com.example.mrbugger_app.R
@@ -82,6 +87,15 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
+    // Image Picker
+    var profileImageUri by remember { mutableStateOf<Uri?>(null) }
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        profileImageUri = uri // Set selected image URI
+    }
+
+//user sign up with firebase
     LaunchedEffect(authState.value) {
         when(authState.value){
             is AuthState.Authenticated -> navController.navigate("home")
@@ -165,22 +179,40 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
                 }
 
                 Spacer(modifier = Modifier.height(2.dp))
-                // Logo
-                Image(
-                    painter = painterResource(R.drawable.logo2),
-                    contentDescription = "Logo",
+
+                // Profile Image
+                Box(
                     modifier = Modifier
-                        .size(160.dp)
-//                        .clip(CircleShape)
-                )
+                        .size(120.dp)
+                        .clip(CircleShape)
+                        .background(Color.Gray)
+                        .clickable { imagePickerLauncher.launch("image/*") },
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (profileImageUri != null) {
+                        Image(
+                            painter = rememberAsyncImagePainter(profileImageUri),
+                            contentDescription = "Profile Image",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Default Profile Icon",
+                            tint = Color.White,
+                            modifier = Modifier.size(60.dp)
+                        )
+                    }
+                }
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Welcome Text
                 Text(
                     text = stringResource(R.string.create_your_account),
                     style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))

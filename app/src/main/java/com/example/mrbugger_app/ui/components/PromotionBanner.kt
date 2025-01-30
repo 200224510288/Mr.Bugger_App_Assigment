@@ -32,6 +32,7 @@ import com.example.mrbugger_app.R
 import com.example.mrbugger_app.ui.theme.Poppins
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
+import com.example.mrbugger_app.ui.theme.Shapes
 
 
 @Composable
@@ -44,23 +45,13 @@ fun PromoBanner(){
           .padding(8.dp)
   ) {
 
-      Text(
-          text = stringResource(R.string.promotionsBanner),
-          style = MaterialTheme.typography.titleLarge.copy(
-              color = MaterialTheme.colorScheme.onBackground,
-              fontWeight = FontWeight.Bold
-          ),
-
-      )
-      Spacer(modifier = Modifier.height(16.dp))
-
       Box(modifier = Modifier
           .fillMaxWidth()
           .background(
               brush = Brush.linearGradient(
                   colors = listOf(PrimaryYellowLight, PrimaryYellowDark),
               ),
-              shape = RoundedCornerShape(16.dp)
+              shape = Shapes.medium
           )
 
           .padding(14.dp) )

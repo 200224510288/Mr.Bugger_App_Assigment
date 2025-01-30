@@ -1,6 +1,7 @@
 package com.example.mrbugger_app.ui.screen.homepage
 
 import android.content.res.Configuration
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -39,6 +40,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -62,6 +64,7 @@ import com.example.mrbugger_app.ui.components.PromoBanner
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
 import com.example.mrbugger_app.ui.theme.Shapes
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -93,7 +96,7 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel) {
                     horizontal = if (isLandscape) 50.dp else 2.dp,
                     vertical = if (isLandscape) 15.dp else 10.dp
                 )
-                .padding(top = if (isLandscape) 2.dp else 10.dp)
+                .padding(top = if (isLandscape) 2.dp else 5.dp)
                 .padding(bottom = if (isLandscape) 2.dp else 20.dp)
         ) {
             LazyColumn(
@@ -115,7 +118,7 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel) {
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    PopularBar(navController)
+                    SectionHeader(title = "Popular", link = "menuPage", navController = navController)
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
@@ -123,8 +126,21 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel) {
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
+                    SectionHeader(title = "Exclusive Promotions", link = "menuPage", navController = navController)
+                }
+                item {
+                    Spacer(modifier = Modifier.height(5.dp))
 
                     PromoBanner()
+                }
+                item {
+                    Spacer(modifier = Modifier.height(5.dp))
+                    SectionHeader(title = "Future Deals!", link = "menuPage", navController = navController)
+                }
+                item {
+                    Spacer(modifier = Modifier.height(5.dp))
+
+                    Slideshow()
                 }
             }
         }
@@ -132,25 +148,29 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel) {
         ScreenWithBottonNavBar(navController = navController)
     }
 }
-// Popular burger section
+// Section bar
 @Composable
-fun  PopularBar(navController: NavController) {
+fun SectionHeader(
+    title: String,
+    link: String,
+    navController: NavController
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 9.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Popular",
+            text = title,
             style = MaterialTheme.typography.titleLarge.copy(
                 color = MaterialTheme.colorScheme.onBackground,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.SemiBold
             )
         )
         Spacer(modifier = Modifier.weight(1f))
         TextButton(
-            onClick = { navController.navigate("menuPage") },
+            onClick = { navController.navigate(link) },
             modifier = Modifier.align(Alignment.CenterVertically)
         ) {
             Text(
@@ -242,3 +262,44 @@ fun Searchbar(search: String, onSearchChange: (String) -> Unit) {
 }
 
 
+//Slideshow Composable
+@Composable
+fun Slideshow(slideInterval: Long = 4000) {
+    val configuration = LocalConfiguration.current
+    val isPortrait = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+    val imageHeight = if (isPortrait) 200.dp else 350.dp
+
+    val imageResources = listOf(
+        R.drawable.slide3,
+        R.drawable.slide2,
+        R.drawable.slide1
+    )
+
+    var currentIndex by remember { mutableStateOf(0) }
+
+    // Update the current index after every slideInterval duration
+    LaunchedEffect(currentIndex) {
+        while (true) {
+            delay(slideInterval)
+            currentIndex = (currentIndex + 1) % imageResources.size
+        }
+    }
+
+    // Crossfade for smooth transitions
+    Crossfade(targetState = currentIndex, modifier = Modifier.fillMaxWidth()) { index ->
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(imageHeight)
+                .padding(horizontal = 8.dp)
+                .clip(Shapes.medium) // Added border radius
+        ) {
+            Image(
+                painter = painterResource(id = imageResources[index]),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
