@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "256182352045",
+    "project_id": "ecormmerseapp",
+    "storage_bucket": "ecormmerseapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256182352045:android:3a1bf88ac988bd7dccee24",
+        "android_client_info": {
+          "package_name": "com.example.ecormmerseapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-WG7qohks17oejG8h3ThqNFcyFqRJ2vw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256182352045:android:f3e9d9b483a2c48dccee24",
+        "android_client_info": {
+          "package_name": "com.example.mrbugger_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-WG7qohks17oejG8h3ThqNFcyFqRJ2vw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
