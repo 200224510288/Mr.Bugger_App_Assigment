@@ -230,7 +230,9 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
                             RoundedCornerShape(16.dp)
                         )
                         .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp)),
-                    textStyle = TextStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onBackground),
+                    textStyle = MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.onBackground
+                    ),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                         unfocusedLabelColor = MaterialTheme.colorScheme.onBackground
@@ -260,7 +262,9 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
                             RoundedCornerShape(16.dp)
                         )
                         .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp)),
-                    textStyle = TextStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onBackground),
+                    textStyle = MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.onBackground
+                    ),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                         unfocusedLabelColor = MaterialTheme.colorScheme.onBackground
@@ -290,7 +294,9 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
                             RoundedCornerShape(16.dp)
                         )
                         .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp)),
-                    textStyle = TextStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onBackground),
+                    textStyle = MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.onBackground
+                    ),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                         unfocusedLabelColor = MaterialTheme.colorScheme.onBackground
@@ -320,7 +326,9 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
                             RoundedCornerShape(16.dp)
                         )
                         .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp)),
-                    textStyle = TextStyle(fontSize = 16.sp, color = MaterialTheme.colorScheme.onBackground),
+                    textStyle = MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.onBackground
+                    ),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                         unfocusedLabelColor = MaterialTheme.colorScheme.onBackground

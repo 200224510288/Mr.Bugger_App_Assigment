@@ -54,6 +54,7 @@ import com.example.mrbugger_app.model.CartItem
 import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.ui.theme.BackgroundColor
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
+import com.example.mrbugger_app.ui.theme.Shapes
 import com.example.mrbugger_app.ui.theme.TextColor
 import java.text.DecimalFormat
 
@@ -62,6 +63,7 @@ fun CartScreen(
     navController: NavHostController,
     cartViewModel: CartViewModel = viewModel(),
 ) {
+    // calculation variables
     val cartItems = cartViewModel.cartItems
     val subTotal = cartViewModel.subTotal
 
@@ -78,6 +80,7 @@ fun CartScreen(
 
         },
         content = { paddingValues ->
+            // content start
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -96,12 +99,13 @@ fun CartScreen(
                         item {
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
-                                "Your Cart",
+                                stringResource(R.string.your_cart),
                                 style = MaterialTheme.typography.headlineMedium,
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Center
                             )
                         }
+                        //cart item list start
 
                         item {
                             Spacer(modifier = Modifier.height(16.dp))
@@ -114,7 +118,7 @@ fun CartScreen(
                             Divider(modifier = Modifier.background(MaterialTheme.colorScheme.onBackground))
                             Spacer(modifier = Modifier.height(8.dp))
                         }
-
+                          //calculation part
                         item {
                             Card(
                                 shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
@@ -171,7 +175,7 @@ fun MainCalculation(formattedShipping: String, formattedSubTotal: String) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Delivery Charge", style = MaterialTheme.typography.bodyLarge)
+            Text(stringResource(R.string.delivery_charge), style = MaterialTheme.typography.bodyLarge)
             Text("Rs.$formattedShipping", style = MaterialTheme.typography.bodyLarge)
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -180,8 +184,8 @@ fun MainCalculation(formattedShipping: String, formattedSubTotal: String) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Discount", style = MaterialTheme.typography.bodyLarge)
-            Text("Rs.40", style = MaterialTheme.typography.bodyLarge)
+            Text(stringResource(R.string.discount), style = MaterialTheme.typography.bodyLarge)
+            Text(stringResource(R.string.rs_40), style = MaterialTheme.typography.bodyLarge)
         }
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -189,8 +193,8 @@ fun MainCalculation(formattedShipping: String, formattedSubTotal: String) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Taxes", style = MaterialTheme.typography.bodyLarge)
-            Text("Rs.150", style = MaterialTheme.typography.bodyLarge)
+            Text(stringResource(R.string.taxes), style = MaterialTheme.typography.bodyLarge)
+            Text(stringResource(R.string.tax_price), style = MaterialTheme.typography.bodyLarge)
         }
         Spacer(modifier = Modifier.height(36.dp))
 
@@ -202,7 +206,7 @@ fun MainCalculation(formattedShipping: String, formattedSubTotal: String) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Sub Total",  fontSize = 19.sp, fontWeight = FontWeight.SemiBold)
+            Text(stringResource(R.string.sub_total),  fontSize = 19.sp, fontWeight = FontWeight.SemiBold)
             Text("Rs.$formattedSubTotal",  fontSize = 19.sp, fontWeight = FontWeight.SemiBold, color = PrimaryYellowDark)
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -231,7 +235,7 @@ fun CartItemList(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Your Cart is empty!",
+                text = stringResource(R.string.your_cart_is_empty),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
@@ -252,8 +256,9 @@ fun CartItemList(
             ) {
                 Spacer(modifier = Modifier.width(8.dp))
 
-                Box(modifier = Modifier.size(60.dp)
-                    .clip(RoundedCornerShape(12.dp))
+                Box(modifier = Modifier
+                    .size(60.dp)
+                    .clip(Shapes.medium)
                     .align(alignment = Alignment.CenterVertically)
                     .background(MaterialTheme.colorScheme.surface)
                     .border(
@@ -270,7 +275,9 @@ fun CartItemList(
                     )
                 }
                 Spacer(modifier = Modifier.width(16.dp))
-                Column(modifier = Modifier.weight(1f) .align(alignment = Alignment.CenterVertically)) {
+                Column(modifier = Modifier
+                    .weight(1f)
+                    .align(alignment = Alignment.CenterVertically)) {
                     Text(item.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
                     Spacer(modifier = Modifier.height(4.dp))
                     Text("Rs.${item.price}", style = MaterialTheme.typography.bodyMedium, color = PrimaryYellowDark)
@@ -284,7 +291,7 @@ fun CartItemList(
                         onClick = { cartViewModel.removeItem(item) } // Callback to remove the item
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("x ${item.quantity}", style = MaterialTheme.typography.bodyMedium, fontSize = 18.sp, modifier = Modifier.offset(x = -7.dp))
+                    Text("x ${item.quantity}", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.offset(x = -7.dp))
 
                 }
             }
@@ -301,7 +308,7 @@ fun SmallCloseButton(onClick: () -> Unit) {
             .size(30.dp) // Outer box size for the red ring
             .clip(RoundedCornerShape(50))
             .background(MaterialTheme.colorScheme.onBackground),
-        contentAlignment = Alignment.Center // Ensures the button is centered
+        contentAlignment = Alignment.Center
     ) {
         Button(
             onClick = { onClick() },

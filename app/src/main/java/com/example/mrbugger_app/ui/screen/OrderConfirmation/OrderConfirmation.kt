@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Logout
@@ -52,6 +53,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -70,9 +72,11 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderConfirmation(navController: NavController,cartViewModel: CartViewModel) {
+    //configure the land scape
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val coroutineScope = rememberCoroutineScope()
+        // for the bottom bar
     val sheetState = rememberModalBottomSheetState()
     var isSheetOpen by rememberSaveable { mutableStateOf(false) }
     Scaffold(
@@ -124,8 +128,7 @@ fun OrderConfirmation(navController: NavController,cartViewModel: CartViewModel)
                                 SpanStyle(
                                     color = MaterialTheme.colorScheme.primary,
                                     fontFamily = MaterialTheme.typography.displayLarge.fontFamily,
-                                    fontWeight = MaterialTheme.typography.displayLarge.fontWeight,
-                                    fontSize = 14.sp
+                                    fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
                                 )
                             )
                             append("Mr.")
@@ -136,8 +139,7 @@ fun OrderConfirmation(navController: NavController,cartViewModel: CartViewModel)
                                 SpanStyle(
                                     color = MaterialTheme.colorScheme.onBackground,
                                     fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                                    fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
-                                    fontSize = 14.sp
+                                    fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
                                 )
                             )
                             append("Burger")
@@ -167,20 +169,21 @@ fun OrderConfirmation(navController: NavController,cartViewModel: CartViewModel)
                 Button(
                     onClick = { navController.navigate(Screen.Menu.route)},
                     modifier = Modifier
-                        .width(150.dp),
+                        .width(160.dp)
+                        .height(50.dp),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
-                    Text(text = "Menu", fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground)
+                    Text(text = stringResource(R.string.menu), style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onBackground)
                 }
 
                 Spacer(modifier = Modifier.width(40.dp))
 
                 Button(
                     onClick = { isSheetOpen = true },
-                    modifier = Modifier.width(150.dp),
+                    modifier = Modifier.width(160.dp).height(50.dp),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
-                    Text(text = "View Order", fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground)
+                    Text(text = stringResource(R.string.view_order), style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onBackground)
                 }
             }
 
@@ -199,6 +202,8 @@ fun OrderConfirmation(navController: NavController,cartViewModel: CartViewModel)
     }
 }
 
+
+// bottom bar part
 @Composable
 fun OrderDetailsContent(cartViewModel: CartViewModel) {
     Column(
@@ -206,7 +211,7 @@ fun OrderDetailsContent(cartViewModel: CartViewModel) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Text(text = "Order Details", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+        Text(text = stringResource(R.string.order_details), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold)
         Divider()
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -218,7 +223,7 @@ fun OrderDetailsContent(cartViewModel: CartViewModel) {
         Spacer(modifier = Modifier.height(8.dp))
 
         // Display total price
-        Text(text = "Total Price: Rs. ${cartViewModel.subTotal}", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+        Text(text = "Total Price: Rs. ${cartViewModel.subTotal}", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -227,11 +232,12 @@ fun OrderDetailsContent(cartViewModel: CartViewModel) {
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
         ) {
-            Text(text = "Track Order", fontSize = 18.sp, color = Color.White)
+            Text(text = stringResource(R.string.track_order), style = MaterialTheme.typography.titleMedium, color = Color.White)
         }
     }
 }
 
+// main box of confirmation
 @Composable
 fun OrderPlacedCard() {
     Box(
@@ -253,7 +259,7 @@ fun OrderPlacedCard() {
             // Green Checkmark Icon
             Icon(
                 imageVector = Icons.Default.CheckCircle,
-                contentDescription = "Order Placed",
+                contentDescription = stringResource(R.string.order_placed),
                 tint = Color(0xFF00C853), // Green color
                 modifier = Modifier.size(110.dp)
             )
@@ -262,8 +268,8 @@ fun OrderPlacedCard() {
 
             // Order Placed Text
             Text(
-                text = "Order has been placed",
-                fontSize = 20.sp,
+                text = stringResource(R.string.order_has_been_placed),
+               style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
             )
@@ -272,8 +278,8 @@ fun OrderPlacedCard() {
 
             // Subtext
             Text(
-                text = "We have received your order!",
-                fontSize = 16.sp,
+                text = stringResource(R.string.we_have_received_your_order),
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.outline
             )
             Spacer(modifier = Modifier.height(8.dp))

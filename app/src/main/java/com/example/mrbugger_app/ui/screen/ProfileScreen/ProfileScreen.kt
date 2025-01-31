@@ -84,11 +84,13 @@ import com.example.mrbugger_app.R
 import com.example.mrbugger_app.Screen
 import com.example.mrbugger_app.model.UserProfileViewModel
 import com.example.mrbugger_app.ui.theme.BackgroundColor
+import com.example.mrbugger_app.ui.theme.Shapes
 import com.example.mrbugger_app.ui.theme.TextColor
 import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfileViewModel,authViewModel: AuthViewModel) {
+    // adding variables for edit mode
     var isEditMode by remember { mutableStateOf(false) }
     val userProfile = userProfileViewModel.userProfile.value
 
@@ -97,6 +99,7 @@ fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfil
     var email by remember { mutableStateOf(userProfile.email) }
     var contact by remember { mutableStateOf(userProfile.contact) }
     var address by remember { mutableStateOf(userProfile.address) }
+
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val coroutineScope = rememberCoroutineScope()
@@ -155,7 +158,7 @@ fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfil
         ) {
             Spacer(modifier = Modifier.height(40.dp))
 
-            // Profile Image
+            // Profile Image (getting image by gallery)
             Box(
                 modifier = Modifier
                     .size(120.dp)
@@ -167,7 +170,7 @@ fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfil
                 if (profileImageUri != null) {
                     Image(
                         painter = rememberAsyncImagePainter(profileImageUri),
-                        contentDescription = "Profile Image",
+                        contentDescription = stringResource(R.string.profile_image),
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
                     )
@@ -184,12 +187,12 @@ fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfil
 
             Text(
                 text = username,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
+
             )
             Spacer(modifier = Modifier.height(20.dp))
-
+               // main user details part
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -278,7 +281,7 @@ fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfil
                         .width(150.dp),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
-                    Text(text = "Logout", fontSize = 22.sp)
+                    Text(text = "Logout", style = MaterialTheme.typography.titleLarge)
                 }
             }
 
@@ -297,13 +300,13 @@ fun UserInfoField(label: String, value: String, isEditMode: Boolean, onValueChan
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp)),
+            .clip(shape = Shapes.medium),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = label,
-            fontSize = 18.sp,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold
         )
@@ -321,14 +324,14 @@ fun UserInfoField(label: String, value: String, isEditMode: Boolean, onValueChan
                     focusedContainerColor = MaterialTheme.colorScheme.background,
                     unfocusedContainerColor = MaterialTheme.colorScheme.surface
                 ),
-                shape = RoundedCornerShape(12.dp),
+                shape = Shapes.medium,
                 modifier = Modifier.background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp)))
 
         } else {
             Text(
                 text = text,
                 color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 18.sp
+                style = MaterialTheme.typography.titleMedium,
             )
         }
     }

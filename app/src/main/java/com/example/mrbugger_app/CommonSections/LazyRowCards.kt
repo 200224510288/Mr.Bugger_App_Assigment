@@ -88,18 +88,16 @@ fun BurgerCard(
             )
             Text(
                 text = title,
-                fontSize = 18.sp,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp)
             )
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(5.dp))
             Text(
                 text = "Rs $price",
-                fontSize = 18.sp,
                 color = PrimaryYellowDark,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier
                     .fillMaxWidth()

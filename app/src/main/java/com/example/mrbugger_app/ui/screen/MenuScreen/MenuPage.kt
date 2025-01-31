@@ -27,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,31 +53,34 @@ import com.example.mrbugger_app.Data.ChickenBurgerItems
 import com.example.mrbugger_app.Data.FoodItem
 import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.model.Pictures
+import com.example.mrbugger_app.ui.components.ShimmerListItem
 import com.example.mrbugger_app.ui.screen.CartScreen.CartItemList
 import com.example.mrbugger_app.ui.screen.CartScreen.MainCalculation
 import com.example.mrbugger_app.ui.screen.homepage.Searchbar
 import com.example.mrbugger_app.ui.theme.BackgroundColor
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
+import com.example.mrbugger_app.ui.theme.Shapes
 
 @Composable
-fun MenuPage (navController: NavHostController,
-                        cartViewModel: CartViewModel = viewModel(), )
-
-{
+fun MenuPage(navController: NavHostController, cartViewModel: CartViewModel = viewModel()) {
     var search by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(true) } // Loading state
+
+    // Simulating data loading
+    LaunchedEffect(Unit) {
+        kotlinx.coroutines.delay(2000) // Simulate network delay
+        isLoading = false
+    }
+
     Scaffold(
         topBar = {
-            TopBarSection(
-                navController = navController,
-            )
-
-
+            TopBarSection(navController = navController)
         },
         content = { paddingValues ->
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues) // Padding for the content
+                    .padding(paddingValues)
             ) {
                 Column(
                     modifier = Modifier
@@ -86,15 +90,23 @@ fun MenuPage (navController: NavHostController,
                     Spacer(modifier = Modifier.height(5.dp))
                     Searchbar(search = search, onSearchChange = { search = it })
                     Spacer(modifier = Modifier.height(5.dp))
-                    ProductsGrid(pictureList = ChickenBurgerItems().loadChickenBurgers(), navController = navController)
+
+                    // Apply Shimmer Effect
+                    ShimmerListItem(
+                        isLoading = isLoading,
+                        contentAfterLoading = {
+                            ProductsGrid(
+                                pictureList = ChickenBurgerItems().loadChickenBurgers(),
+                                navController = navController
+                            )
+                        }
+                    )
                 }
             }
 
             // Bottom Navigation Bar
             ScreenWithBottonNavBar(navController = navController)
-
         }
-
     )
 }
 
@@ -105,10 +117,11 @@ fun ProductCards(picture: Pictures, modifier: Modifier = Modifier, navController
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
+                //passing fooditem arguments
                 navController.navigate("detailedProductView/${picture.imageResourceId}/${picture.stringResourceId}/${picture.price}")
             }
             .padding(8.dp),
-        shape = RoundedCornerShape(15.dp),
+        shape = Shapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
@@ -126,15 +139,17 @@ fun ProductCards(picture: Pictures, modifier: Modifier = Modifier, navController
                     .height(140.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
+            //food item name
             Text(
                 text = stringResource(id = picture.stringResourceId),
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp),
+                style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(4.dp))
+            //price
             Text(
                 text = "Rs. ${stringResource(id = picture.price)}",
-                style = MaterialTheme.typography.bodySmall.copy(fontSize = 15.sp),
+                style = MaterialTheme.typography.bodyMedium,
                 color = PrimaryYellowDark
             )
             Spacer(modifier = Modifier.height(4.dp))
@@ -151,6 +166,7 @@ fun ProductCards(picture: Pictures, modifier: Modifier = Modifier, navController
 
 }
 
+//load the product cards with picture list.
 @Composable
 fun ProductsGrid(pictureList: List<Pictures>, navController: NavController){
     LazyVerticalGrid(

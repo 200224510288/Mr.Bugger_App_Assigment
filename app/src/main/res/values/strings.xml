@@ -100,4 +100,23 @@
     <string name="today_s_deal">Today\'s Deal !</string>
     <string name="buy_burger_meal_for_rs_750_00">Buy Burger Meal\nfor  Rs. 750.00</string>
     <string name="condition_applied">Condition Applied!</string>
+    <string name="popular">Popular</string>
+    <string name="exclusive_promotions">Exclusive Promotions</string>
+    <string name="future_deals">Future Deals!</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="your_cart">Your Cart</string>
+    <string name="delivery_charge">Delivery Charge</string>
+    <string name="discount">Discount</string>
+    <string name="rs_40">Rs.40</string>
+    <string name="taxes">Taxes</string>
+    <string name="tax_price">Rs.150</string>
+    <string name="sub_total">Sub Total</string>
+    <string name="your_cart_is_empty">Your Cart is empty!</string>
+    <string name="menu">Menu</string>
+    <string name="view_order">View Order</string>
+    <string name="order_details">Order Details</string>
+    <string name="track_order">Track Order</string>
+    <string name="order_placed">Order Placed</string>
+    <string name="order_has_been_placed">Order has been placed</string>
+    <string name="we_have_received_your_order">We have received your order!</string>
 </resources>

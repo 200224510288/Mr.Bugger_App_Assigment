@@ -75,4 +75,6 @@ dependencies {
     implementation ("androidx.compose.material:material-icons-extended:1.5.0")
     implementation ("com.google.maps.android:maps-compose:2.7.2")
     implementation("io.coil-kt:coil-compose:2.3.0")
+    implementation ("com.google.accompanist:accompanist-navigation-animation:0.31.5-beta")
+
 }

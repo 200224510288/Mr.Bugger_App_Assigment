@@ -61,6 +61,7 @@ fun SearchScreen(navController: NavHostController) {
                 contentPadding = PaddingValues(10.dp),
                 verticalArrangement = Arrangement.spacedBy(1.dp)
             ) {
+                //cart and back button
                 val category = Category()
                 item {
                     TopBarSection(navController = navController)
@@ -71,9 +72,11 @@ fun SearchScreen(navController: NavHostController) {
                 item {
                     PopularCategories(category.loadCategory())
                 }
+
+                //starting food item categories
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    SectionsText(title = stringResource(R.string.popular_burgers))
+                    SectionsText(title = stringResource(R.string.popular_burgers), navController = navController)
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
@@ -81,7 +84,7 @@ fun SearchScreen(navController: NavHostController) {
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    SectionsText(title = stringResource(R.string.popular_fast_foods)   )
+                    SectionsText(title = stringResource(R.string.popular_fast_foods), navController = navController)
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
@@ -90,7 +93,7 @@ fun SearchScreen(navController: NavHostController) {
 
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    SectionsText(title = stringResource(R.string.beverages))
+                    SectionsText(title = stringResource(R.string.beverages), navController = navController)
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
@@ -108,7 +111,7 @@ fun SearchScreen(navController: NavHostController) {
     }
 }
 
-
+//food item card
 @Composable
 fun ChickenBurgerCard(chickenBurgerPictures: Pictures, modifier: Modifier, navController: NavController) {
     BurgerCard(
@@ -120,7 +123,7 @@ fun ChickenBurgerCard(chickenBurgerPictures: Pictures, modifier: Modifier, navCo
         }
     )
 }
-
+//retrive list to the cards
 @Composable
 fun ChickenBurgerList(chickenBugerList: List<Pictures>,navController: NavController){
 

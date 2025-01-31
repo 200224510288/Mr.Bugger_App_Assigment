@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 @Composable
-fun SectionsText(
+fun SectionsText( navController: NavController,
     title: String,
 ) {
     Row(
@@ -34,7 +34,7 @@ fun SectionsText(
         )
         Spacer(modifier = Modifier.weight(1f))
         TextButton(
-            onClick = {/*jjj*/ },
+            onClick = {navController.navigate("menuPage") },
             modifier = Modifier.align(Alignment.CenterVertically)
         ) {
             Text(

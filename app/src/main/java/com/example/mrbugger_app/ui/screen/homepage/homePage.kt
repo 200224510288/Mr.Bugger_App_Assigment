@@ -104,39 +104,46 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel) {
                 contentPadding = PaddingValues(6.dp),
                 verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
+                //top bar
                 item {
                     Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
                     LogoAndCard()
                 }
+                //search bar
                 item {
                     Searchbar(search = search, onSearchChange = { search = it })
                 }
-
+               //small chips for the navigation
                 item {
                     Spacer(modifier = Modifier.height(10.dp))
                     CategoryBar()
                 }
+                //Section headers
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    SectionHeader(title = "Popular", link = "menuPage", navController = navController)
+                    SectionHeader(title = stringResource(R.string.popular), link = "menuPage", navController = navController)
                 }
+                //popular item cards
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
                     PopularBurgerList(pictureList = FoodItem().loadPopularPictures(),navController = navController)
                 }
+                //promotion section
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    SectionHeader(title = "Exclusive Promotions", link = "menuPage", navController = navController)
+                    SectionHeader(title = stringResource(R.string.exclusive_promotions), link = "menuPage", navController = navController)
                 }
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
 
                     PromoBanner()
                 }
+                //upcomeing events
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
-                    SectionHeader(title = "Future Deals!", link = "menuPage", navController = navController)
+                    SectionHeader(title = stringResource(R.string.future_deals), link = "menuPage", navController = navController)
                 }
+
                 item {
                     Spacer(modifier = Modifier.height(5.dp))
 
@@ -148,6 +155,7 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel) {
         ScreenWithBottonNavBar(navController = navController)
     }
 }
+
 // Section bar
 @Composable
 fun SectionHeader(
@@ -255,7 +263,7 @@ fun PopularBurgerCard(picture: Pictures, modifier: Modifier = Modifier, navContr
     }
 }
 
-
+//search bar
 @Composable
 fun Searchbar(search: String, onSearchChange: (String) -> Unit) {
     com.example.mrbugger_app.ui.components.SearchBar(search = search, onSearchChange = onSearchChange)
@@ -264,7 +272,7 @@ fun Searchbar(search: String, onSearchChange: (String) -> Unit) {
 
 //Slideshow Composable
 @Composable
-fun Slideshow(slideInterval: Long = 4000) {
+fun Slideshow(slideInterval: Long = 3000) {
     val configuration = LocalConfiguration.current
     val isPortrait = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
     val imageHeight = if (isPortrait) 200.dp else 350.dp
