@@ -1,5 +1,6 @@
 package com.example.mrbugger_app.ui.screen.MenuScreen
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,7 +52,7 @@ import androidx.navigation.NavHostController
 import com.example.mrbugger_app.CommonSections.ScreenWithBottonNavBar
 import com.example.mrbugger_app.CommonSections.TopBarSection
 import com.example.mrbugger_app.CommonSections.cartBar
-import com.example.mrbugger_app.Data.ChickenBurgerItems
+import com.example.mrbugger_app.Data.BurgerItems
 import com.example.mrbugger_app.Data.FoodItem
 import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.model.Pictures
@@ -65,6 +68,12 @@ import com.example.mrbugger_app.ui.theme.Shapes
 fun MenuPage(navController: NavHostController, cartViewModel: CartViewModel = viewModel()) {
     var search by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(true) } // Loading state
+    val cartViewModel: CartViewModel = viewModel()
+
+    // Get screen orientation
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
 
     // Simulating data loading
     LaunchedEffect(Unit) {
@@ -74,7 +83,7 @@ fun MenuPage(navController: NavHostController, cartViewModel: CartViewModel = vi
 
     Scaffold(
         topBar = {
-            TopBarSection(navController = navController)
+            TopBarSection(navController = navController, cartViewModel = cartViewModel)
         },
         content = { paddingValues ->
             Box(
@@ -82,30 +91,53 @@ fun MenuPage(navController: NavHostController, cartViewModel: CartViewModel = vi
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 66.dp)
-                ) {
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Searchbar(search = search, onSearchChange = { search = it })
-                    Spacer(modifier = Modifier.height(5.dp))
+                if (isLandscape) {
+                    // Landscape Layout
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 66.dp)
+                    ) {
+                        Searchbar(search = search, onSearchChange = { search = it })
+                        Spacer(modifier = Modifier.height(5.dp))
 
-                    // Apply Shimmer Effect
-                    ShimmerListItem(
-                        isLoading = isLoading,
-                        contentAfterLoading = {
-                            ProductsGrid(
-                                pictureList = ChickenBurgerItems().loadChickenBurgers(),
-                                navController = navController
-                            )
-                        }
-                    )
+                        ShimmerListItem(
+                            isLoading = isLoading,
+                            contentAfterLoading = {
+                                ProductsGrid(
+                                    pictureList = BurgerItems().loadBurgers(),
+                                    navController = navController,
+                                    columns = 4 // Default columns in portrait mode
+                                )
+                            }
+                        )
+                    }
+                } else {
+                    // Portrait Layout
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 66.dp)
+                    ) {
+                        Searchbar(search = search, onSearchChange = { search = it })
+                        Spacer(modifier = Modifier.height(5.dp))
+
+                        ShimmerListItem(
+                            isLoading = isLoading,
+                            contentAfterLoading = {
+                                ProductsGrid(
+                                    pictureList = BurgerItems().loadBurgers(),
+                                    navController = navController,
+                                    columns = 2 // Default columns in portrait mode
+                                )
+                            }
+                        )
+                    }
                 }
             }
 
             // Bottom Navigation Bar
-            ScreenWithBottonNavBar(navController = navController)
+            ScreenWithBottonNavBar(navController = navController, cartViewModel = cartViewModel)
         }
     )
 }
@@ -118,7 +150,7 @@ fun ProductCards(picture: Pictures, modifier: Modifier = Modifier, navController
             .fillMaxWidth()
             .clickable {
                 //passing fooditem arguments
-                navController.navigate("detailedProductView/${picture.imageResourceId}/${picture.stringResourceId}/${picture.price}")
+                navController.navigate("detailedProductView/${picture.imageResourceId}/${picture.imageResourceId2}/${picture.stringResourceId}/${picture.stringResourceId2}/${picture.price}")
             }
             .padding(8.dp),
         shape = Shapes.large,
@@ -168,9 +200,9 @@ fun ProductCards(picture: Pictures, modifier: Modifier = Modifier, navController
 
 //load the product cards with picture list.
 @Composable
-fun ProductsGrid(pictureList: List<Pictures>, navController: NavController){
+fun ProductsGrid(pictureList: List<Pictures>, navController: NavController, columns: Int) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(columns),
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),

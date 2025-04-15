@@ -81,7 +81,7 @@ fun OrderConfirmation(navController: NavController,cartViewModel: CartViewModel)
     var isSheetOpen by rememberSaveable { mutableStateOf(false) }
     Scaffold(
         topBar = {
-            TopBarSection(navController = navController)
+            TopBarSection(navController = navController, cartViewModel = cartViewModel)
         },
 
         ) { scaffoldPadding ->

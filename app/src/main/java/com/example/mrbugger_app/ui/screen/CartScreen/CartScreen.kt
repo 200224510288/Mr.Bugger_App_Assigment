@@ -58,6 +58,8 @@ import com.example.mrbugger_app.ui.theme.Shapes
 import com.example.mrbugger_app.ui.theme.TextColor
 import java.text.DecimalFormat
 
+
+// cart screen
 @Composable
 fun CartScreen(
     navController: NavHostController,
@@ -73,10 +75,7 @@ fun CartScreen(
 
     Scaffold(
         topBar = {
-            TopBarSection(
-                navController = navController,
-            )
-
+            TopBarSection(navController = navController, cartViewModel = cartViewModel)
 
         },
         content = { paddingValues ->
@@ -152,8 +151,7 @@ fun CartScreen(
             }
 
             // Bottom Navigation Bar
-            ScreenWithBottonNavBar(navController = navController)
-
+            ScreenWithBottonNavBar(navController = navController, cartViewModel = cartViewModel)
         }
 
     )

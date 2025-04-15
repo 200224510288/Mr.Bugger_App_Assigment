@@ -67,12 +67,17 @@ import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
 import com.example.mrbugger_app.ui.theme.TextColor
 
+
+//detailed view page
 @Composable
-fun DetailedProductView( navController: NavController,cartViewModel: CartViewModel,
-                          imageResId: Int,
-                          nameResId: Int,
-                          priceResId: Int,
-                          enableScrolling: Boolean = true
+fun DetailedProductView(
+    navController: NavController,
+    cartViewModel: CartViewModel,
+    imageResId: Int,
+    imageResId2: Int,
+    nameResId: Int,
+    descResId: Int,
+    priceResId: Int
 ) {
     val context = LocalContext.current
     val category = Category()
@@ -82,7 +87,10 @@ fun DetailedProductView( navController: NavController,cartViewModel: CartViewMod
     var currentPrice by remember { mutableStateOf(basePrice) }
 
     val name = stringResource(id = nameResId)
+    val description = stringResource(id = descResId)
     val price = stringResource(id = priceResId).toDouble()
+
+
 
     // Update current price when quantity changes
     val updatePrice = { newQuantity: Int ->
@@ -93,7 +101,7 @@ fun DetailedProductView( navController: NavController,cartViewModel: CartViewMod
         modifier = Modifier
             .fillMaxSize(),
         topBar = {
-            TopBarSection(navController = navController)
+            TopBarSection(navController = navController, cartViewModel = cartViewModel)
 
         },
                 bottomBar = {
@@ -258,7 +266,7 @@ fun DetailedProductView( navController: NavController,cartViewModel: CartViewMod
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.nonveg),
+                                    painter = painterResource(id = imageResId2),
                                     contentDescription = "non-veg",
                                     tint = Color.Unspecified
                                 )
@@ -286,7 +294,7 @@ fun DetailedProductView( navController: NavController,cartViewModel: CartViewMod
                             )
                             Spacer(modifier = Modifier.height(5.dp))
                             Text(
-                                text = stringResource(R.string.DetailPageContent),
+                                text = stringResource(id = descResId),
                                 fontSize = 14.sp,
                                 color = Color.Gray
                             )

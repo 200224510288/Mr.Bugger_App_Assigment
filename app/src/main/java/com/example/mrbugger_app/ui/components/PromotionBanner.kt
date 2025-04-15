@@ -35,6 +35,8 @@ import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
 import com.example.mrbugger_app.ui.theme.Shapes
 
 
+
+//promotion banner in home page
 @Composable
 @Preview
 fun PromoBanner(){

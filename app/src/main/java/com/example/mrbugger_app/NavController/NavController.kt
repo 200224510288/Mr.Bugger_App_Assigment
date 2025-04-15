@@ -52,13 +52,13 @@ fun AppNavigation(userProfileViewModel: UserProfileViewModel, cartViewModel: Car
             popExitTransition = { slideOutHorizontally(targetOffsetX = { it }, animationSpec = tween(500)) + fadeOut() }
         ) {
             composable(Screen.Home.route) {
-                homePage(navController = navController, authViewModel)
+                homePage(navController = navController, authViewModel,cartViewModel)
             }
             composable(Screen.Profile.route) {
-                ProfileScreen(navController = navController, userProfileViewModel, authViewModel)
+                ProfileScreen(navController = navController, userProfileViewModel, authViewModel, cartViewModel)
             }
             composable(Screen.Search.route) {
-                SearchScreen(navController = navController)
+                SearchScreen(navController = navController,cartViewModel)
             }
             composable(Screen.Cart.route) {
                 CartScreen(navController = navController, cartViewModel)
@@ -75,22 +75,33 @@ fun AppNavigation(userProfileViewModel: UserProfileViewModel, cartViewModel: Car
             composable(Screen.OrderConfirmation.route) {
                 OrderConfirmation(navController = navController, cartViewModel)
             }
+
+            //passing arguments to the detailed view page
             composable(
-                route = "detailedProductView/{imageResId}/{nameResId}/{priceResId}",
+                route = "detailedProductView/{imageResId}/{imageResId2}/{nameResId}/{descResId}/{priceResId}",
                 arguments = listOf(
                     navArgument("imageResId") { type = NavType.IntType },
+                    navArgument("imageResId2") { type = NavType.IntType },
                     navArgument("nameResId") { type = NavType.IntType },
+                    navArgument("descResId") { type = NavType.IntType },
                     navArgument("priceResId") { type = NavType.IntType }
                 )
             ) { backStackEntry ->
+                // Extract arguments from the navigation route
                 val imageResId = backStackEntry.arguments?.getInt("imageResId") ?: 0
+                val imageResId2 = backStackEntry.arguments?.getInt("imageResId2") ?: 0
                 val nameResId = backStackEntry.arguments?.getInt("nameResId") ?: 0
+                val descResId = backStackEntry.arguments?.getInt("descResId") ?: 0
                 val priceResId = backStackEntry.arguments?.getInt("priceResId") ?: 0
+
+                // Navigate to the DetailedProductView and pass the extracted arguments
                 DetailedProductView(
                     navController = navController,
                     cartViewModel = cartViewModel,
                     imageResId = imageResId,
+                    imageResId2 = imageResId2,
                     nameResId = nameResId,
+                    descResId = descResId,
                     priceResId = priceResId
                 )
             }

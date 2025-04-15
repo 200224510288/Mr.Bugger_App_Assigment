@@ -76,5 +76,16 @@ dependencies {
     implementation ("com.google.maps.android:maps-compose:2.7.2")
     implementation("io.coil-kt:coil-compose:2.3.0")
     implementation ("com.google.accompanist:accompanist-navigation-animation:0.31.5-beta")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("io.ktor:ktor-client-core:2.3.7")
+    implementation("io.ktor:ktor-client-cio:2.3.7")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
+    implementation("io.ktor:ktor-client-logging:2.3.7")
+    implementation("io.ktor:ktor-client-okhttp:2.3.7")
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
+
+
 
 }

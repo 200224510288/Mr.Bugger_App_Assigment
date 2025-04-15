@@ -53,7 +53,7 @@ import com.example.mrbugger_app.ui.theme.Shapes
 import org.checkerframework.checker.units.qual.h
 
 @Composable
-fun BurgerCard(
+fun  BurgerCard(
     imageResourceId: Int,
     title: String,
     price: String,
@@ -109,6 +109,8 @@ fun BurgerCard(
 }
 
 
+
+// popular catergory section use for detailed view page and search page
 @Composable
 fun PopularCategories(categories: List<CategoryPictuers>) {
     Column(
@@ -131,6 +133,7 @@ fun PopularCategories(categories: List<CategoryPictuers>) {
     }
 }
 
+// Category section card design
 @Composable
 fun CategoryItem(category: CategoryPictuers) {
     var isSelected by remember { mutableStateOf(false) }

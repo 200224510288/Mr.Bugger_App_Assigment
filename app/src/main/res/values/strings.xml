@@ -18,65 +18,109 @@
 
     <!-- Chicken Burgers -->
     <string name="zingerBurger">Zinger Burger</string>
+    <string name="zingerBurgerDesc">Crispy fried chicken fillet, coated in a special blend of spices, topped with fresh lettuce, creamy mayo, and sandwiched between a soft sesame seed bun.</string>
     <string name="zingerBurgerPrice">990</string>
+
     <string name="loadedCheeseburger">Cheese Burger</string>
+    <string name="loadedCheeseburgerDesc">A juicy grilled beef patty topped with a generous layer of melted cheddar cheese, crisp lettuce, onions, tomatoes, and a hint of tangy burger sauce.</string>
     <string name="loadedCheeseburgerPrice">1300</string>
+
     <string name="tandooriBurger">Tandoori Burger</string>
+    <string name="tandooriBurgerDesc">Flame-grilled chicken infused with aromatic tandoori spices, layered with onions, lettuce, and a spicy yogurt sauce for a rich Indian-inspired taste.</string>
     <string name="tandooriBurgerPrice">1450</string>
+
     <string name="nashvilleBurger">Nashville Burger</string>
+    <string name="nashvilleBurgerDesc">Crispy hot chicken coated in Nashville-style spices, served with pickles, lettuce, and a smoky mayo sauce, all inside a toasted brioche bun.</string>
     <string name="nashvilleBurgerPrice">1950</string>
 
     <!-- Beef Burgers -->
     <string name="bbqBaconBurger">BBQ Bacon Burger</string>
+    <string name="bbqBaconBurgerDesc">Smoky BBQ sauce, crispy bacon strips, juicy beef patty, and melted cheddar cheese, all stacked in a soft brioche bun with crunchy onions.</string>
     <string name="bbqBaconBurgerPrice">1600</string>
+
     <string name="WesternWhopperBurger">Whopper Burger</string>
+    <string name="WesternWhopperBurgerDesc">A flame-grilled beef patty topped with crisp lettuce, juicy tomatoes, mayonnaise, and a hint of smoky BBQ sauce for a classic western taste.</string>
     <string name="WesternWhopperBurgerPrice">1700</string>
+
     <string name="loadedCheeseBeefBurger">Cheese Beef Burger</string>
+    <string name="loadedCheeseBeefBurgerDesc">Double juicy beef patties layered with a gooey mix of cheddar and Swiss cheese, caramelized onions, and a special zesty sauce.</string>
     <string name="loadedCheeseBeefBurgerPrice">1800</string>
+
     <string name="DoubleMushroomSwissBurger">Mushroom Burger</string>
+    <string name="DoubleMushroomSwissBurgerDesc">Sautéed mushrooms and creamy Swiss cheese over a seasoned beef patty, with garlic aioli spread on a lightly toasted bun.</string>
     <string name="DoubleMushroomSwissBurgerPrice">1500</string>
 
     <!-- Veg Burgers -->
     <string name="classicVeggieBurger">Veggie Burger</string>
+    <string name="classicVeggieBurgerDesc">A wholesome veggie patty made from fresh vegetables, topped with crisp lettuce, tomatoes, and a creamy herb sauce.</string>
     <string name="classicVeggieBurgerPrice">800</string>
+
     <string name="spicyVeggieBurger">Spicy Veggie Burger</string>
+    <string name="spicyVeggieBurgerDesc">A crunchy, spicy veggie patty with jalapeños, fresh lettuce, tomatoes, and a fiery mayo sauce, perfect for spice lovers.</string>
     <string name="spicyVeggieBurgerPrice">950</string>
+
     <string name="gardenFreshBurger">Garden Fresh Burger</string>
+    <string name="gardenFreshBurgerDesc">A plant-based burger packed with fresh cucumbers, lettuce, tomatoes, and a tangy avocado spread on a whole wheat bun.</string>
     <string name="gardenFreshBurgerPrice">900</string>
+
     <string name="cheesyVegDelightBurger">Cheesy Veg Burger</string>
+    <string name="cheesyVegDelightBurgerDesc">A crispy veggie patty with gooey melted mozzarella cheese, pickles, and a zesty ranch sauce in a soft toasted bun.</string>
     <string name="cheesyVegDelightBurgerPrice">1000</string>
 
     <!-- Beverages -->
-    <string name="beverages">Beverages</string>
     <string name="Lime">Lime</string>
+    <string name="LimeDesc">A refreshing burst of citrus goodness, made with freshly squeezed limes and a hint of honey, served chilled.</string>
     <string name="LimePrice">200</string>
-    <string name="Pasion">Pasion</string>
-    <string name="PasionPrice">350</string>
-    <string name="Orange">Orange</string>
-    <string name="OrangePrice">400</string>
-    <string name="Apple">Apple</string>
-    <string name="ApplePrice">600</string>
-    <string name="Pinaplle">PineApple</string>
-    <string name="PinapllePrice">590</string>
-    <string name="watermellon">Watermelon</string>
-    <string name="watermellonPrice">150</string>
-    <string name="grapes">Grapes</string>
-    <string name="grapesPrice">750</string>
 
+    <string name="Pasion">Passion</string>
+    <string name="PasionDesc">A sweet and tangy drink made from exotic passion fruit, blended to perfection for a tropical taste.</string>
+    <string name="PasionPrice">350</string>
+
+    <string name="Orange">Orange</string>
+    <string name="OrangeDesc">Freshly squeezed oranges turned into a refreshing, vitamin-rich drink with a naturally sweet and tangy flavor.</string>
+    <string name="OrangePrice">400</string>
+
+    <string name="Apple">Apple</string>
+    <string name="AppleDesc">A crisp and flavorful apple juice, made from fresh, hand-picked apples for a naturally sweet taste.</string>
+    <string name="ApplePrice">600</string>
+
+    <string name="Pinaplle">Pineapple</string>
+    <string name="PinaplleDesc">A tropical delight made from sun-ripened pineapples, delivering a perfect balance of sweetness and tanginess.</string>
+    <string name="PinapllePrice">590</string>
+
+    <string name="watermellon">Watermelon</string>
+    <string name="watermellonDesc">A hydrating and naturally sweet watermelon juice, perfect for quenching thirst on a hot day.</string>
+    <string name="watermellonPrice">150</string>
+
+    <string name="grapes">Grapes</string>
+    <string name="grapesDesc">A rich, velvety grape juice made from the finest dark grapes, packed with antioxidants and flavor.</string>
+    <string name="grapesPrice">750</string>
 
     <!-- Fast Foods -->
     <string name="Fries">Fries</string>
+    <string name="FriesDesc">Golden crispy fries, lightly salted and served hot, with a side of zesty dipping sauce.</string>
     <string name="FriesPrice">600</string>
+
     <string name="breads">Garlic Bread</string>
+    <string name="breadsDesc">Toasted bread infused with butter, garlic, and fresh herbs, served warm and crispy.</string>
     <string name="breadsPrice">450</string>
+
     <string name="rings">Onion Rings</string>
+    <string name="ringsDesc">Crunchy battered onion rings with a crispy golden coating, served with a tangy dip.</string>
     <string name="ringsPrice">900</string>
-    <string name="taccos">Taccos</string>
+
+    <string name="taccos">Tacos</string>
+    <string name="taccosDesc">Soft flour tortillas filled with spicy grilled meat, fresh salsa, lettuce, and melted cheese.</string>
     <string name="taccosPrice">800</string>
+
     <string name="shawarma">Shawarma</string>
+    <string name="shawarmaDesc">Tender marinated meat, slow-roasted and wrapped in soft pita bread with fresh veggies and garlic sauce.</string>
     <string name="shawarmaPrice">950</string>
+
     <string name="Wegus">Wegus</string>
+    <string name="WegusDesc">A unique blend of crispy potato wedges, seasoned with a mix of herbs and spices for a flavorful bite.</string>
     <string name="WegusPrice">900</string>
+
 
     <!-- PopularCategories -->
     <string name="PopularCategories">Popular Categories</string>
@@ -88,14 +132,17 @@
     <string name="popular_fast_foods">Popular Fast Foods</string>
 
 
-    <string name="removeBtn">X</string>
-    <string name="clearBtn">Clear</string>
-    <string name="buyBtn">Buy</string>
+
+    <!-- Detailed Page -->
     <string name="item_added_to_cart">Item added to cart</string>
     <string name="DetailPageContent">Try a juicy, grilled patty nestled inside soft buns. Included fresh ripe tomatoes, crispy onions and a slice of cheddar cheese.</string>
     <string name="background_image">Login Background Image</string>
+
+    <!-- signup & Login  -->
     <string name="welcome">Welcome</string>
     <string name="create_your_account">Create Your Account</string>
+
+
     <string name="show_more">Show more</string>
     <string name="today_s_deal">Today\'s Deal !</string>
     <string name="buy_burger_meal_for_rs_750_00">Buy Burger Meal\nfor  Rs. 750.00</string>
@@ -104,6 +151,12 @@
     <string name="exclusive_promotions">Exclusive Promotions</string>
     <string name="future_deals">Future Deals!</string>
     <string name="profile_image">Profile Image</string>
+
+    <!-- Cart Page -->
+    <string name="removeBtn">X</string>
+    <string name="clearBtn">Clear</string>
+    <string name="buyBtn">Buy</string>
+
     <string name="your_cart">Your Cart</string>
     <string name="delivery_charge">Delivery Charge</string>
     <string name="discount">Discount</string>
@@ -113,10 +166,15 @@
     <string name="sub_total">Sub Total</string>
     <string name="your_cart_is_empty">Your Cart is empty!</string>
     <string name="menu">Menu</string>
+
+    <!-- Order Confirmation Page -->
     <string name="view_order">View Order</string>
     <string name="order_details">Order Details</string>
     <string name="track_order">Track Order</string>
     <string name="order_placed">Order Placed</string>
     <string name="order_has_been_placed">Order has been placed</string>
     <string name="we_have_received_your_order">We have received your order!</string>
+    <string name="beverages">beverages</string>
+
+
 </resources>

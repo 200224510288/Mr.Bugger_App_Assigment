@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
+
+// categorizing bar in pages
 @Composable
 fun SectionsText( navController: NavController,
     title: String,

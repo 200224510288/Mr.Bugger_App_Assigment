@@ -28,26 +28,46 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mrbugger_app.BottomNav.BottomNavDesign
 import com.example.mrbugger_app.Screen
 import com.example.mrbugger_app.TopNav.TopBar
+import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.ui.theme.ExtraYellowLight
 
-
+// Add bottom bar fixed into bottom
 @Composable
-fun ScreenWithBottonNavBar(navController: NavController){
+fun ScreenWithBottonNavBar(navController: NavController, cartViewModel: CartViewModel) {
+
     Column(modifier = Modifier.fillMaxSize()) {
         // Main Content
-        Box(modifier = Modifier
-            .weight(1f)
-            .background(MaterialTheme.colorScheme.tertiary)) {
-        }
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .background(MaterialTheme.colorScheme.tertiary)
+        ) {}
         // Bottom Navigation Bar
-        BottomNavSection(navController = navController)
+        BottomNavSection(navController = navController, cartViewModel = cartViewModel)
     }
 }
 
+// Add bottom bar wrap into box
+@Composable
+fun BottomNavSection(navController: NavController, cartViewModel: CartViewModel) {
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(elevation = 8.dp)
+            .height(80.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        BottomNavDesign(modifier = Modifier, navController = navController, cartViewModel = cartViewModel)
+    }
+}
+
+// bottom section the detailed view page
 @Composable
 fun cartBar(navController: NavController){
 
@@ -86,30 +106,19 @@ fun cartBar(navController: NavController){
 
 }
 
+
+
+// Top bar with cart icon and back icon
 @Composable
-fun BottomNavSection(navController: NavController){
-
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .shadow(elevation = 8.dp)
-        .height(80.dp),
-        contentAlignment = Alignment.Center){
-
-        BottomNavDesign(modifier = Modifier, navController = navController)
-    }
-}
-
-@Composable
-fun TopBarSection(navController: NavController) {
+fun TopBarSection(navController: NavController, cartViewModel: CartViewModel) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.Transparent),
         contentAlignment = Alignment.Center
     ) {
-        TopBar(modifier = Modifier,navController = navController)
+        TopBar(navController = navController, cartViewModel = cartViewModel)
     }
 }
-
 
 

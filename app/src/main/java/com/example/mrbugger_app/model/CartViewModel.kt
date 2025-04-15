@@ -17,6 +17,9 @@ class CartViewModel (private val savedStateHandle: SavedStateHandle) : ViewModel
     val subTotal: Double
         get() = _cartItems.sumOf { it.price * it.quantity } + deliveryCost + TasxCost - Discount
 
+    val cartSize: Int
+        get() = _cartItems.sumOf { it.quantity }  // Sum up item quantities
+
     //    Add items to cart
     fun addItemToCart(cartItem: CartItem) {
         _cartItems.add(cartItem)

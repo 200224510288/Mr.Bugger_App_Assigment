@@ -57,6 +57,7 @@ import com.example.mrbugger_app.AuthViewModel.AuthViewModel
 import com.example.mrbugger_app.Data.FoodItem
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.CommonSections.ScreenWithBottonNavBar
+import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.model.Pictures
 import com.example.mrbugger_app.ui.components.CategoryBar
 import com.example.mrbugger_app.ui.components.LogoAndCard
@@ -68,7 +69,7 @@ import kotlinx.coroutines.delay
 
 
 @Composable
-fun homePage(navController: NavHostController,authViewModel: AuthViewModel) {
+fun homePage(navController: NavHostController,authViewModel: AuthViewModel,cartViewModel: CartViewModel) {
     var search by remember { mutableStateOf("") }
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -82,7 +83,6 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel) {
             else -> Unit
 
         }
-
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -152,8 +152,7 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel) {
             }
         }
         //  Bottom Navigation Bar
-        ScreenWithBottonNavBar(navController = navController)
-    }
+        ScreenWithBottonNavBar(navController = navController, cartViewModel = cartViewModel)    }
 }
 
 // Section bar
@@ -219,7 +218,7 @@ fun PopularBurgerCard(picture: Pictures, modifier: Modifier = Modifier, navContr
             .height(240.dp)
             .clickable {
                 // Navigate to detailed product view, passing necessary parameters
-                navController.navigate("detailedProductView/${picture.imageResourceId}/${picture.stringResourceId}/${picture.price}")
+                navController.navigate("detailedProductView/${picture.imageResourceId}/${picture.imageResourceId2}/${picture.stringResourceId}/${picture.stringResourceId2}/${picture.price}")
             },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {

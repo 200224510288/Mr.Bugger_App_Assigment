@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -43,11 +44,17 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mrbugger_app.Pictures.Pictures
 import com.example.mrbugger_app.Screen
+import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
 import com.example.mrbugger_app.ui.theme.TextColor
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier, navController: NavController) {
+fun TopBar(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    cartViewModel: CartViewModel
+) {
+    val cartCount by remember { derivedStateOf { cartViewModel.cartSize } }
 
     Row(
         modifier = modifier
@@ -58,46 +65,50 @@ fun TopBar(modifier: Modifier = Modifier, navController: NavController) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
-
-            IconButton(onClick = {navController.popBackStack() },
-                modifier = Modifier.border(2.dp, color = MaterialTheme.colorScheme.onBackground, shape = CircleShape).size(35.dp)) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-            }
-
+        IconButton(
+            onClick = { navController.popBackStack() },
+            modifier = Modifier
+                .border(2.dp, color = MaterialTheme.colorScheme.onBackground, shape = CircleShape)
+                .size(35.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = MaterialTheme.colorScheme.onBackground
+            )
+        }
 
         Spacer(modifier = Modifier.weight(1f))
-        Box(modifier = Modifier.size(28.dp)){
+
+        Box(modifier = Modifier.size(28.dp)) {
             Icon(
                 imageVector = Icons.Outlined.ShoppingCart,
                 contentDescription = "Cart",
                 tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
-                    .clickable {navController.navigate(Screen.Cart.route)  }
-                    .size(28.dp)
+                    .clickable { navController.navigate(Screen.Cart.route) }
+                    .size(30.dp)
                     .align(Alignment.TopEnd)
             )
+
+            if (cartCount > 0) { // Only show badge if items exist
                 Box(
                     modifier = Modifier
-                        .size(14.dp)
+                        .size(16.dp)
                         .clip(CircleShape)
-                        .background(PrimaryYellowLight)
+                        .background(MaterialTheme.colorScheme.error)
                         .align(Alignment.TopEnd)
                 ) {
                     Text(
-                        text = "5",
+                        text = cartCount.toString(),
                         color = Color.White,
-                        style = MaterialTheme.typography.labelSmall,
-                        textAlign = TextAlign.Justify,
+                        fontSize = 10.sp,
+                        textAlign = TextAlign.Center,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
             }
-
         }
     }
-
+}
 

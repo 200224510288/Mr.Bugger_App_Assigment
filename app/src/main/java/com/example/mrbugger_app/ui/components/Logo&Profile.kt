@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mrbugger_app.Pictures.Pictures
 
-
+//Home page top bar
 @Composable
 fun LogoAndCard(){
     Row(

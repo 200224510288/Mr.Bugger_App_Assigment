@@ -32,6 +32,8 @@ import com.example.mrbugger_app.ui.theme.Darkgray
 import com.example.mrbugger_app.ui.theme.Poppins
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
 
+
+// common search bar for all pages
 @Composable
 fun SearchBar(
     search: String,
