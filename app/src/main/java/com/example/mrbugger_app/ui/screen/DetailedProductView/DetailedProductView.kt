@@ -80,7 +80,7 @@ fun DetailedProductView(
     priceResId: Int
 ) {
     val context = LocalContext.current
-    val category = Category()
+    val category = Category
     var quantity by remember { mutableStateOf(1) }
     var isSpicy by remember { mutableStateOf(false) }
     val basePrice = stringResource(id = priceResId).toFloat()
@@ -354,7 +354,7 @@ fun DetailedProductView(
                     }
                     //popular food category section
                     Spacer(modifier = Modifier.height(10.dp))
-                    PopularCategories(category.loadCategory())
+                   // PopularCategories(category.loadCategory())
                     Spacer(modifier = Modifier.height(10.dp))
                 }
             }

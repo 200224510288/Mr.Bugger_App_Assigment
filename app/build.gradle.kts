@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -85,7 +87,11 @@ dependencies {
     implementation("io.ktor:ktor-client-okhttp:2.3.7")
     implementation("io.coil-kt:coil-compose:2.6.0")
 
-
-
+// Retrofit for network requests
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+// Coroutines
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation ("com.google.dagger:hilt-android-gradle-plugin:2.51")
 
 }

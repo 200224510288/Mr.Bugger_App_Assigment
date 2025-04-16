@@ -62,14 +62,14 @@ fun SearchScreen(navController: NavHostController, cartViewModel: CartViewModel)
                 verticalArrangement = Arrangement.spacedBy(1.dp)
             ) {
                 //cart and back button
-                val category = Category()
+                val category = Category
                 item {
                     TopBarSection(navController = navController, cartViewModel = cartViewModel)                }
                 item {
                     Searchbar(search = search, onSearchChange = { search = it })
                 }
                 item {
-                    PopularCategories(category.loadCategory())
+                    //PopularCategories(category.loadCategory())
                 }
 
                 //starting food item categories

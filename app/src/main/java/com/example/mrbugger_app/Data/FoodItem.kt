@@ -1,10 +1,13 @@
 package com.example.mrbugger_app.Data
 
 import androidx.annotation.DrawableRes
+import com.example.mrbugger_app.APIService.NetworkClient
 import com.example.mrbugger_app.R
+import com.example.mrbugger_app.model.CategoryModel
 import com.example.mrbugger_app.model.CategoryPictuers
 import com.example.mrbugger_app.model.Pictures
 import com.google.android.engage.common.datamodel.Price
+import java.io.IOException
 
 class FoodItem {
     fun loadPopularPictures(): List<Pictures> {
@@ -240,25 +243,39 @@ class FastFoodData {
 
 
 
-class Category {
-    fun loadCategory(): List<CategoryPictuers> {
-        return listOf<CategoryPictuers>(
+object Category {
+    // Local cache for categories
+    private var cachedCategories: List<CategoryModel>? = null
+
+    // Local loading (unchanged)
+    fun loadCategoryLocal(): List<CategoryPictuers> {
+        return listOf(
             CategoryPictuers(
                 R.drawable.chicken_burger,
                 R.string.Burgers,
             ),
-            CategoryPictuers(
-                R.drawable.bannerpic2,
-                R.string.FastFood,
-            ),
-            CategoryPictuers(
-                R.drawable.juices,
-                R.string.Juices,
-            ),
-            CategoryPictuers(
-                R.drawable.beverage,
-                R.string.Beverages,
-            ),
+            // ... other categories
         )
+    }
+
+    // Remote loading with offline detection
+    suspend fun loadCategoryRemote(isNetworkAvailable: Boolean): Result<List<CategoryModel>> {
+        return if (!isNetworkAvailable) {
+            cachedCategories?.let { Result.success(it) }
+                ?: Result.failure(Exception("Offline and no cached data available"))
+        } else {
+            try {
+                val response = NetworkClient.apiService.getCategories()
+                cachedCategories = response.categories // Cache the result
+                Result.success(response.categories)
+            } catch (e: Exception) {
+                if (e is IOException || e.message?.contains("network", true) == true) {
+                    cachedCategories?.let { Result.success(it) }
+                        ?: Result.failure(Exception("Offline and no cached data available"))
+                } else {
+                    Result.failure(e)
+                }
+            }
+        }
     }
 }
