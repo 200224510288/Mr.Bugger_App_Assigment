@@ -1,18 +1,22 @@
 package com.example.mrbugger_app.model
 
+import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.mrbugger_app.Data.Category
 import com.example.mrbugger_app.state.CategoryUiState
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.io.InputStreamReader
 
-class CategoryViewModel(private val context: Context) : ViewModel() {
+class CategoryViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow<CategoryUiState>(CategoryUiState.Loading)
     val uiState: StateFlow<CategoryUiState> = _uiState
@@ -24,57 +28,73 @@ class CategoryViewModel(private val context: Context) : ViewModel() {
     fun loadCategories() {
         viewModelScope.launch {
             _uiState.value = CategoryUiState.Loading
+            val isOnline = isNetworkAvailable()
 
-            val isNetworkAvailable = isNetworkAvailable()
             try {
-                val result = Category.loadCategoryRemote(isNetworkAvailable)
-                if (result.isSuccess) {
-                    val categories = result.getOrNull().orEmpty()
+                val result = Category.loadCategoryRemote(isOnline) // assuming this returns Result<List<CategoryModel>>
+                val categories = result.getOrNull().orEmpty()
 
-                    if (categories.isNotEmpty()) {
-                        _uiState.value = CategoryUiState.Success(
-                            categories = categories,
-                            isOffline = !isNetworkAvailable
-                        )
-                    } else {
-                        _uiState.value = CategoryUiState.Error(
-                            message = "No categories available.",
-                            isOffline = !isNetworkAvailable
-                        )
-                    }
+                if (categories.isNotEmpty()) {
+                    _uiState.value = CategoryUiState.Success(
+                        categories = categories,
+                        isOffline = !isOnline
+                    )
+                    return@launch
+                }
+
+                // fallback to local data
+                val localCategories = loadLocalData()
+                if (localCategories.isNotEmpty()) {
+                    _uiState.value = CategoryUiState.Success(
+                        categories = localCategories,
+                        isOffline = true
+                    )
                 } else {
                     _uiState.value = CategoryUiState.Error(
-                        message = result.exceptionOrNull()?.localizedMessage ?: "Failed to load categories.",
-                        isOffline = !isNetworkAvailable
+                        message = "No categories available.",
+                        isOffline = true
                     )
                 }
+
             } catch (e: Exception) {
-                _uiState.value = CategoryUiState.Error(
-                    message = e.localizedMessage ?: "Unexpected error.",
-                    isOffline = !isNetworkAvailable
-                )
+                val fallbackCategories = loadLocalData()
+                if (fallbackCategories.isNotEmpty()) {
+                    _uiState.value = CategoryUiState.Success(
+                        categories = fallbackCategories,
+                        isOffline = true
+                    )
+                } else {
+                    _uiState.value = CategoryUiState.Error(
+                        message = e.localizedMessage ?: "Unexpected error.",
+                        isOffline = true
+                    )
+                }
             }
         }
     }
 
     private fun isNetworkAvailable(): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
-        return connectivityManager?.let {
-            val network = it.activeNetwork ?: return false
-            val capabilities = it.getNetworkCapabilities(network) ?: return false
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
-        } ?: false
+        val connectivityManager = getApplication<Application>()
+            .getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+        val network = connectivityManager?.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
     }
-}
 
-
-class CategoryViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CategoryViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return CategoryViewModel(context.applicationContext) as T
+    private fun loadLocalData(): List<CategoryModel> {
+        return try {
+            val assetManager = getApplication<Application>().assets
+            val inputStream = assetManager.open("categories.json")
+            val reader = InputStreamReader(inputStream)
+            val type = object : TypeToken<List<CategoryModel>>() {}.type
+            val data = Gson().fromJson<List<CategoryModel>>(reader, type)
+            android.util.Log.d("CategoryViewModel", "Local data loaded: $data")
+            data
+        } catch (e: Exception) {
+            android.util.Log.e("CategoryViewModel", "Failed to load local data", e)
+            emptyList()
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
+
 }

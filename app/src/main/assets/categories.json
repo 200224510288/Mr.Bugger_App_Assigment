@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Burgers",
+    "imageUrl": "file:///android_asset/images/chicken_burger.png"
+  },
+  {
+    "id": 2,
+    "name": "Fast Food",
+    "imageUrl": "file:///android_asset/images/bannerpic2.png"
+  },
+  {
+    "id": 3,
+    "name": "Juices",
+    "imageUrl": "file:///android_asset/images/juices.png"
+  },
+  {
+    "id": 4,
+    "name": "Beverages",
+    "imageUrl": "file:///android_asset/images/beverage.png"
+  }
+]

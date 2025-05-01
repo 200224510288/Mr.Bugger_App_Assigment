@@ -1,5 +1,6 @@
 package com.example.mrbugger_app.ui.components
 
+import android.app.Application
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,13 +39,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mrbugger_app.Data.Category
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.model.CategoryViewModel
-import com.example.mrbugger_app.model.CategoryViewModelFactory
 import com.example.mrbugger_app.state.CategoryUiState
 import com.example.mrbugger_app.ui.theme.MrBurgerTheme
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
@@ -139,7 +140,7 @@ private fun CategoryCardImage(
 fun CategoryBar(
     modifier: Modifier = Modifier,
     viewModel: CategoryViewModel = viewModel(
-        factory = CategoryViewModelFactory(LocalContext.current.applicationContext)
+        factory = CategoryViewModelFactory(LocalContext.current.applicationContext as Application)
     )
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -205,5 +206,16 @@ private fun OfflineBanner() {
             color = MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.bodySmall
         )
+    }
+}
+
+
+class CategoryViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
+    override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(CategoryViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return CategoryViewModel(application) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

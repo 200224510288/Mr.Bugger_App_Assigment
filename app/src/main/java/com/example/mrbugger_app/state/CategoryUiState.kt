@@ -1,7 +1,6 @@
 package com.example.mrbugger_app.state
 
 import com.example.mrbugger_app.model.CategoryModel
-import com.example.mrbugger_app.model.CategoryPictuers
 
 sealed class CategoryUiState {
     object Loading : CategoryUiState()
