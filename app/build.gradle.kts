@@ -75,7 +75,11 @@ dependencies {
     implementation(libs.bundles.ui)
     implementation("androidx.compose.material:material:1.4.0")
     implementation ("androidx.compose.material:material-icons-extended:1.5.0")
-    implementation ("com.google.maps.android:maps-compose:2.7.2")
+    
+    implementation ("com.google.android.gms:play-services-maps:19.2.0")
+    implementation ("com.google.android.gms:play-services-location:21.3.0")
+
+
     implementation("io.coil-kt:coil-compose:2.3.0")
     implementation ("com.google.accompanist:accompanist-navigation-animation:0.31.5-beta")
     implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")

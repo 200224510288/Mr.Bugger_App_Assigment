@@ -31,7 +31,7 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
             val isOnline = isNetworkAvailable()
 
             try {
-                val result = Category.loadCategoryRemote(isOnline) // assuming this returns Result<List<CategoryModel>>
+                val result = Category.loadCategoryRemote(isOnline)
                 val categories = result.getOrNull().orEmpty()
 
                 if (categories.isNotEmpty()) {
