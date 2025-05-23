@@ -21,21 +21,32 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mrbugger_app.AuthViewModel.AuthViewModel
 import com.example.mrbugger_app.NavController.AppNavigation
 import com.example.mrbugger_app.model.CartViewModel
+import com.example.mrbugger_app.model.ThemeViewModel
 import com.example.mrbugger_app.model.UserProfileViewModel
 import com.example.mrbugger_app.ui.screen.homepage.homePage
 import com.example.mrbugger_app.ui.screen.welcome.welcomePage
 import com.example.mrbugger_app.ui.theme.MrBurgerTheme
 
 class MainActivity : ComponentActivity() {
+    private val themeViewModel by viewModels<ThemeViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val authViewModel : AuthViewModel by viewModels()
         setContent {
-            MrBurgerTheme {
+            MrBurgerTheme(darkTheme = themeViewModel.isDarkMode.value) {
                 val userProfileViewModel: UserProfileViewModel = viewModel()
                 val cartViewModel: CartViewModel = viewModel()
-                AppNavigation(userProfileViewModel = userProfileViewModel,cartViewModel = cartViewModel, authViewModel = authViewModel)
+                val authViewModel: AuthViewModel by viewModels()
+                val navController = rememberNavController()
+
+                AppNavigation(
+                    userProfileViewModel = userProfileViewModel,
+                    cartViewModel = cartViewModel,
+                    authViewModel = authViewModel,
+                    themeViewModel = themeViewModel,
+                    navController = navController
+                )
             }
         }
     }

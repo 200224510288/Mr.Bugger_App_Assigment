@@ -47,6 +47,7 @@ import com.example.mrbugger_app.CommonSections.ScreenWithBottonNavBar
 import com.example.mrbugger_app.CommonSections.TopBarSection
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.model.CartViewModel
+import com.example.mrbugger_app.model.ThemeViewModel
 import com.example.mrbugger_app.model.UserProfileViewModel
 import com.example.mrbugger_app.ui.theme.Shapes
 import kotlinx.coroutines.launch
@@ -56,9 +57,13 @@ fun ProfileScreen(
     navController: NavController,
     userProfileViewModel: UserProfileViewModel,
     authViewModel: AuthViewModel,
-    cartViewModel: CartViewModel
+    cartViewModel: CartViewModel,
+    themeViewModel: ThemeViewModel
 ) {
-    // Edit mode and user data states
+    // Get theme state from ViewModel
+    val isDarkMode by themeViewModel.isDarkMode
+
+    // Rest of your existing code remains the same...
     var isEditMode by remember { mutableStateOf(false) }
     val userProfile = userProfileViewModel.userProfile.value
     val isLoading by userProfileViewModel.isLoading
@@ -85,7 +90,7 @@ fun ProfileScreen(
     var showValidationError by remember { mutableStateOf(false) }
     var validationMessage by remember { mutableStateOf("") }
 
-    // Image picker launchers
+    // Image picker launchers (same as before)
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -98,7 +103,6 @@ fun ProfileScreen(
         bitmap?.let { userProfileViewModel.updateProfileImage(it) }
     }
 
-    // Camera permission launcher
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -172,9 +176,60 @@ fun ProfileScreen(
                 .navigationBarsPadding(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // Profile Image Section with Edit Overlay
+            // Theme Toggle Section - Updated to use ViewModel
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        androidx.compose.material3.Icon(
+                            imageVector = if (isDarkMode) Icons.Default.DarkMode else Icons.Default.LightMode,
+                            contentDescription = "Theme Icon",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = if (isDarkMode) "Dark Mode" else "Light Mode",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+
+                    Switch(
+                        checked = isDarkMode,
+                        onCheckedChange = { themeViewModel.toggleTheme() }, // Use ViewModel method
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.primary,
+                            checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                            uncheckedThumbColor = MaterialTheme.colorScheme.outline,
+                            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant
+                        )
+                    )
+                }
+            }
+
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Profile Image Section with Edit
             Box(
                 contentAlignment = Alignment.BottomEnd
             ) {

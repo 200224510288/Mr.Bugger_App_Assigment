@@ -1,5 +1,6 @@
 package com.example.mrbugger_app.ui.components
 
+import android.R.attr.textColor
 import android.app.Application
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -66,7 +68,7 @@ fun CategoryChip(
         label = "Category Background"
     )
     val textColor by animateColorAsState(
-        targetValue = if (isSelect) PrimaryYellowLight else Color.Black,
+        targetValue = if (isSelect) PrimaryYellowLight else MaterialTheme.colorScheme.onBackground,
         label = "Category Text Color"
     )
     val fontWeight = if (isSelect) FontWeight.Bold else FontWeight.Normal
@@ -106,7 +108,9 @@ fun CategoryChip(
             text = displayText,
             color = textColor,
             fontWeight = fontWeight,
-            style = MaterialTheme.typography.titleMedium.copy(fontSize = 14.sp),
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontSize = 14.sp,
+            ),
             maxLines = 1
         )
     }

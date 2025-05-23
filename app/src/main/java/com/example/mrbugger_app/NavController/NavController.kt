@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
@@ -30,17 +31,24 @@ import com.example.mrbugger_app.ui.screen.ProfileScreen.ProfileScreen
 import com.example.mrbugger_app.ui.screen.SearchScreen.SearchScreen
 import com.example.mrbugger_app.ui.screen.homepage.homePage
 import com.example.mrbugger_app.ui.screen.login.LoginScreen
+import com.example.mrbugger_app.model.ThemeViewModel
 import com.example.mrbugger_app.ui.screen.signup.signupPage
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AppNavigation(userProfileViewModel: UserProfileViewModel, cartViewModel: CartViewModel, authViewModel: AuthViewModel) {
+fun AppNavigation(
+    userProfileViewModel: UserProfileViewModel,
+    cartViewModel: CartViewModel,
+    authViewModel: AuthViewModel,
+    themeViewModel: ThemeViewModel,
+    navController: NavHostController
+)
+{
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
         val navController = rememberNavController()
-
 
         // Fade effect for smooth transition.
         AnimatedNavHost(
@@ -52,11 +60,19 @@ fun AppNavigation(userProfileViewModel: UserProfileViewModel, cartViewModel: Car
             popExitTransition = { slideOutHorizontally(targetOffsetX = { it }, animationSpec = tween(500)) + fadeOut() }
         ) {
             composable(Screen.Home.route) {
-                homePage(navController = navController, authViewModel,cartViewModel)
+                homePage(
+                    navController = navController, authViewModel, cartViewModel,
+                    userProfileViewModel = userProfileViewModel
+                )
             }
             composable(Screen.Profile.route) {
-                ProfileScreen(navController = navController, userProfileViewModel, authViewModel, cartViewModel)
-            }
+                ProfileScreen(
+                    navController = navController,
+                    userProfileViewModel = userProfileViewModel,
+                    authViewModel = authViewModel,
+                    cartViewModel = cartViewModel,
+                    themeViewModel = themeViewModel
+                )}
             composable(Screen.Search.route) {
                 SearchScreen(navController = navController,cartViewModel)
             }
@@ -67,7 +83,8 @@ fun AppNavigation(userProfileViewModel: UserProfileViewModel, cartViewModel: Car
                 LoginScreen(navController = navController, authViewModel)
             }
             composable(Screen.Singup.route) {
-                signupPage(navController = navController, authViewModel)
+                signupPage(navController = navController, authViewModel, userProfileViewModel = userProfileViewModel,
+                )
             }
             composable(Screen.Menu.route) {
                 MenuPage(navController = navController)

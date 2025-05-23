@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -62,6 +63,7 @@ import com.example.mrbugger_app.Data.Category
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.model.CartItem
 import com.example.mrbugger_app.model.CartViewModel
+import com.example.mrbugger_app.ui.components.CategoryBar
 import com.example.mrbugger_app.ui.theme.BackgroundColor
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
@@ -353,9 +355,26 @@ fun DetailedProductView(
                         }
                     }
                     //popular food category section
-                    Spacer(modifier = Modifier.height(10.dp))
-                   // PopularCategories(category.loadCategory())
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Divider(
+                        color = Color.LightGray,
+                        thickness = 1.dp,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = "Popular Categories",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
+                    )
+
+                    CategoryBar()
+
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }

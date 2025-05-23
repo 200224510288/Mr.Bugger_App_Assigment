@@ -1,5 +1,6 @@
 package com.example.mrbugger_app.ui.screen.homepage
 
+import android.app.Application
 import android.content.res.Configuration
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
@@ -45,37 +46,43 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.mrbugger_app.AuthViewModel.AuthState
 import com.example.mrbugger_app.AuthViewModel.AuthViewModel
+import com.example.mrbugger_app.CommonSections.RefreshableContent
 import com.example.mrbugger_app.Data.FoodItem
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.CommonSections.ScreenWithBottonNavBar
 import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.model.Pictures
+import com.example.mrbugger_app.model.UserProfileViewModel
 import com.example.mrbugger_app.ui.components.CategoryBar
 import com.example.mrbugger_app.ui.components.LogoAndCard
+import com.example.mrbugger_app.ui.components.NetworkStatusIndicator
 import com.example.mrbugger_app.ui.components.PromoBanner
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
 import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
 import com.example.mrbugger_app.ui.theme.Shapes
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
-fun homePage(navController: NavHostController,authViewModel: AuthViewModel,cartViewModel: CartViewModel) {
+fun homePage(navController: NavHostController,authViewModel: AuthViewModel,cartViewModel: CartViewModel, userProfileViewModel: UserProfileViewModel) {
     var search by remember { mutableStateOf("") }
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val coroutineScope = rememberCoroutineScope()
-
     val authState = authViewModel.authState.observeAsState()
+    var isRefreshing by remember { mutableStateOf(false) }
 
     LaunchedEffect(authState.value) {
         when(authState.value){
@@ -84,75 +91,100 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel,cartV
 
         }
     }
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        // Content Column
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(bottom = 66.dp)
-                .padding(
-                    horizontal = if (isLandscape) 50.dp else 2.dp,
-                    vertical = if (isLandscape) 15.dp else 10.dp
-                )
-                .padding(top = if (isLandscape) 2.dp else 5.dp)
-                .padding(bottom = if (isLandscape) 2.dp else 20.dp)
-        ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(6.dp),
-                verticalArrangement = Arrangement.spacedBy(5.dp)
-            ) {
-                //top bar
-                item {
-                    Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
-                    LogoAndCard()
-                }
-                //search bar
-                item {
-                    Searchbar(search = search, onSearchChange = { search = it })
-                }
-               //small chips for the navigation
-                item {
-                    Spacer(modifier = Modifier.height(10.dp))
-                    CategoryBar()
-                }
-                //Section headers
-                item {
-                    Spacer(modifier = Modifier.height(5.dp))
-                    SectionHeader(title = stringResource(R.string.popular), link = "menuPage", navController = navController)
-                }
-                //popular item cards
-                item {
-                    Spacer(modifier = Modifier.height(5.dp))
-                    PopularBurgerList(pictureList = FoodItem().loadPopularPictures(),navController = navController)
-                }
-                //promotion section
-                item {
-                    Spacer(modifier = Modifier.height(5.dp))
-                    SectionHeader(title = stringResource(R.string.exclusive_promotions), link = "menuPage", navController = navController)
-                }
-                item {
-                    Spacer(modifier = Modifier.height(5.dp))
-
-                    PromoBanner()
-                }
-                //upcomeing events
-                item {
-                    Spacer(modifier = Modifier.height(5.dp))
-                    SectionHeader(title = stringResource(R.string.future_deals), link = "menuPage", navController = navController)
-                }
-
-                item {
-                    Spacer(modifier = Modifier.height(5.dp))
-
-                    Slideshow()
-                }
+    RefreshableContent(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            isRefreshing = true
+            // Simulate refresh
+            coroutineScope.launch {
+                delay(1500)
+                isRefreshing = false
             }
         }
-        //  Bottom Navigation Bar
-        ScreenWithBottonNavBar(navController = navController, cartViewModel = cartViewModel)    }
+    ){
+        Box(modifier = Modifier.fillMaxSize()) {
+            // Content Column
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(bottom = 66.dp)
+                    .padding(
+                        horizontal = if (isLandscape) 50.dp else 2.dp,
+                        vertical = if (isLandscape) 15.dp else 10.dp
+                    )
+                    .padding(top = if (isLandscape) 2.dp else 5.dp)
+                    .padding(bottom = if (isLandscape) 2.dp else 20.dp)
+            ) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(6.dp),
+                    verticalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
+                    //top bar with network status
+                    item {
+                        Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
+
+                        // Top bar with logo and network status
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp, vertical = 4.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+
+                            Box(modifier = Modifier.weight(1f)) {
+                                LogoAndCard(userProfileViewModel = userProfileViewModel)                            }
+
+                        }
+                    }
+                    //search bar
+                    item {
+                        Searchbar(search = search, onSearchChange = { search = it })
+                    }
+                    //small chips for the navigation
+                    item {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        CategoryBar()
+                    }
+                    //Section headers
+                    item {
+                        Spacer(modifier = Modifier.height(5.dp))
+                        SectionHeader(title = stringResource(R.string.popular), link = "menuPage", navController = navController)
+                    }
+                    //popular item cards
+                    item {
+                        Spacer(modifier = Modifier.height(5.dp))
+                        PopularBurgerList(pictureList = FoodItem().loadPopularPictures(),navController = navController)
+                    }
+                    //promotion section
+                    item {
+                        Spacer(modifier = Modifier.height(5.dp))
+                        SectionHeader(title = stringResource(R.string.exclusive_promotions), link = "menuPage", navController = navController)
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(5.dp))
+
+                        PromoBanner()
+                    }
+                    //upcomeing events
+                    item {
+                        Spacer(modifier = Modifier.height(5.dp))
+                        SectionHeader(title = stringResource(R.string.future_deals), link = "menuPage", navController = navController)
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(5.dp))
+
+                        Slideshow()
+                    }
+                }
+            }
+            //  Bottom Navigation Bar
+            ScreenWithBottonNavBar(navController = navController, cartViewModel = cartViewModel)    }
+    }
+
 }
 
 // Section bar
@@ -299,7 +331,7 @@ fun Slideshow(slideInterval: Long = 3000) {
                 .fillMaxWidth()
                 .height(imageHeight)
                 .padding(horizontal = 8.dp)
-                .clip(Shapes.medium) // Added border radius
+                .clip(Shapes.medium)
         ) {
             Image(
                 painter = painterResource(id = imageResources[index]),

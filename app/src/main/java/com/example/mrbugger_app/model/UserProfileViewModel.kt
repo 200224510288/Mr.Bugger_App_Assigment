@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
 
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -94,10 +95,22 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     // Update profile image from URI (for gallery selection)
+    // FIXED: Now converts URI to bitmap and saves it permanently
     fun updateProfileImage(uri: Uri) {
         viewModelScope.launch {
-            profileImageUri.value = uri
-            saveProfileImageUri(uri.toString())
+            try {
+                // Convert URI to bitmap and save it to internal storage
+                val bitmap = uriToBitmap(uri)
+                if (bitmap != null) {
+                    profileImageBitmap.value = bitmap
+                    saveProfileImageToStorage(bitmap)
+                    // Clear URI since we're now using the saved bitmap
+                    profileImageUri.value = null
+                    clearProfileImageUri()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -106,13 +119,34 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch {
             profileImageBitmap.value = bitmap
             saveProfileImageToStorage(bitmap)
+            // Clear URI since we're using bitmap
+            profileImageUri.value = null
+            clearProfileImageUri()
         }
     }
 
-    // Save profile image URI to SharedPreferences
+    // Convert URI to Bitmap
+    private fun uriToBitmap(uri: Uri): Bitmap? {
+        return try {
+            val inputStream: InputStream? = getApplication<Application>().contentResolver.openInputStream(uri)
+            BitmapFactory.decodeStream(inputStream)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    // Save profile image URI to SharedPreferences (keeping for backward compatibility)
     private fun saveProfileImageUri(uriString: String) {
         val editor = sharedPreferences.edit()
         editor.putString("profile_image_uri", uriString)
+        editor.apply()
+    }
+
+    // Clear profile image URI from SharedPreferences
+    private fun clearProfileImageUri() {
+        val editor = sharedPreferences.edit()
+        editor.remove("profile_image_uri")
         editor.apply()
     }
 
@@ -141,19 +175,39 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         return file.absolutePath
     }
 
-    // Load profile image from storage
+    // FIXED: Load profile image from storage
     private fun loadProfileImage() {
-        // First try to load from URI (gallery image)
-        val uriString = sharedPreferences.getString("profile_image_uri", null)
-        if (uriString != null) {
-            profileImageUri.value = Uri.parse(uriString)
-            return
-        }
-
-        // Then try to load from bitmap file (camera image)
+        // First try to load from bitmap file (most reliable)
         val imagePath = sharedPreferences.getString("profile_image_path", null)
         if (imagePath != null) {
-            profileImageBitmap.value = BitmapFactory.decodeFile(imagePath)
+            val file = File(imagePath)
+            if (file.exists()) {
+                profileImageBitmap.value = BitmapFactory.decodeFile(imagePath)
+                return
+            }
+        }
+
+        // Fallback: try to load from URI (less reliable after app restart)
+        val uriString = sharedPreferences.getString("profile_image_uri", null)
+        if (uriString != null) {
+            try {
+                val uri = Uri.parse(uriString)
+                val bitmap = uriToBitmap(uri)
+                if (bitmap != null) {
+                    // Convert URI to bitmap and save it for future use
+                    profileImageBitmap.value = bitmap
+                    saveProfileImageToStorage(bitmap)
+                    // Clear the URI since we now have it saved as bitmap
+                    clearProfileImageUri()
+                } else {
+                    // URI is invalid, clear it
+                    clearProfileImageUri()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Clear invalid URI
+                clearProfileImageUri()
+            }
         }
     }
 

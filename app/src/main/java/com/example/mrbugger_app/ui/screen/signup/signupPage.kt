@@ -70,40 +70,55 @@ import com.example.mrbugger_app.AuthViewModel.AuthState
 import com.example.mrbugger_app.AuthViewModel.AuthViewModel
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.Screen
-import com.example.mrbugger_app.ui.theme.BackgroundColor
-import com.example.mrbugger_app.ui.theme.TextColor
+import com.example.mrbugger_app.model.UserProfileViewModel
 
 @Composable
-fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
+fun signupPage(navController: NavController, authViewModel: AuthViewModel, userProfileViewModel: UserProfileViewModel) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var contact by remember{ mutableStateOf("") }
+    var contact by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
-    var location by remember { mutableStateOf("") }
-    val authState = authViewModel.authState.observeAsState()
-    val context = LocalContext.current
-
+    var address by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    val authState by authViewModel.authState.observeAsState()
+    val isLoading by userProfileViewModel.isLoading
+    val profileImageBitmap by userProfileViewModel.profileImageBitmap
+    val profileImageUri by userProfileViewModel.profileImageUri
+    val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     // Image Picker
-    var profileImageUri by remember { mutableStateOf<Uri?>(null) }
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        profileImageUri = uri // Set selected image URI
+        uri?.let { userProfileViewModel.updateProfileImage(it) }
     }
 
-//user sign up with firebase
-    LaunchedEffect(authState.value) {
-        when(authState.value){
-            is AuthState.Authenticated -> navController.navigate("home")
-            is AuthState.Error -> Toast.makeText(context,
-                (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+    // Handle Firebase authentication state
+    LaunchedEffect(authState) {
+        when (authState) {
+            is AuthState.Authenticated -> {
+                // Update profile data only after successful authentication
+                userProfileViewModel.updateUserData(
+                    username = username,
+                    password = password,
+                    email = email,
+                    contact = contact,
+                    address = address
+                )
+                val (isValid, message) = userProfileViewModel.validateUserData()
+                if (isValid) {
+                    navController.navigate("home")
+                } else {
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                }
+            }
+            is AuthState.Error -> {
+                Toast.makeText(context, (authState as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+            }
             else -> Unit
         }
-
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -113,7 +128,6 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
             contentDescription = "Background Image",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
-
         )
 
         // Glass Background Box
@@ -127,8 +141,8 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
                 .padding(top = if (isLandscape) 2.dp else 150.dp)
                 .padding(bottom = if (isLandscape) 2.dp else 50.dp)
                 .background(
-                    color = MaterialTheme.colorScheme.surface.copy(alpha = 1f), // transparent white
-                    shape = RoundedCornerShape(24.dp) // Rounded corners
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 1f),
+                    shape = RoundedCornerShape(24.dp)
                 )
                 .clip(RoundedCornerShape(24.dp))
                 .padding(20.dp)
@@ -139,20 +153,18 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxSize()
-
             ) {
                 // Top-left Mr. Burger Text
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(if (isLandscape) 16.dp else 12.dp)
-                        .offset(x = (-15).dp, y = (-16).dp) // X and Y offsets
+                        .offset(x = (-15).dp, y = (-16).dp)
                         .padding(start = 4.dp, top = 4.dp),
                     contentAlignment = Alignment.TopStart
                 ) {
                     Text(
                         text = AnnotatedString.Builder().apply {
-                            // Style for "Mr."
                             pushStyle(
                                 SpanStyle(
                                     color = MaterialTheme.colorScheme.primary,
@@ -162,8 +174,6 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
                             )
                             append("Mr.")
                             pop()
-
-                            // Style for "Burger"
                             pushStyle(
                                 SpanStyle(
                                     color = MaterialTheme.colorScheme.onBackground,
@@ -189,20 +199,31 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
                         .clickable { imagePickerLauncher.launch("image/*") },
                     contentAlignment = Alignment.Center
                 ) {
-                    if (profileImageUri != null) {
-                        Image(
-                            painter = rememberAsyncImagePainter(profileImageUri),
-                            contentDescription = "Profile Image",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
-                    } else {
-                        Icon(
-                            imageVector = Icons.Default.Person,
-                            contentDescription = "Default Profile Icon",
-                            tint = Color.White,
-                            modifier = Modifier.size(60.dp)
-                        )
+                    when {
+                        profileImageBitmap != null -> {
+                            Image(
+                                painter = rememberAsyncImagePainter(profileImageBitmap),
+                                contentDescription = "Profile Image",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                        profileImageUri != null -> {
+                            Image(
+                                painter = rememberAsyncImagePainter(profileImageUri),
+                                contentDescription = "Profile Image",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                        else -> {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = "Default Profile Icon",
+                                tint = Color.White,
+                                modifier = Modifier.size(60.dp)
+                            )
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
@@ -217,11 +238,11 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // UserName TextField
+                // Username TextField
                 TextField(
                     value = username,
                     onValueChange = { username = it },
-                    label = { Text("UserName") },
+                    label = { Text("Username") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .border(
@@ -240,7 +261,7 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
                     shape = RoundedCornerShape(16.dp),
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Filled.Person,
+                            imageVector = Icons.Default.Person,
                             contentDescription = "Person Icon",
                             tint = MaterialTheme.colorScheme.onBackground
                         )
@@ -281,7 +302,7 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
 
                 Spacer(modifier = Modifier.height(26.dp))
 
-                // Contact TextField
+                // Password TextField
                 TextField(
                     value = password,
                     onValueChange = { password = it },
@@ -302,6 +323,16 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
                         unfocusedLabelColor = MaterialTheme.colorScheme.onBackground
                     ),
                     shape = RoundedCornerShape(16.dp),
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    trailingIcon = {
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(
+                                imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                contentDescription = if (passwordVisible) "Hide password" else "Show password",
+                                tint = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
+                    },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Filled.Lock,
@@ -313,11 +344,43 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
 
                 Spacer(modifier = Modifier.height(26.dp))
 
-                // Location TextField
+                // Contact TextField
                 TextField(
-                    value = location,
-                    onValueChange = { location = it },
-                    label = { Text("Location") },
+                    value = contact,
+                    onValueChange = { contact = it },
+                    label = { Text("Contact") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(
+                            1.dp,
+                            MaterialTheme.colorScheme.onBackground,
+                            RoundedCornerShape(16.dp)
+                        )
+                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp)),
+                    textStyle = MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.onBackground
+                    ),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onBackground
+                    ),
+                    shape = RoundedCornerShape(16.dp),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Phone,
+                            contentDescription = "Phone Icon",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(26.dp))
+
+                // Address TextField
+                TextField(
+                    value = address,
+                    onValueChange = { address = it },
+                    label = { Text("Address") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .border(
@@ -354,7 +417,7 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
                         .height(60.dp)
                         .clip(CircleShape),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                    enabled = authState.value != AuthState.Loading // Disable button when loading
+                    enabled = authState != AuthState.Loading && !isLoading // Disable button when either ViewModel is loading
                 ) {
                     Text(
                         text = "Sign Up",
@@ -365,12 +428,15 @@ fun signupPage(navController: NavController,authViewModel: AuthViewModel) {
                     )
                 }
 
-
                 Spacer(modifier = Modifier.height(22.dp))
 
-                // Signup TextButton
-                TextButton(onClick = {navController.navigate(Screen.Login.route) }) {
-                    Text(text = "Already Have an Account? Login", color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.titleMedium)
+                // Login TextButton
+                TextButton(onClick = { navController.navigate(Screen.Login.route) }) {
+                    Text(
+                        text = "Already Have an Account? Login",
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.titleMedium
+                    )
                 }
             }
         }
