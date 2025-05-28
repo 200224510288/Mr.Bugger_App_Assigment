@@ -20,17 +20,26 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        // ✅ Inject API key to manifest
+        manifestPlaceholders["MAPS_API_KEY"] = project.findProperty("MAPS_API_KEY") as? String ?: ""
     }
 
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+            buildConfigField("String", "MAPS_API_KEY", "\"${project.findProperty("MAPS_API_KEY") ?: ""}\"")
+        }
         release {
             isMinifyEnabled = false
+            buildConfigField("String", "MAPS_API_KEY", "\"${project.findProperty("MAPS_API_KEY") ?: ""}\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -40,6 +49,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -75,7 +85,7 @@ dependencies {
     implementation(libs.bundles.ui)
     implementation("androidx.compose.material:material:1.4.0")
     implementation ("androidx.compose.material:material-icons-extended:1.5.0")
-    
+
     implementation ("com.google.android.gms:play-services-maps:19.2.0")
     implementation ("com.google.android.gms:play-services-location:21.3.0")
 
@@ -102,5 +112,20 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    implementation("io.coil-kt:coil-compose:2.6.0")
+    // Google Maps SDK
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
+    // Maps Compose
+    implementation("com.google.maps.android:maps-compose:4.3.0")
+    implementation("com.google.maps.android:maps-compose-utils:4.3.0")
 
 }

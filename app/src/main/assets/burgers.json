@@ -1,0 +1,12 @@
+{
+  "meals": [
+    {
+      "idMeal": "1",
+      "strMeal": "Classic Burger",
+      "strInstructions": "Grill patty, assemble with bun, lettuce, tomato.",
+      "strMealThumb": "https://example.com/burger.jpg",
+      "strIngredient1": "Beef Patty",
+      "strMeasure1": "1"
+    }
+  ]
+}

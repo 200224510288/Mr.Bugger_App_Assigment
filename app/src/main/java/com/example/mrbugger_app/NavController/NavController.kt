@@ -122,6 +122,7 @@ fun AppNavigation(
                     priceResId = priceResId
                 )
             }
+
         }
     }
 }

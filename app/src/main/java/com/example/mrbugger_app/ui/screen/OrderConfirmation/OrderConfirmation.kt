@@ -73,24 +73,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import com.example.mrbugger_app.CommonSections.ScreenWithBottonNavBar
 import com.example.mrbugger_app.CommonSections.TopBarSection
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.Screen
 import com.example.mrbugger_app.model.CartViewModel
-import com.example.mrbugger_app.model.UserProfileViewModel
-import com.example.mrbugger_app.ui.screen.ProfileScreen.UserInfoField
-import kotlinx.coroutines.launch
 import android.location.Geocoder
-import android.location.LocationListener
-import android.os.Looper
-import androidx.core.location.LocationManagerCompat.getCurrentLocation
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.CancellationTokenSource
 import java.io.IOException
 import java.util.Locale
@@ -109,39 +99,185 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
     var locationPermissionGranted by remember { mutableStateOf(false) }
     var isLoadingLocation by remember { mutableStateOf(false) }
 
-    // Location Helper Functions
-    fun requestNewLocation(
-        context: Context,
-        fusedLocationClient: FusedLocationProviderClient,
-        onLocationReceived: (Location?) -> Unit
-    ) {
-        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
-            .setWaitForAccurateLocation(false)
-            .setMinUpdateIntervalMillis(5000)
-            .setMaxUpdateDelayMillis(15000)
-            .build()
+    var showLocationPicker by remember { mutableStateOf(false) }
+    var selectedLatLng by remember { mutableStateOf<LatLng?>(null) }
+    var isUsingCustomLocation by remember { mutableStateOf(false) }
 
-        val locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                locationResult.locations.firstOrNull()?.let { location ->
-                    onLocationReceived(location)
-                    fusedLocationClient.removeLocationUpdates(this)
+
+    @Composable
+    fun UserLocationCard(
+        locationAddress: String,
+        isLoadingLocation: Boolean,
+        locationPermissionGranted: Boolean,
+        userLocation: Location?,
+        isUsingCustomLocation: Boolean,
+        onRequestLocation: () -> Unit,
+        onChooseLocation: () -> Unit
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.LocationOn,
+                        contentDescription = "Location",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Delivery Location",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    // NEW: Location type indicator
+                    if (isUsingCustomLocation) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "(Custom)",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                when {
+                    !locationPermissionGranted -> {
+                        Text(
+                            text = "Location permission needed for delivery",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            OutlinedButton(
+                                onClick = onRequestLocation,
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.LocationOn,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("Enable Location")
+                            }
+                            Button(
+                                onClick = onChooseLocation,
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text("Choose on Map")
+                            }
+                        }
+                    }
+                    isLoadingLocation -> {
+                        Text(
+                            text = "Getting your location...",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    userLocation != null || selectedLatLng != null -> {
+                        Text(
+                            text = locationAddress,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        val displayLatLng = selectedLatLng ?: userLocation?.let {
+                            LatLng(it.latitude, it.longitude)
+                        }
+
+                        displayLatLng?.let { latLng ->
+                            Text(
+                                text = "Coordinates: ${String.format("%.4f", latLng.latitude)}, ${String.format("%.4f", latLng.longitude)}",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // NEW: Buttons to change location
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            if (!isUsingCustomLocation) {
+                                OutlinedButton(
+                                    onClick = onChooseLocation,
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Text("Choose Different Location")
+                                }
+                            } else {
+                                OutlinedButton(
+                                    onClick = onRequestLocation,
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Text("Use Current Location")
+                                }
+                                OutlinedButton(
+                                    onClick = onChooseLocation,
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Text("Change Location")
+                                }
+                            }
+                        }
+                    }
+                    else -> {
+                        Text(
+                            text = "Unable to get location",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            OutlinedButton(
+                                onClick = onRequestLocation,
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text("Retry Location")
+                            }
+                            Button(
+                                onClick = onChooseLocation,
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text("Choose on Map")
+                            }
+                        }
+                    }
                 }
             }
         }
-
-        if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            fusedLocationClient.requestLocationUpdates(
-                locationRequest,
-                locationCallback,
-                Looper.getMainLooper()
-            )
-        }
     }
+
 
     fun getCurrentLocation(
         context: Context,
@@ -436,19 +572,25 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    // Location display card
+                    // Updated location display card
                     UserLocationCard(
                         locationAddress = locationAddress,
                         isLoadingLocation = isLoadingLocation,
                         locationPermissionGranted = locationPermissionGranted,
                         userLocation = userLocation,
+                        isUsingCustomLocation = isUsingCustomLocation,
                         onRequestLocation = {
+                            isUsingCustomLocation = false
+                            selectedLatLng = null
                             locationPermissionLauncher.launch(
                                 arrayOf(
                                     Manifest.permission.ACCESS_FINE_LOCATION,
                                     Manifest.permission.ACCESS_COARSE_LOCATION
                                 )
                             )
+                        },
+                        onChooseLocation = {
+                            showLocationPicker = true
                         }
                     )
 
@@ -509,6 +651,45 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
                 OrderDetailsContent(cartViewModel = cartViewModel)
             }
         }
+
+        // NEW: Location Picker Dialog
+        LocationPickerDialog(
+            isVisible = showLocationPicker,
+            currentLocation = userLocation,
+            onLocationSelected = { latLng, address ->
+                selectedLatLng = latLng
+                locationAddress = address
+                isUsingCustomLocation = true
+            },
+            onDismiss = {
+                showLocationPicker = false
+            },
+            onGetCurrentLocation = {
+                // Request current location when user clicks current location button in map
+                if (locationPermissionGranted) {
+                    isLoadingLocation = true
+                    getCurrentLocation(context) { location ->
+                        userLocation = location
+                        location?.let {
+                            getAddressFromLocation(context, it.latitude, it.longitude) { address ->
+                                locationAddress = address
+                                isLoadingLocation = false
+                            }
+                        } ?: run {
+                            locationAddress = "Unable to get location"
+                            isLoadingLocation = false
+                        }
+                    }
+                } else {
+                    locationPermissionLauncher.launch(
+                        arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    )
+                }
+            }
+        )
     }
 }
 

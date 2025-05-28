@@ -140,6 +140,9 @@ private fun CategoryCardImage(
     }
 }
 
+
+
+
 @Composable
 fun CategoryBar(
     modifier: Modifier = Modifier,

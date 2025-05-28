@@ -83,7 +83,6 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel,cartV
     val coroutineScope = rememberCoroutineScope()
     val authState = authViewModel.authState.observeAsState()
     var isRefreshing by remember { mutableStateOf(false) }
-
     LaunchedEffect(authState.value) {
         when(authState.value){
             is AuthState.unauthenticated -> navController.navigate("login")
@@ -166,7 +165,8 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel,cartV
                     item {
                         Spacer(modifier = Modifier.height(5.dp))
 
-                        PromoBanner()
+                      PromoBanner()
+                        //BurgerListScreen(viewModel = burgerViewModel, navController = navController)
                     }
                     //upcomeing events
                     item {
