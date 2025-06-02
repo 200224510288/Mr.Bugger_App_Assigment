@@ -160,7 +160,7 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel,cartV
                     //promotion section
                     item {
                         Spacer(modifier = Modifier.height(5.dp))
-                        SectionHeader(title = stringResource(R.string.exclusive_promotions), link = "menuPage", navController = navController)
+                        SectionHeader(title = stringResource(R.string.exclusive_promotions), link = "Recipes", navController = navController)
                     }
                     item {
                         Spacer(modifier = Modifier.height(5.dp))

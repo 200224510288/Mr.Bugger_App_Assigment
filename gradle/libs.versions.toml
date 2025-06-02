@@ -1,5 +1,6 @@
 [versions]
 agp = "8.9.1"
+hilt-compiler = "2.52"
 kotlin = "1.9.0"
 androidx-core = "1.13.1"
 androidx-runtime = "2.8.4"
@@ -35,6 +36,7 @@ compose-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-pr
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
 
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-compiler" }
 konfetti = { group = "nl.dionsegijn", name = "konfetti-compose", version.ref = "konfetti" }
 engage-core = { group = "com.google.android.engage", name = "engage-core", version.ref = "engage-core" }
 generativeai = { group = "com.google.ai.client.generativeai", name = "generativeai", version.ref = "generativeai" }

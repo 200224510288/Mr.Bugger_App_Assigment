@@ -9,9 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,18 +21,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.mrbugger_app.ui.screen.homepage.homePage
-import com.example.mrbugger_app.ui.theme.Darkgray
 import com.example.mrbugger_app.ui.theme.Poppins
-import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
-
 
 // common search bar for all pages
 @Composable
-fun SearchBar(
+fun SearchBarForSearchScreen(
     search: String,
     onSearchChange: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -54,7 +45,7 @@ fun SearchBar(
         TextField(
             value = search,
             onValueChange = onSearchChange,
-            placeholder = { Text(text = "Search ", fontFamily = Poppins, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground) },
+            placeholder = { Text(text = "Search Any Food Recipe ...", fontFamily = Poppins, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 2.dp),
@@ -80,11 +71,4 @@ fun SearchBar(
             visualTransformation = VisualTransformation.None
         )
     }
-}
-
-
-@Preview
-@Composable
-fun PreviewHomePage(){
-    SearchBar(search = "", onSearchChange = {})
 }

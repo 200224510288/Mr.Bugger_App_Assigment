@@ -42,13 +42,11 @@ fun AppNavigation(
     authViewModel: AuthViewModel,
     themeViewModel: ThemeViewModel,
     navController: NavHostController
-)
-{
+) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        val navController = rememberNavController()
 
         // Fade effect for smooth transition.
         AnimatedNavHost(
@@ -61,10 +59,13 @@ fun AppNavigation(
         ) {
             composable(Screen.Home.route) {
                 homePage(
-                    navController = navController, authViewModel, cartViewModel,
+                    navController = navController,
+                    authViewModel,
+                    cartViewModel,
                     userProfileViewModel = userProfileViewModel
                 )
             }
+
             composable(Screen.Profile.route) {
                 ProfileScreen(
                     navController = navController,
@@ -72,28 +73,41 @@ fun AppNavigation(
                     authViewModel = authViewModel,
                     cartViewModel = cartViewModel,
                     themeViewModel = themeViewModel
-                )}
-            composable(Screen.Search.route) {
-                SearchScreen(navController = navController,cartViewModel)
+                )
             }
+
+            composable(Screen.Search.route) {
+                SearchScreen(
+                    navController = navController,
+                    cartViewModel = cartViewModel
+                )
+            }
+
             composable(Screen.Cart.route) {
                 CartScreen(navController = navController, cartViewModel)
             }
+
             composable(Screen.Login.route) {
                 LoginScreen(navController = navController, authViewModel)
             }
+
             composable(Screen.Singup.route) {
-                signupPage(navController = navController, authViewModel, userProfileViewModel = userProfileViewModel,
+                signupPage(
+                    navController = navController,
+                    authViewModel,
+                    userProfileViewModel = userProfileViewModel
                 )
             }
+
             composable(Screen.Menu.route) {
                 MenuPage(navController = navController)
             }
+
             composable(Screen.OrderConfirmation.route) {
                 OrderConfirmation(navController = navController, cartViewModel)
             }
 
-            //passing arguments to the detailed view page
+            // Passing arguments to the detailed view page
             composable(
                 route = "detailedProductView/{imageResId}/{imageResId2}/{nameResId}/{descResId}/{priceResId}",
                 arguments = listOf(
@@ -122,7 +136,6 @@ fun AppNavigation(
                     priceResId = priceResId
                 )
             }
-
         }
     }
 }

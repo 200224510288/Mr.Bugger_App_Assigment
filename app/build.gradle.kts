@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.google.gms.google.services)
 }
 
+
 android {
     namespace = "com.example.mrbugger_app"
     compileSdk = 35
@@ -128,4 +129,25 @@ dependencies {
     implementation("com.google.maps.android:maps-compose:4.3.0")
     implementation("com.google.maps.android:maps-compose-utils:4.3.0")
 
+    // Retrofit for API calls
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
+
+// Hilt for dependency injection
+    implementation("com.google.dagger:hilt-android:2.52")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0 ")
+
+
+// Coroutines for async operations
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+
+    // Hilt core
+    implementation("com.google.dagger:hilt-android:2.48")
+
+    // Hilt Navigation Compose (this is what you need for hiltViewModel())
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    // Optional: Hilt testing
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.48")
 }
