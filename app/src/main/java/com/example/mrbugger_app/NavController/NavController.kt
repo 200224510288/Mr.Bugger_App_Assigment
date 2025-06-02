@@ -32,7 +32,10 @@ import com.example.mrbugger_app.ui.screen.SearchScreen.SearchScreen
 import com.example.mrbugger_app.ui.screen.homepage.homePage
 import com.example.mrbugger_app.ui.screen.login.LoginScreen
 import com.example.mrbugger_app.model.ThemeViewModel
+import com.example.mrbugger_app.ui.screen.DetailedProductViewJson.DetailedProductViewBurger
 import com.example.mrbugger_app.ui.screen.signup.signupPage
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -134,6 +137,41 @@ fun AppNavigation(
                     nameResId = nameResId,
                     descResId = descResId,
                     priceResId = priceResId
+                )
+            }
+
+            composable(
+                route = "detailedBurgerView/{name}/{description}/{price}/{imageUrl}/{categoryImageUrl}",
+                arguments = listOf(
+                    navArgument("name") { type = NavType.StringType },
+                    navArgument("description") { type = NavType.StringType },
+                    navArgument("price") { type = NavType.StringType },
+                    navArgument("imageUrl") { type = NavType.StringType },
+                    navArgument("categoryImageUrl") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+                // Extract arguments from the navigation route
+                val name = backStackEntry.arguments?.getString("name") ?: ""
+                val description = backStackEntry.arguments?.getString("description") ?: ""
+                val price = backStackEntry.arguments?.getString("price") ?: "0"
+                val imageUrl = backStackEntry.arguments?.getString("imageUrl") ?: ""
+                val categoryImageUrl = backStackEntry.arguments?.getString("categoryImageUrl") ?: ""
+
+                // URL decode the parameters (in case they contain special characters)
+                val decodedName = URLDecoder.decode(name, StandardCharsets.UTF_8.toString())
+                val decodedDescription = URLDecoder.decode(description, StandardCharsets.UTF_8.toString())
+                val decodedImageUrl = URLDecoder.decode(imageUrl, StandardCharsets.UTF_8.toString())
+                val decodedCategoryImageUrl = URLDecoder.decode(categoryImageUrl, StandardCharsets.UTF_8.toString())
+
+                // Navigate to the new DetailedProductViewBurger
+                DetailedProductViewBurger(
+                    navController = navController,
+                    cartViewModel = cartViewModel,
+                    name = decodedName,
+                    description = decodedDescription,
+                    price = price,
+                    imageUrl = decodedImageUrl,
+                    categoryImageUrl = decodedCategoryImageUrl
                 )
             }
         }

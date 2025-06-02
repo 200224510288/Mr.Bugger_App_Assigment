@@ -1,8 +1,6 @@
-package com.example.mrbugger_app.ui.screen.DetailedProductView
+package com.example.mrbugger_app.ui.screen.DetailedProductViewJson
 
 import android.widget.Toast
-import androidx.benchmark.perfetto.Row
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -16,26 +14,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.TabRowDefaults.Divider
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,13 +35,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role.Companion.Switch
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -57,72 +46,57 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.mrbugger_app.CommonSections.PopularCategories
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.mrbugger_app.CommonSections.TopBarSection
-import com.example.mrbugger_app.Data.Category
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.model.CartItem
 import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.ui.components.CategoryBar
-import com.example.mrbugger_app.ui.theme.BackgroundColor
-import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
-import com.example.mrbugger_app.ui.theme.PrimaryYellowLight
-import com.example.mrbugger_app.ui.theme.TextColor
 
-
-
-
-
-
-//detailed view page
+// New detailed view page for BurgerModel
 @Composable
-fun DetailedProductView(
+fun DetailedProductViewBurger(
     navController: NavController,
     cartViewModel: CartViewModel,
-    imageResId: Int,
-    imageResId2: Int,
-    nameResId: Int,
-    descResId: Int,
-    priceResId: Int
+    name: String,
+    description: String,
+    price: String,
+    imageUrl: String,
+    categoryImageUrl: String
 ) {
     val context = LocalContext.current
-    val category = Category
     var quantity by remember { mutableStateOf(1) }
     var isSpicy by remember { mutableStateOf(false) }
-    val basePrice = stringResource(id = priceResId).toFloat()
+    val basePrice = price.toFloatOrNull() ?: 0f
     var currentPrice by remember { mutableStateOf(basePrice) }
 
-    val name = stringResource(id = nameResId)
-    val description = stringResource(id = descResId)
-    val price = stringResource(id = priceResId).toDoubleOrNull() ?: 0.0
-
+    val priceAsDouble = price.toDoubleOrNull() ?: 0.0
 
     // Update current price when quantity changes
     val updatePrice = { newQuantity: Int ->
         currentPrice = basePrice * newQuantity
         quantity = newQuantity
     }
+
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         topBar = {
             TopBarSection(navController = navController, cartViewModel = cartViewModel)
-
         },
-                bottomBar = {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    // Fixed bottom bar
+        bottomBar = {
+            Spacer(modifier = Modifier.height(8.dp))
+            // Fixed bottom bar
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.surface)
-                    // .shadow(elevation = 8.dp, shape = RoundedCornerShape(topStart = 16.dp))
                     .padding(16.dp)
                     .height(85.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-            // food price section
+                // food price section
                 Box(
                     modifier = Modifier
                         .border(
@@ -134,7 +108,6 @@ fun DetailedProductView(
                         .height(50.dp)
                         .padding(8.dp)
                 ) {
-
                     Text(
                         text = "Rs. ${"%.2f".format(currentPrice)}",
                         fontSize = 18.sp,
@@ -144,16 +117,21 @@ fun DetailedProductView(
                 }
                 //add to cart button
                 Button(
-                    onClick = { val cartItem = CartItem(
-                        imageRes = imageResId,
-                        name = name,
-                        price = price,
-                        quantity = quantity
-                    )
-                        Toast.makeText(context,
-                            context.getString(R.string.item_added_to_cart), Toast.LENGTH_SHORT).show()
-                        cartViewModel.addItemToCart(cartItem)},
-
+                    onClick = {
+                        val cartItem = CartItem(
+                            imageRes = R.drawable.placeholder, // Fallback resource
+                            imageUrl = imageUrl, // Pass the imageUrl
+                            name = name,
+                            price = priceAsDouble,
+                            quantity = quantity
+                        )
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.item_added_to_cart),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        cartViewModel.addItemToCart(cartItem)
+                    },
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                     shape = RoundedCornerShape(25.dp),
                     modifier = Modifier
@@ -176,16 +154,23 @@ fun DetailedProductView(
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
-
-            Image(
-                painter = painterResource(id = imageResId),
-                contentDescription = stringResource(id = R.string.product_image),
+            // Product Image using AsyncImage for URL
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = name,
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .height(250.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                placeholder = painterResource(R.drawable.placeholder),
+                error = painterResource(R.drawable.placeholder)
             )
+
             Spacer(modifier = Modifier.height(8.dp))
+
             Card(
                 shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
                 elevation = CardDefaults.cardElevation(15.dp),
@@ -207,9 +192,9 @@ fun DetailedProductView(
                         .padding(16.dp)
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
+
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -244,7 +229,7 @@ fun DetailedProductView(
                                 modifier = Modifier.padding(bottom = 4.dp)
                             )
                             Text(
-                                text = stringResource(id = nameResId),
+                                text = name,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 20.sp
                             )
@@ -264,23 +249,29 @@ fun DetailedProductView(
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(text = "4.9", fontWeight = FontWeight.Bold, fontSize = 14.sp)
-
                             }
                             Spacer(modifier = Modifier.width(16.dp))
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Icon(
-                                    painter = painterResource(id = imageResId2),
-                                    contentDescription = "non-veg",
-                                    tint = Color.Unspecified
+                                // Category Image using AsyncImage for URL
+                                AsyncImage(
+                                    model = ImageRequest.Builder(LocalContext.current)
+                                        .data(categoryImageUrl)
+                                        .crossfade(true)
+                                        .build(),
+                                    contentDescription = "category",
+                                    modifier = Modifier.width(24.dp).height(24.dp),
+                                    placeholder = painterResource(R.drawable.placeholder),
+                                    error = painterResource(R.drawable.placeholder)
                                 )
                             }
                         }
                     }
 
                     Spacer(modifier = Modifier.height(15.dp))
-                //food discription section
+
+                    // food description section
                     Box(
                         modifier = Modifier
                             .border(
@@ -290,7 +281,6 @@ fun DetailedProductView(
                             )
                             .padding(10.dp)
                     ) {
-
                         Column(modifier = Modifier.fillMaxWidth()) {
                             Text(
                                 text = "Description",
@@ -299,12 +289,13 @@ fun DetailedProductView(
                             )
                             Spacer(modifier = Modifier.height(5.dp))
                             Text(
-                                text = stringResource(id = descResId),
+                                text = description,
                                 fontSize = 14.sp,
                                 color = Color.Gray
                             )
                         }
                     }
+
                     Spacer(modifier = Modifier.height(16.dp))
 
                     // Spicy Toggle and Portion Controls
@@ -319,7 +310,7 @@ fun DetailedProductView(
                             Spacer(modifier = Modifier.width(8.dp))
                             Switch(checked = isSpicy, onCheckedChange = { isSpicy = it })
                         }
-                        //increasing the porting section
+                        //increasing the portion section
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Button(
                                 onClick = { if (quantity > 1) updatePrice(quantity - 1) },
@@ -342,11 +333,11 @@ fun DetailedProductView(
                                 modifier = Modifier.width(30.dp)
                             )
                             Button(
-                                onClick =  { updatePrice(quantity + 1) },
+                                onClick = { updatePrice(quantity + 1) },
                                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                                 modifier = Modifier.padding(4.dp),
                                 contentPadding = PaddingValues(4.dp),
-                                shape = RoundedCornerShape(12.dp)  // Add rounded corners with a radius of 12.dp
+                                shape = RoundedCornerShape(12.dp)
                             ) {
                                 Text(
                                     text = "+",
@@ -357,6 +348,7 @@ fun DetailedProductView(
                             }
                         }
                     }
+
                     //popular food category section
                     Spacer(modifier = Modifier.height(24.dp))
 
@@ -383,4 +375,3 @@ fun DetailedProductView(
         }
     }
 }
-

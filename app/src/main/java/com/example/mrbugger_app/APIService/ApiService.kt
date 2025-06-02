@@ -1,5 +1,6 @@
 package com.example.mrbugger_app.APIService
 
+import com.example.mrbugger_app.model.BurgerResponse
 import com.example.mrbugger_app.model.CategoryResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -9,6 +10,8 @@ import retrofit2.http.GET
 interface ApiService {
     @GET("categories.json")
     suspend fun getCategories(): CategoryResponse
+    @GET("burgers.json")
+    suspend fun getBurgers(): BurgerResponse
 }
 
 // NetworkClient.kt

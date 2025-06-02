@@ -9,25 +9,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider // Updated import
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,8 +30,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,42 +39,36 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.mrbugger_app.CommonSections.ScreenWithBottonNavBar
 import com.example.mrbugger_app.CommonSections.TopBarSection
 import com.example.mrbugger_app.CommonSections.cartBar
 import com.example.mrbugger_app.R
 import com.example.mrbugger_app.model.CartItem
 import com.example.mrbugger_app.model.CartViewModel
-import com.example.mrbugger_app.ui.theme.BackgroundColor
 import com.example.mrbugger_app.ui.theme.PrimaryYellowDark
 import com.example.mrbugger_app.ui.theme.Shapes
-import com.example.mrbugger_app.ui.theme.TextColor
 import java.text.DecimalFormat
 
-
-// cart screen
 @Composable
 fun CartScreen(
     navController: NavHostController,
     cartViewModel: CartViewModel = viewModel(),
 ) {
-    // calculation variables
     val cartItems = cartViewModel.cartItems
     val subTotal = cartViewModel.subTotal
 
-    val decimalFormat = android.icu.text.DecimalFormat("#.##")
+    val decimalFormat = DecimalFormat("#.##")
     val formattedSubTotal = decimalFormat.format(subTotal)
     val formattedShipping = decimalFormat.format(cartViewModel.deliveryCost)
 
     Scaffold(
         topBar = {
             TopBarSection(navController = navController, cartViewModel = cartViewModel)
-
         },
         content = { paddingValues ->
-            // content start
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -104,20 +93,18 @@ fun CartScreen(
                                 textAlign = TextAlign.Center
                             )
                         }
-                        //cart item list start
 
                         item {
                             Spacer(modifier = Modifier.height(16.dp))
-                            // CartItemList - Modularized Cart items display
                             CartItemList(cartItems = cartItems, cartViewModel = cartViewModel)
                         }
 
                         item {
                             Spacer(modifier = Modifier.height(36.dp))
-                            Divider(modifier = Modifier.background(MaterialTheme.colorScheme.onBackground))
+                            HorizontalDivider(modifier = Modifier.background(MaterialTheme.colorScheme.onBackground))
                             Spacer(modifier = Modifier.height(8.dp))
                         }
-                          //calculation part
+
                         item {
                             Card(
                                 shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
@@ -134,41 +121,32 @@ fun CartScreen(
                                         color = MaterialTheme.colorScheme.onSurface,
                                         shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
                                     )
-
                             ) {
-
-
-                                // Main calculation part for Delivery Charge and Sub Total
-                                MainCalculation(formattedShipping = formattedShipping, formattedSubTotal = formattedSubTotal)
+                                MainCalculation(
+                                    formattedShipping = formattedShipping,
+                                    formattedSubTotal = formattedSubTotal
+                                )
                                 cartBar(navController = navController)
                                 Spacer(modifier = Modifier.height(36.dp))
-
                             }
                         }
-
                     }
                 }
             }
-
-            // Bottom Navigation Bar
             ScreenWithBottonNavBar(navController = navController, cartViewModel = cartViewModel)
         }
-
     )
 }
 
-
-//calculation part
 @Composable
 fun MainCalculation(formattedShipping: String, formattedSubTotal: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(15.dp)
-
     ) {
-
         Spacer(modifier = Modifier.height(16.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -196,26 +174,31 @@ fun MainCalculation(formattedShipping: String, formattedSubTotal: String) {
         }
         Spacer(modifier = Modifier.height(36.dp))
 
-        Divider(modifier = Modifier.background(MaterialTheme.colorScheme.onSurfaceVariant))
-
+        HorizontalDivider(modifier = Modifier.background(MaterialTheme.colorScheme.onSurfaceVariant))
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(stringResource(R.string.sub_total),  fontSize = 19.sp, fontWeight = FontWeight.SemiBold)
-            Text("Rs.$formattedSubTotal",  fontSize = 19.sp, fontWeight = FontWeight.SemiBold, color = PrimaryYellowDark)
+            Text(
+                stringResource(R.string.sub_total),
+                fontSize = 19.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                "Rs.$formattedSubTotal",
+                fontSize = 19.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = PrimaryYellowDark
+            )
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        Divider(modifier = Modifier.background(MaterialTheme.colorScheme.background))
+        HorizontalDivider(modifier = Modifier.background(MaterialTheme.colorScheme.background))
         Spacer(modifier = Modifier.height(36.dp))
-
-
     }
 }
-
 
 @Composable
 fun CartItemList(
@@ -223,13 +206,10 @@ fun CartItemList(
     cartViewModel: CartViewModel
 ) {
     if (cartItems.isEmpty()) {
-        // Display message when Cart is empty
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 22.dp, horizontal = 8.dp),
-
-
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -254,56 +234,85 @@ fun CartItemList(
             ) {
                 Spacer(modifier = Modifier.width(8.dp))
 
-                Box(modifier = Modifier
-                    .size(60.dp)
-                    .clip(Shapes.medium)
-                    .align(alignment = Alignment.CenterVertically)
-                    .background(MaterialTheme.colorScheme.surface)
-                    .border(
-                        width = 1.dp,
-                        color = MaterialTheme.colorScheme.background,
-                        shape = RoundedCornerShape(12.dp)
-                    )){
-                    Image(
-                        painter = painterResource(id = item.imageRes),
-                        contentDescription = item.name,
-                        modifier = Modifier
-                            .size(64.dp),
-                        contentScale = ContentScale.Crop
+                Box(
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(Shapes.medium)
+                        .align(alignment = Alignment.CenterVertically)
+                        .background(MaterialTheme.colorScheme.surface)
+                        .border(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.background,
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                ) {
+                    if (!item.imageUrl.isNullOrEmpty()) {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(item.imageUrl)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = item.name,
+                            modifier = Modifier.size(64.dp),
+                            contentScale = ContentScale.Crop,
+                            placeholder = painterResource(R.drawable.placeholder),
+                            error = painterResource(R.drawable.placeholder)
+                        )
+                    } else {
+                        Image(
+                            painter = painterResource(id = item.imageRes),
+                            contentDescription = item.name,
+                            modifier = Modifier.size(64.dp),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .align(alignment = Alignment.CenterVertically)
+                ) {
+                    Text(
+                        item.name,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        "Rs.${item.price}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = PrimaryYellowDark
                     )
                 }
-                Spacer(modifier = Modifier.width(16.dp))
-                Column(modifier = Modifier
-                    .weight(1f)
-                    .align(alignment = Alignment.CenterVertically)) {
-                    Text(item.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text("Rs.${item.price}", style = MaterialTheme.typography.bodyMedium, color = PrimaryYellowDark)
-                }
+
                 Column(
                     horizontalAlignment = Alignment.End,
                     modifier = Modifier.padding(end = 4.dp)
                 ) {
                     Spacer(modifier = Modifier.height(8.dp))
                     SmallCloseButton(
-                        onClick = { cartViewModel.removeItem(item) } // Callback to remove the item
+                        onClick = { cartViewModel.removeItem(item) }
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("x ${item.quantity}", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.offset(x = -7.dp))
-
+                    Text(
+                        "x ${item.quantity}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.offset(x = (-7).dp)
+                    )
                 }
             }
         }
     }
 }
 
-
-
 @Composable
 fun SmallCloseButton(onClick: () -> Unit) {
     Box(
         modifier = Modifier
-            .size(30.dp) // Outer box size for the red ring
+            .size(30.dp)
             .clip(RoundedCornerShape(50))
             .background(MaterialTheme.colorScheme.onBackground),
         contentAlignment = Alignment.Center
@@ -311,12 +320,12 @@ fun SmallCloseButton(onClick: () -> Unit) {
         Button(
             onClick = { onClick() },
             modifier = Modifier
-                .size(25.dp) // Inner button size
+                .size(25.dp)
                 .clip(RoundedCornerShape(50))
                 .offset(x = 0.dp, y = 0.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.background, // Background color for button
-                contentColor = MaterialTheme.colorScheme.error // Text/Icon color
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.error
             ),
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 4.dp,

@@ -1,12 +1,112 @@
 {
-  "meals": [
+  "burgers": [
     {
-      "idMeal": "1",
-      "strMeal": "Classic Burger",
-      "strInstructions": "Grill patty, assemble with bun, lettuce, tomato.",
-      "strMealThumb": "https://example.com/burger.jpg",
-      "strIngredient1": "Beef Patty",
-      "strMeasure1": "1"
+      "id": 1,
+      "name": "Zinger Burger",
+      "description": "Crispy chicken with spicy sauce and fresh lettuce",
+      "price": "850",
+      "imageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/zingerburger.jpg",
+      "categoryImageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/nonveg.png",
+      "category": "nonveg"
+    },
+    {
+      "id": 2,
+      "name": "Cheese Burger",
+      "description": "Double cheese with juicy beef patty and special sauce",
+      "price": "950",
+      "imageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/loadedcheeseburger.jpg",
+      "categoryImageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/nonveg.png",
+      "category": "nonveg"
+    },
+    {
+      "id": 3,
+      "name": "Tandoori Burger",
+      "description": "Tandoori spiced chicken with mint chutney",
+      "price": "800",
+      "imageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/tandooriburger.jpg",
+      "categoryImageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/nonveg.png",
+      "category": "nonveg"
+    },
+    {
+      "id": 4,
+      "name": "Nashville Burger",
+      "description": "Hot and spicy Nashville style chicken burger",
+      "price": "900",
+      "imageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/nashvilleburger.jpg",
+      "categoryImageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/nonveg.png",
+      "category": "nonveg"
+    },
+    {
+      "id": 5,
+      "name": "BBQ Burger",
+      "description": "Smoky BBQ sauce with crispy bacon and beef",
+      "price": "1050",
+      "imageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/bbqbeefburger.png",
+      "categoryImageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/nonveg.png",
+      "category": "nonveg"
+    },
+    {
+      "id": 6,
+      "name": "Western Whopper",
+      "description": "Classic western style burger with all the fixings",
+      "price": "1100",
+      "imageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/westernwhopper.png",
+      "categoryImageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/nonveg.png",
+      "category": "nonveg"
+    },
+    {
+      "id": 7,
+      "name": "Beef Burger",
+      "description": "Extra cheese with premium beef patty",
+      "price": "1200",
+      "imageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/cheesybeefburger.png",
+      "categoryImageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/nonveg.png",
+      "category": "nonveg"
+    },
+    {
+      "id": 8,
+      "name": "Mushroom Burger",
+      "description": "Double mushroom with Swiss cheese and beef",
+      "price": "1150",
+      "imageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/mushrrombeefburger.png",
+      "categoryImageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/nonveg.png",
+      "category": "nonveg"
+    },
+    {
+      "id": 9,
+      "name": "Veggie Burger",
+      "description": "Fresh vegetables with special veggie patty",
+      "price": "650",
+      "imageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/vegburger1.png",
+      "categoryImageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/veg.png",
+      "category": "veg"
+    },
+    {
+      "id": 10,
+      "name": "Spicy Veggie Burger",
+      "description": "Spiced veggie patty with jalapeños and hot sauce",
+      "price": "700",
+      "imageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/vebburger2.png",
+      "categoryImageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/veg.png",
+      "category": "veg"
+    },
+    {
+      "id": 11,
+      "name": "Garden Fresh Burger",
+      "description": "Garden fresh vegetables with avocado and herbs",
+      "price": "750",
+      "imageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/vegburger3.png",
+      "categoryImageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/veg.png",
+      "category": "veg"
+    },
+    {
+      "id": 12,
+      "name": "Cheesy Veg Burger",
+      "description": "Cheesy veggie burger with multiple cheese varieties",
+      "price": "800",
+      "imageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/vegbuger4.png",
+      "categoryImageUrl": "https://raw.githubusercontent.com/200224510288/Mr.Burgger_Server/main/images/veg.png",
+      "category": "veg"
     }
   ]
 }
