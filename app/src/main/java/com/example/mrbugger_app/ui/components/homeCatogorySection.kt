@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mrbugger_app.Data.Category
@@ -142,10 +143,10 @@ private fun CategoryCardImage(
 
 
 
-
 @Composable
 fun CategoryBar(
     modifier: Modifier = Modifier,
+    navController: NavController,
     viewModel: CategoryViewModel = viewModel(
         factory = CategoryViewModelFactory(LocalContext.current.applicationContext as Application)
     )
@@ -190,7 +191,15 @@ fun CategoryBar(
                             title = category.name,
                             imageUrl = category.imageUrl,
                             isSelect = selectedCategory == index,
-                            onSelected = { selectedCategory = index }
+                            onSelected = {
+                                selectedCategory = index
+
+                                when (category.name.lowercase()) {
+                                    "burgers" -> navController.navigate("menuPage")
+                                    "fast food" -> navController.navigate("fastFoodsMenu")
+                                    "juices", "beverages" -> navController.navigate("beverageMenu")
+                                }
+                            }
                         )
                     }
                 }

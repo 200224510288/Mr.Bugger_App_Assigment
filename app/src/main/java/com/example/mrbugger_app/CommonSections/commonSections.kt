@@ -1,5 +1,9 @@
 package com.example.mrbugger_app.CommonSections
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -67,9 +72,13 @@ fun BottomNavSection(navController: NavController, cartViewModel: CartViewModel)
     }
 }
 
-// bottom section the detailed view page
+// bottom section of the detailed view page
 @Composable
-fun cartBar(navController: NavController){
+fun cartBar(
+    navController: NavController,
+    cartViewModel: CartViewModel
+) {
+    val context = LocalContext.current
 
     Row(
         modifier = Modifier
@@ -81,32 +90,62 @@ fun cartBar(navController: NavController){
 
         // Back Button
         Button(
-            onClick = {navController.popBackStack()},
+            onClick = { navController.popBackStack() },
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             shape = RoundedCornerShape(35),
-            modifier = Modifier.padding(12.dp).height(50.dp).width(170.dp),
+            modifier = Modifier
+                .padding(12.dp)
+                .height(50.dp)
+                .width(170.dp),
             elevation = ButtonDefaults.buttonElevation(2.dp)
-        )  {
-            Text("Back to Menu", color = MaterialTheme.colorScheme.onSecondary, fontSize = 17.sp ,fontWeight = FontWeight.SemiBold,modifier = Modifier.padding(horizontal = 2.dp))
+        ) {
+            Text(
+                "Back to Menu",
+                color = MaterialTheme.colorScheme.onSecondary,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.SemiBold
+            )
         }
 
         // Confirm Order Button
         Button(
-            onClick = {navController.navigate(Screen.OrderConfirmation.route)}, // Confirm order action
+            onClick = {
+                if (isNetworkAvailable(context)) {
+                    val success = cartViewModel.placeOrder()
+                    if (success) {
+                        navController.navigate(Screen.OrderConfirmation.route)
+                    }
+                } else {
+                    Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
+                }
+            },
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             shape = RoundedCornerShape(35),
-            modifier = Modifier.padding(12.dp).height(50.dp).width(160.dp),
+            modifier = Modifier
+                .padding(12.dp)
+                .height(50.dp)
+                .width(160.dp),
             elevation = ButtonDefaults.buttonElevation(2.dp)
         ) {
-            Text("Confirm Order", color = MaterialTheme.colorScheme.onSecondary, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(horizontal = 2.dp))
+            Text(
+                "Confirm Order",
+                color = MaterialTheme.colorScheme.onSecondary,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.SemiBold
+            )
         }
     }
 
     Spacer(modifier = Modifier.height(26.dp))
-
 }
 
-
+fun isNetworkAvailable(context: Context): Boolean {
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val network = connectivityManager.activeNetwork ?: return false
+    val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+    return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+}
 
 // Top bar with cart icon and back icon
 @Composable

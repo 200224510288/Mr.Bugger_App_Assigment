@@ -1,0 +1,67 @@
+{
+  "beverages": [
+    {
+      "id": 1,
+      "name": "Pineapple Juice",
+      "description": "Freshly squeezed pineapple juice, rich in vitamin C and enzymes, offering a sweet yet tangy tropical burst that cools and refreshes instantly.",
+      "price": "350",
+      "imageUrl": "file:///android_asset/images/pineapple.png",
+      "categoryImageUrl": "file:///android_asset/images/veg.png",
+      "category": "veg"
+    },
+    {
+      "id": 2,
+      "name": "Watermelon Juice",
+      "description": "Hydrating and naturally sweet watermelon juice blended with a hint of mint, perfect for beating the summer heat while replenishing lost fluids.",
+      "price": "300",
+      "imageUrl": "file:///android_asset/images/watermelon.png",
+      "categoryImageUrl": "file:///android_asset/images/veg.png",
+      "category": "veg"
+    },
+    {
+      "id": 3,
+      "name": "Grapes Juice",
+      "description": "Smooth and antioxidant-rich grape juice made from sun-ripened black grapes, delivering a deep, sweet flavor that's both heart-healthy and delicious.",
+      "price": "370",
+      "imageUrl": "file:///android_asset/images/grapes.png",
+      "categoryImageUrl": "file:///android_asset/images/veg.png",
+      "category": "veg"
+    },
+    {
+      "id": 4,
+      "name": "Lime Juice",
+      "description": "Refreshing lime juice infused with crushed mint leaves and a pinch of salt, offering a revitalizing, tangy punch and natural detox properties.",
+      "price": "280",
+      "imageUrl": "file:///android_asset/images/lime.png",
+      "categoryImageUrl": "file:///android_asset/images/veg.png",
+      "category": "veg"
+    },
+    {
+      "id": 5,
+      "name": "Passion Fruit Juice",
+      "description": "Vibrant passion fruit juice with its bold aroma, tart taste, and vitamin-rich pulp—crafted to elevate your mood and refresh your senses.",
+      "price": "390",
+      "imageUrl": "file:///android_asset/images/pasion.png",
+      "categoryImageUrl": "file:///android_asset/images/veg.png",
+      "category": "veg"
+    },
+    {
+      "id": 6,
+      "name": "Orange Juice",
+      "description": "A glass of classic orange juice with natural pulp, bursting with citrus goodness, immune-boosting vitamin C, and a fresh-from-the-orchard taste.",
+      "price": "320",
+      "imageUrl": "file:///android_asset/images/orange.png",
+      "categoryImageUrl": "file:///android_asset/images/veg.png",
+      "category": "veg"
+    },
+    {
+      "id": 7,
+      "name": "Apple Juice",
+      "description": "Cold-pressed apple juice with no added sugar, retaining its crisp flavor and loaded with antioxidants for a naturally sweet and healthy drink.",
+      "price": "340",
+      "imageUrl": "file:///android_asset/images/apple.png",
+      "categoryImageUrl": "file:///android_asset/images/veg.png",
+      "category": "veg"
+    }
+  ]
+}

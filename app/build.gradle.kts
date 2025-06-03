@@ -150,4 +150,15 @@ dependencies {
 
     // Optional: Hilt testing
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.48")
+
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    // Biometric authentication
+    implementation ("androidx.biometric:biometric:1.1.0")
+
+    implementation ("androidx.fragment:fragment-ktx:1.6.2")
+    implementation ("androidx.activity:activity-compose:1.8.2")
+
+
 }

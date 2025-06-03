@@ -375,7 +375,7 @@ fun DetailedProductView(
                         modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
                     )
 
-                    CategoryBar()
+                    CategoryBar(navController = navController)
 
                     Spacer(modifier = Modifier.height(16.dp))
                 }

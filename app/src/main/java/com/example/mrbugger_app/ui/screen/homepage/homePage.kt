@@ -87,7 +87,6 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel,cartV
         when(authState.value){
             is AuthState.unauthenticated -> navController.navigate("login")
             else -> Unit
-
         }
     }
     RefreshableContent(
@@ -145,7 +144,7 @@ fun homePage(navController: NavHostController,authViewModel: AuthViewModel,cartV
                     //small chips for the navigation
                     item {
                         Spacer(modifier = Modifier.height(10.dp))
-                        CategoryBar()
+                        CategoryBar(navController = navController)
                     }
                     //Section headers
                     item {
@@ -280,8 +279,8 @@ fun PopularBurgerCard(picture: Pictures, modifier: Modifier = Modifier, navContr
             )
             Button(
                 onClick = {
-                    // Navigate to detailed product view when button is clicked
-                    navController.navigate("detailedProductView/${picture.imageResourceId}/${picture.stringResourceId}/${picture.price}")
+                    // Navigate with all required parameters
+                    navController.navigate("detailedProductView/${picture.imageResourceId}/${picture.imageResourceId2}/${picture.stringResourceId}/${picture.stringResourceId2}/${picture.price}")
                 },
                 modifier = Modifier
                     .fillMaxWidth()

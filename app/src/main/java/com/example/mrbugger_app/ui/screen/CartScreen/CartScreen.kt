@@ -126,7 +126,8 @@ fun CartScreen(
                                     formattedShipping = formattedShipping,
                                     formattedSubTotal = formattedSubTotal
                                 )
-                                cartBar(navController = navController)
+                                cartBar(navController = navController, cartViewModel = cartViewModel)
+
                                 Spacer(modifier = Modifier.height(36.dp))
                             }
                         }

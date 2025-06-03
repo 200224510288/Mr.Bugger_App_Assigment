@@ -11,20 +11,20 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 
 
-// categorizing bar in pages
+// Reusable categorizing bar component
 @Composable
-fun SectionsText( navController: NavController,
+fun SectionsText(
     title: String,
+    onShowMoreClick: () -> Unit,
+    showMoreText: String = "Show more",
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 7.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -36,14 +36,15 @@ fun SectionsText( navController: NavController,
         )
         Spacer(modifier = Modifier.weight(1f))
         TextButton(
-            onClick = {navController.navigate("menuPage") },
+            onClick = onShowMoreClick,
             modifier = Modifier.align(Alignment.CenterVertically)
         ) {
             Text(
-                text = "Show more",
+                text = showMoreText,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.SemiBold
-                ), modifier = Modifier.offset(x = 8.dp),
+                ),
+                modifier = Modifier.offset(x = 8.dp),
             )
         }
     }

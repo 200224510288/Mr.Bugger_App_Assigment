@@ -186,7 +186,7 @@ fun SearchScreen(
                         Spacer(modifier = Modifier.height(5.dp))
                         SectionsText(
                             title = stringResource(R.string.popular_burgers),
-                            navController = navController
+                            onShowMoreClick = { navController.navigate("menuPage") }
                         )
                     }
                     item {
@@ -202,7 +202,7 @@ fun SearchScreen(
                         Spacer(modifier = Modifier.height(5.dp))
                         SectionsText(
                             title = stringResource(R.string.popular_fast_foods),
-                            navController = navController
+                            onShowMoreClick = { navController.navigate("fastFoodsMenu") }
                         )
                     }
                     item {
@@ -218,7 +218,7 @@ fun SearchScreen(
                         Spacer(modifier = Modifier.height(5.dp))
                         SectionsText(
                             title = stringResource(R.string.beverages),
-                            navController = navController
+                            onShowMoreClick = { navController.navigate("beverageMenu") }
                         )
                     }
                     item {

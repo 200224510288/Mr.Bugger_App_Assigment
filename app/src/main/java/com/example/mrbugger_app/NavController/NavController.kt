@@ -32,7 +32,9 @@ import com.example.mrbugger_app.ui.screen.SearchScreen.SearchScreen
 import com.example.mrbugger_app.ui.screen.homepage.homePage
 import com.example.mrbugger_app.ui.screen.login.LoginScreen
 import com.example.mrbugger_app.model.ThemeViewModel
+import com.example.mrbugger_app.ui.screen.BeverageMenu.BeveragesMenuPage
 import com.example.mrbugger_app.ui.screen.DetailedProductViewJson.DetailedProductViewBurger
+import com.example.mrbugger_app.ui.screen.FastFoodsMenu.FastFoodMenuPage
 import com.example.mrbugger_app.ui.screen.signup.signupPage
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
@@ -104,6 +106,12 @@ fun AppNavigation(
 
             composable(Screen.Menu.route) {
                 MenuPage(navController = navController)
+            }
+            composable(Screen.BeverageMenu.route) {
+                BeveragesMenuPage(navController = navController)
+            }
+            composable(Screen.FastFoodsMenu.route) {
+                FastFoodMenuPage(navController = navController)
             }
 
             composable(Screen.OrderConfirmation.route) {

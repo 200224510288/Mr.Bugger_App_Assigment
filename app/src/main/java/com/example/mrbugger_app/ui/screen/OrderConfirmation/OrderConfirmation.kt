@@ -2,13 +2,13 @@ package com.example.mrbugger_app.ui.screen.OrderConfirmation
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.location.Location
-import android.location.LocationManager
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,17 +23,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Logout
-import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -61,14 +57,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -102,7 +97,6 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
     var showLocationPicker by remember { mutableStateOf(false) }
     var selectedLatLng by remember { mutableStateOf<LatLng?>(null) }
     var isUsingCustomLocation by remember { mutableStateOf(false) }
-
 
     @Composable
     fun UserLocationCard(
@@ -146,7 +140,7 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
                         color = MaterialTheme.colorScheme.onSurface
                     )
 
-                    // NEW: Location type indicator
+                    // Location type indicator
                     if (isUsingCustomLocation) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
@@ -220,7 +214,7 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        // NEW: Buttons to change location
+                        // Buttons to change location
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -277,7 +271,6 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
             }
         }
     }
-
 
     fun getCurrentLocation(
         context: Context,
@@ -349,109 +342,6 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
         }
     }
 
-    @Composable
-    fun UserLocationCard(
-        locationAddress: String,
-        isLoadingLocation: Boolean,
-        locationPermissionGranted: Boolean,
-        userLocation: Location?,
-        onRequestLocation: () -> Unit
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.LocationOn,
-                        contentDescription = "Location",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Delivery Location",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                when {
-                    !locationPermissionGranted -> {
-                        Text(
-                            text = "Location permission needed for delivery",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        OutlinedButton(
-                            onClick = onRequestLocation,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.LocationOn,
-                                contentDescription = null,
-                                modifier = Modifier.size(18.dp)
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text("Enable Location")
-                        }
-                    }
-                    isLoadingLocation -> {
-                        Text(
-                            text = "Getting your location...",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                    userLocation != null -> {
-                        Text(
-                            text = locationAddress,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "Coordinates: ${String.format("%.4f", userLocation.latitude)}, ${String.format("%.4f", userLocation.longitude)}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                    else -> {
-                        Text(
-                            text = "Unable to get location",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.error
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        OutlinedButton(
-                            onClick = onRequestLocation,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Retry Location")
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     // Permission launcher
     val locationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -507,6 +397,13 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
     Scaffold(
         topBar = {
             TopBarSection(navController = navController, cartViewModel = cartViewModel)
+        },
+        floatingActionButton = {
+            QuickCallFAB(
+                merchantPhone = "+94741248950",
+                context = context,
+                modifier = Modifier.offset(y = (-80).dp)
+            )
         }
     ) { scaffoldPadding ->
         Column(
@@ -572,7 +469,7 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    // Updated location display card
+                    // Location display card
                     UserLocationCard(
                         locationAddress = locationAddress,
                         isLoadingLocation = isLoadingLocation,
@@ -600,40 +497,40 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Buttons row
+            // Main action buttons
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.Center,
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Button(
                     onClick = { navController.navigate(Screen.Menu.route) },
                     modifier = Modifier
-                        .width(160.dp)
-                        .height(50.dp),
+                        .weight(1f)
+                        .height(50.dp)
+                        .padding(horizontal = 4.dp),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
                         text = stringResource(R.string.menu),
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onBackground
                     )
                 }
 
-                Spacer(modifier = Modifier.width(40.dp))
-
                 Button(
                     onClick = { isSheetOpen = true },
                     modifier = Modifier
-                        .width(160.dp)
-                        .height(50.dp),
+                        .weight(1f)
+                        .height(50.dp)
+                        .padding(horizontal = 4.dp),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
                         text = stringResource(R.string.view_order),
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onBackground
                     )
                 }
@@ -652,7 +549,7 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
             }
         }
 
-        // NEW: Location Picker Dialog
+        // Location Picker Dialog
         LocationPickerDialog(
             isVisible = showLocationPicker,
             currentLocation = userLocation,
@@ -693,6 +590,79 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
     }
 }
 
+//  Call Merchant Button Component
+@Composable
+fun CallMerchantButton(
+    merchantPhone: String,
+    context: Context,
+    modifier: Modifier = Modifier
+) {
+    OutlinedButton(
+        onClick = {
+            try {
+                val intent = Intent(Intent.ACTION_DIAL).apply {
+                    data = Uri.parse("tel:$merchantPhone")
+                }
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        },
+        modifier = modifier,
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = Color(0xFF00C853)
+        ),
+        border = androidx.compose.foundation.BorderStroke(
+            2.dp,
+            Color(0xFF00C853)
+        )
+    ) {
+        Icon(
+            imageVector = Icons.Default.Phone,
+            contentDescription = "Call Merchant",
+            modifier = Modifier.size(20.dp),
+            tint = Color(0xFF00C853)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = "Call Merchant",
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
+}
+
+// Quick Call Floating Action Button
+@Composable
+fun QuickCallFAB(
+    merchantPhone: String,
+    context: Context,
+    modifier: Modifier = Modifier
+) {
+    FloatingActionButton(
+        onClick = {
+            try {
+                val intent = Intent(Intent.ACTION_DIAL).apply {
+                    data = Uri.parse("tel:$merchantPhone")
+                }
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        },
+        modifier = modifier,
+        containerColor = Color(0xFF00C853),
+        contentColor = Color.White
+    ) {
+        Icon(
+            imageVector = Icons.Default.Phone,
+            contentDescription = "Call Merchant",
+            modifier = Modifier.size(24.dp)
+        )
+    }
+}
+
 // bottom bar part
 @Composable
 fun OrderDetailsContent(cartViewModel: CartViewModel) {
@@ -727,15 +697,16 @@ fun OrderDetailsContent(cartViewModel: CartViewModel) {
     }
 }
 
-// main box of confirmation
+// Order Placed Card with Call Merchant Button
 @Composable
 fun OrderPlacedCard() {
+    val context = LocalContext.current
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
             .clip(RoundedCornerShape(16.dp))
-
     ) {
         Column(
             modifier = Modifier
@@ -743,18 +714,17 @@ fun OrderPlacedCard() {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             Spacer(modifier = Modifier.height(8.dp))
 
             // Green Checkmark Icon
             Icon(
                 imageVector = Icons.Default.CheckCircle,
                 contentDescription = stringResource(R.string.order_placed),
-                tint = Color(0xFF00C853), // Green color
+                tint = Color(0xFF00C853),
                 modifier = Modifier.size(110.dp)
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Order Placed Text
             Text(
@@ -764,15 +734,38 @@ fun OrderPlacedCard() {
                 color = MaterialTheme.colorScheme.onBackground
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Subtext
             Text(
                 text = stringResource(R.string.we_have_received_your_order),
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.outline
+                color = MaterialTheme.colorScheme.outline,
+                textAlign = TextAlign.Center
             )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Call Merchant Button - Prominently placed after order confirmation
+            CallMerchantButton(
+                merchantPhone = "+94741248950",
+                context = context,
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .height(48.dp)
+            )
+
             Spacer(modifier = Modifier.height(8.dp))
+
+            // Helper text
+            Text(
+                text = "Need help with your order? Call us directly!",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
             Divider()
         }
     }

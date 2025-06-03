@@ -1,0 +1,58 @@
+{
+  "fastFoods": [
+    {
+      "id": 1,
+      "name": "Fries",
+      "description": "Crispy golden fries tossed with sea salt, served piping hot for the perfect snack or sidekick to any meal.",
+      "price": "250",
+      "imageUrl": "file:///android_asset/images/fries.png",
+      "categoryImageUrl": "file:///android_asset/images/veg.png",
+      "category": "veg"
+    },
+    {
+      "id": 2,
+      "name": "Onion Rings",
+      "description": "Thick-cut onion rings fried to a crunchy perfection, served with a zesty, creamy dipping sauce.",
+      "price": "280",
+      "imageUrl": "file:///android_asset/images/rings.png",
+      "categoryImageUrl": "file:///android_asset/images/veg.png",
+      "category": "veg"
+    },
+    {
+      "id": 3,
+      "name": "Wegus Bites",
+      "description": "Crispy-on-the-outside, tender-on-the-inside veggie nuggets infused with herbs and spices — a vegetarian's savory delight.",
+      "price": "300",
+      "imageUrl": "file:///android_asset/images/wegus.png",
+      "categoryImageUrl": "file:///android_asset/images/veg.png",
+      "category": "veg"
+    },
+    {
+      "id": 4,
+      "name": "Garlic Breads",
+      "description": "Freshly baked bread slices brushed with rich garlic butter and lightly toasted for an aromatic and crunchy treat.",
+      "price": "200",
+      "imageUrl": "file:///android_asset/images/breads.png",
+      "categoryImageUrl": "file:///android_asset/images/veg.png",
+      "category": "veg"
+    },
+    {
+      "id": 5,
+      "name": "Tacos",
+      "description": "Soft-shell tacos filled with spicy grilled chicken, fresh veggies, and a creamy chili-lime dressing — bursting with bold flavor.",
+      "price": "450",
+      "imageUrl": "file:///android_asset/images/taccos.png",
+      "categoryImageUrl": "file:///android_asset/images/nonveg.png",
+      "category": "nonveg"
+    },
+    {
+      "id": 6,
+      "name": "Shawarma",
+      "description": "Tender, marinated meat carved fresh and wrapped in warm pita with garlic sauce, crisp veggies, and Middle Eastern spices.",
+      "price": "500",
+      "imageUrl": "file:///android_asset/images/shawrma.png",
+      "categoryImageUrl": "file:///android_asset/images/nonveg.png",
+      "category": "nonveg"
+    }
+  ]
+}
