@@ -50,8 +50,10 @@ import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.model.ThemeViewModel
 import com.example.mrbugger_app.model.UserProfileViewModel
 import com.example.mrbugger_app.ui.theme.Shapes
+import com.example.mrbugger_app.ui.components.AmbientLightCard
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     navController: NavController,
@@ -62,6 +64,7 @@ fun ProfileScreen(
 ) {
     // Get theme state from ViewModel
     val isDarkMode by themeViewModel.isDarkMode
+    val themeMode by themeViewModel.themeMode.collectAsState()
 
     // Rest of your existing code remains the same...
     var isEditMode by remember { mutableStateOf(false) }
@@ -178,7 +181,7 @@ fun ProfileScreen(
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Theme Toggle Section - Updated to use ViewModel
+            // Theme Settings Section
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -188,44 +191,82 @@ fun ProfileScreen(
                 ),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                Column(
+                    modifier = Modifier.padding(16.dp)
                 ) {
+                    // Header
                     Row(
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 12.dp)
                     ) {
                         androidx.compose.material3.Icon(
-                            imageVector = if (isDarkMode) Icons.Default.DarkMode else Icons.Default.LightMode,
-                            contentDescription = "Theme Icon",
+                            imageVector = Icons.Default.Palette,
+                            contentDescription = "Theme Settings",
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(24.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            text = if (isDarkMode) "Dark Mode" else "Light Mode",
+                            text = "Theme Settings",
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Medium
                         )
                     }
 
-                    Switch(
-                        checked = isDarkMode,
-                        onCheckedChange = { themeViewModel.toggleTheme() }, // Use ViewModel method
-                        colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colorScheme.primary,
-                            checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                            uncheckedThumbColor = MaterialTheme.colorScheme.outline,
-                            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant
-                        )
-                    )
+                    // Manual Theme Toggle (only show when not using ambient light)
+                    if (themeMode == ThemeViewModel.ThemeMode.MANUAL) {
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 8.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                            )
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    androidx.compose.material3.Icon(
+                                        imageVector = if (isDarkMode) Icons.Default.DarkMode else Icons.Default.LightMode,
+                                        contentDescription = "Theme Icon",
+                                        tint = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = if (isDarkMode) "Dark Mode" else "Light Mode",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+
+                                Switch(
+                                    checked = isDarkMode,
+                                    onCheckedChange = { themeViewModel.toggleTheme() },
+                                    colors = SwitchDefaults.colors(
+                                        checkedThumbColor = MaterialTheme.colorScheme.primary,
+                                        checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                                        uncheckedThumbColor = MaterialTheme.colorScheme.outline,
+                                        uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant
+                                    )
+                                )
+                            }
+                        }
+                    }
+
+                    // Ambient Light Sensor Card
+                    AmbientLightCard(themeViewModel = themeViewModel)
+
                 }
             }
-
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -394,7 +435,8 @@ fun ProfileScreen(
                         Text(
                             text = "Clear Image",
                             color = MaterialTheme.colorScheme.onBackground
-                        )                    }
+                        )
+                    }
 
                     OutlinedButton(
                         onClick = {
@@ -409,8 +451,7 @@ fun ProfileScreen(
                             modifier = Modifier.size(18.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Reset", color = MaterialTheme.colorScheme.onBackground
-                        )
+                        Text("Reset", color = MaterialTheme.colorScheme.onBackground)
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))

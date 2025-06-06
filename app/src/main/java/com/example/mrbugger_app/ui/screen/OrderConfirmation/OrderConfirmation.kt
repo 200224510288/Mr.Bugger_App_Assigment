@@ -506,7 +506,10 @@ fun OrderConfirmation(navController: NavController, cartViewModel: CartViewModel
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Button(
-                    onClick = { navController.navigate(Screen.Menu.route) },
+                    onClick = {
+                        cartViewModel.clearCart() // clearCart function
+                        navController.navigate(Screen.Menu.route) // Then navigate
+                    },
                     modifier = Modifier
                         .weight(1f)
                         .height(50.dp)

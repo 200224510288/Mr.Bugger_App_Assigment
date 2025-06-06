@@ -125,7 +125,7 @@ class CartViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             saveOrderToHistory()
-            clearCart()
+           //clearCart()
 
             Log.d("CartViewModel", "Order placed successfully")
             true
