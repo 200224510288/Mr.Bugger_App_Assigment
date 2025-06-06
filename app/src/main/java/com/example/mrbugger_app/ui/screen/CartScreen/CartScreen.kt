@@ -1,5 +1,9 @@
 package com.example.mrbugger_app.ui.screen.CartScreen
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,6 +31,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,11 +66,26 @@ fun CartScreen(
 ) {
     val cartItems = cartViewModel.cartItems
     val subTotal = cartViewModel.subTotal
-
+    val context = LocalContext.current
     val decimalFormat = DecimalFormat("#.##")
     val formattedSubTotal = decimalFormat.format(subTotal)
     val formattedShipping = decimalFormat.format(cartViewModel.deliveryCost)
+// Permission state
+    val onPermission = remember { mutableStateOf(false) }
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            onPermission.value = isGranted
+        }
+    )
 
+    LaunchedEffect(Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            onPermission.value = true
+        }
+    }
     Scaffold(
         topBar = {
             TopBarSection(navController = navController, cartViewModel = cartViewModel)
@@ -126,8 +148,12 @@ fun CartScreen(
                                     formattedShipping = formattedShipping,
                                     formattedSubTotal = formattedSubTotal
                                 )
-                                cartBar(navController = navController, cartViewModel = cartViewModel)
-
+                                cartBar(
+                                    navController = navController,
+                                    cartViewModel = cartViewModel,
+                                    onPermission = onPermission.value,
+                                    context = context
+                                )
                                 Spacer(modifier = Modifier.height(36.dp))
                             }
                         }

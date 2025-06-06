@@ -1,9 +1,15 @@
 package com.example.mrbugger_app.CommonSections
 
+import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -33,13 +39,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mrbugger_app.BottomNav.BottomNavDesign
+import com.example.mrbugger_app.R
 import com.example.mrbugger_app.Screen
 import com.example.mrbugger_app.TopNav.TopBar
+import com.example.mrbugger_app.model.CartItem
 import com.example.mrbugger_app.model.CartViewModel
 import com.example.mrbugger_app.ui.theme.ExtraYellowLight
+import java.text.DecimalFormat
+import android.Manifest
+import android.util.Log
+import kotlin.collections.joinToString
 
 // Add bottom bar fixed into bottom
 @Composable
@@ -76,10 +92,10 @@ fun BottomNavSection(navController: NavController, cartViewModel: CartViewModel)
 @Composable
 fun cartBar(
     navController: NavController,
-    cartViewModel: CartViewModel
+    cartViewModel: CartViewModel,
+    onPermission: Boolean,
+    context: Context
 ) {
-    val context = LocalContext.current
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -87,7 +103,6 @@ fun cartBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         // Back Button
         Button(
             onClick = { navController.popBackStack() },
@@ -113,6 +128,13 @@ fun cartBar(
                 if (isNetworkAvailable(context)) {
                     val success = cartViewModel.placeOrder()
                     if (success) {
+                        if (onPermission && hasNotificationPermission(context)) {
+                            showNotification(
+                                context = context,
+                                cartItems = cartViewModel.cartItems,
+                                subTotal = cartViewModel.subTotal
+                            )
+                        }
                         navController.navigate(Screen.OrderConfirmation.route)
                     }
                 } else {
@@ -139,6 +161,7 @@ fun cartBar(
     Spacer(modifier = Modifier.height(26.dp))
 }
 
+
 fun isNetworkAvailable(context: Context): Boolean {
     val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -161,3 +184,70 @@ fun TopBarSection(navController: NavController, cartViewModel: CartViewModel) {
 }
 
 
+fun showNotification(context: Context, cartItems: List<CartItem>, subTotal: Double) {
+    if (!hasNotificationPermission(context)) {
+        Toast.makeText(context, "Notification permission not granted", Toast.LENGTH_SHORT).show()
+        return
+    }
+
+    val channelId = "order_confirmation_channel"
+    val notificationId = 1
+
+    // Create notification channel (for Android O+)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val channel = NotificationChannel(
+            channelId,
+            "Order Confirmation",
+            NotificationManager.IMPORTANCE_DEFAULT
+        ).apply {
+            description = "Notifications for order confirmations"
+        }
+
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    // Build cart item details
+    val itemsText = cartItems.joinToString("\n") { item ->
+        "${item.name} (x${item.quantity}): Rs.${item.price * item.quantity}"
+    }
+    val formattedTotal = DecimalFormat("#.##").format(subTotal)
+
+    val notificationText = """
+        Your order has been confirmed!
+        Items:
+        $itemsText
+        Total: Rs.$formattedTotal
+    """.trimIndent()
+
+    // Build and show notification
+    try {
+        val notification = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.logo2)
+            .setContentTitle("Order Confirmed")
+            .setContentText("Your order has been placed successfully!")
+            .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+            .build()
+
+        NotificationManagerCompat.from(context).notify(notificationId, notification)
+
+    } catch (e: SecurityException) {
+        Log.e("NotificationError", "Permission issue: ${e.message}")
+        Toast.makeText(context, "Unable to show notification", Toast.LENGTH_SHORT).show()
+    }
+}
+
+
+fun hasNotificationPermission(context: Context): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
+    } else {
+        true // Notification permission is auto-granted below Android 13
+    }
+}
