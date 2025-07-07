@@ -179,9 +179,19 @@ fun CartScreen(
 
 ## 📱 Screenshots
 
+### 🎨 App Interface Gallery
+
 | Home Screen | Menu | Cart | Order Tracking |
 |-------------|------|------|----------------|
 | ![Home](https://github.com/200224510288/Mr.Burgger_Server/blob/main/images/home.png) | ![Menu](https://github.com/200224510288/Mr.Burgger_Server/blob/main/images/menu.png) | ![Cart](https://github.com/200224510288/Mr.Burgger_Server/blob/main/images/cart.png) | ![Tracking](https://github.com/200224510288/Mr.Burgger_Server/blob/main/images/traking.png) |
+
+| Profile | Master View | Admin Panel | Authentication |
+|---------|-------------|-------------|----------------|
+| ![Profile](https://github.com/200224510288/Mr.Burgger_Server/blob/main/images/profile.png) | ![MasterView1](https://github.com/200224510288/Mr.Burgger_Server/blob/main/images/master.png) | ![MasterView2](https://github.com/200224510288/Mr.Burgger_Server/blob/main/images/master2.png) | ![Login](https://github.com/200224510288/Mr.Burgger_Server/blob/main/images/login.png) |
+
+| Beverage Menu |
+|---------------|
+| ![Beverage Menu](https://github.com/200224510288/Mr.Burgger_Server/blob/main/images/beveragemenu.png) |
 
 ## 🎯 Features Breakdown
 
