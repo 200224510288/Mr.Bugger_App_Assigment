@@ -181,7 +181,7 @@ fun CartScreen(
 
 | Home Screen | Menu | Cart | Order Tracking |
 |-------------|------|------|----------------|
-| ![Home](screenshots/home.png) | ![Menu](screenshots/menu.png) | ![Cart](screenshots/cart.png) | ![Tracking](screenshots/tracking.png) |
+| ![Home](https://github.com/200224510288/Mr.Burgger_Server/blob/main/images/home.png) | ![Menu](https://github.com/200224510288/Mr.Burgger_Server/blob/main/images/menu.png) | ![Cart](https://github.com/200224510288/Mr.Burgger_Server/blob/main/images/cart.png) | ![Tracking](https://github.com/200224510288/Mr.Burgger_Server/blob/main/images/traking.png) |
 
 ## 🎯 Features Breakdown
 
@@ -283,8 +283,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/your-username/burger-delivery-app/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/burger-delivery-app/discussions)
 - **Email**: alokasilva2021@gmail.com
 
 ---
